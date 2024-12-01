@@ -1,0 +1,48 @@
+@import './base.scss';
+.FormTabella {
+    @apply flex justify-center;
+  table {
+    background-color: white;
+  }
+  th {
+    background-color: #d1d5db;
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+  td {
+    text-align: center;
+  }
+  .Centra {
+    display: flex;
+    justify-content: center;
+  }
+  .BTNAzione {
+    margin: 2px;
+    padding: 6px;
+    width: 30px;
+    border-radius: 45px;
+    background-color: #ffb912;
+    cursor: pointer;
+  }
+  .FaseDiModifica {
+    background-color: #22c55e;
+  }
+  .FaseDiElimina {
+    background-color: #f37373;
+  }
+  .BTNSalva {
+    background-color: #86efac;
+  }
+
+  .BTNDisabilitato {
+    @apply bg-gray-300 cursor-not-allowed;
+  }
+
+  .BTNIndietro {
+    background-color: white;
+  }
+
+  .BTNEliminaDefinitivamente {
+    background-color: #ff0000;
+  }
+}
