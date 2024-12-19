@@ -8,7 +8,7 @@
 import { Pinia } from '@/stores'
 import { computed } from 'vue';
 
-import RTable from '@/components/ComponenteTabella/CostrisciTabella.vue'
+import RTable from '@/components/ComponenteTabella/CostruisciTabella.vue'
 const Elenco = Pinia.SuperCategorie().getElenco
 
 const Items = computed(() => {

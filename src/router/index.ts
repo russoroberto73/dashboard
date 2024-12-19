@@ -42,11 +42,21 @@ const router = createRouter({
       path: '/movimenti',
       name: 'Movimenti',
       component: () => import('@/views/Banca/Movimenti.vue')
+    },        
+    {
+      path: '/tbellone',
+      name: 'Tabellone',
+      component: () => import('@/views/Banca/Tabellone.vue')
     },    
     {
-      path: '/excel',
-      name: 'Excel',
-      component: () => import('@/views/Banca/Excel.vue')
+      path: '/730',
+      name: '730',
+      component: () => import('@/views/Banca/Rimborso730.vue')
+    },    
+    {
+      path: '/handiphone',
+      name: 'Handiphone',
+      component: () => import('@/views/HandiphoneCodiciFrasi.vue')
     }
   ]
 })

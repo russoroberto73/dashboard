@@ -71,17 +71,17 @@ export const MeseDaNomeANumero = (nomemse: string) => {
       numero = '8'
       break
     case 'settembre':
-      numero ='9'
+      numero = '9'
       break
     case 'ottobre':
-      numero ='10'
+      numero = '10'
       break
     case 'novembre':
       numero = '11'
       break
     case 'dicembre':
       numero = '12'
-      break;
+      break
     default:
       numero = ''
       break
@@ -103,10 +103,13 @@ export const Data_aaaammgg_ggmmaaaa = (obj: string) => {
 export const Data_ggmmaaaa_aaaammgg = (Data: string) => {
   //console.log('Data_ggmmaaa-aaammgg')
   //console.log(Data)
-  const gg = Data.substring(0, 2)
-  const mm = Data.substring(3, 5)
-  const aaaa = Data.substring(6, 10)
-  const tmp = aaaa + '-' + mm + '-' + gg
+  let tmp = ''
+  if (Data) {
+    const gg = Data.substring(0, 2)
+    const mm = Data.substring(3, 5)
+    const aaaa = Data.substring(6, 10)
+    tmp = aaaa + '-' + mm + '-' + gg
+  }
   // console.log(aaaa, mm, gg, tmp)
 
   return tmp
@@ -165,8 +168,11 @@ export const TestAzioneSalva = (Test: boolean, Tipo: string) => {
   }
   return tmp
 }
-
+/*
 export const Round = (num: number, decimals: number) => {
+  /*
+  if (num===-10800)
+  console.log(num)  
   const t = Math.pow(10, decimals)
   let tmp
   if (num != 0) {
@@ -182,6 +188,18 @@ export const Round = (num: number, decimals: number) => {
     } else {
       tmp = tmp.replace('.', ',')
     }
-  }  
-  return tmp != 'NaN' ? tmp!='0' ? tmp!=null ? tmp : '' : '' : ''
+  }
+  if (num===-10800)
+    console.log(tmp != 'NaN' ? (tmp != '0' ? (tmp != null ? tmp : '') : '') : '')    
+  return num //tmp != 'NaN' ? (tmp != '0' ? (tmp != null ? tmp : '') : '') : ''
+  /
+}
+*/
+export const formatEuro = (amount: any) => {
+  let numreturn: any = new Intl.NumberFormat('it-IT', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }).format(amount)
+  numreturn = numreturn === 'NaN' ? '': numreturn
+  return numreturn
 }

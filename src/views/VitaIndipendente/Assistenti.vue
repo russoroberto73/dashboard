@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import { Pinia } from '@/stores'
 import { computed } from 'vue'
-import Rtable from '@/components/ComponenteTabella/CostrisciTabella.vue'
+import Rtable from '@/components/ComponenteTabella/CostruisciTabella.vue'
 const Elenco = Pinia.Assistenti().getElenco
 import { Data_ggmmaaaa_aaaammgg, DataOggiInglese } from '@/assets/helpers/MyMixin'
 

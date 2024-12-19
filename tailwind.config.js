@@ -7,7 +7,11 @@ export default {
         "weather-primary": "#0068A",
         "weather-secondary": "#004E71",
         "Sfondo": "#abcdef",
-        "Bottone": "#ffb912"
+        "Bottone": "#ffb912",
+        "Accrediti": "#a9f2a4",
+        "Addebiti": "#F90",
+        "Investimenti": "#fff270",
+        "BordoTabella": "#7698dc"
       },
       fontFamily: {
         Roboto: ["Roboto, sans-serif"]

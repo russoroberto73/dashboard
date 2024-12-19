@@ -1,4 +1,5 @@
 <template>
+    {{piniainterna.ItemsInterno}}
     <p class="w-full hidden">
         {{ Obj }}
     </p>
@@ -69,17 +70,22 @@
                         </span>
                         <div v-else :class="item[Object.keys(item)[n]].Class"> <!-- lettura-->
                             <div v-if="item[Object.keys(item)[n]].ForzaModifica">
-                                <!--rimpopongo tutti i casi del ccampo form-->
-                                <textarea v-if="item[Object.keys(item)[n]].Type === 'textarea'" class="FaseDiModifica" />
-                                <select v-else-if="item[Object.keys(item)[n]].Type === 'select'" class="FaseDiModifica">
-                                    <option v-for="(option, index) in item[Object.keys(item)[n]].Array" :key="index">
-                                        {{option.text}}
-                                    </option>
-                                </select>
-                                <div v-else-if="item[Object.keys(item)[n]].Type === 'boolean'">
+                                <!--rimpopongo tutti i casi del campo form-->
+                                {{ IdComboNome(item[Object.keys(item)[n]].Value) }}
+                                <span v-if="item[Object.keys(item)[n]].Value === ''">
+                                    <textarea v-if="item[Object.keys(item)[n]].Type === 'textarea'"
+                                        class="FaseDiModifica" />
+                                    <select v-else-if="item[Object.keys(item)[n]].Type === 'select'" class="BTNSalva" v-model="select[parseInt(index)]">
+                                        <option v-for="(option, index) in item[Object.keys(item)[n]].Array" :value="{Etichetta: 'ok'}"
+                                            :key="index">
+                                            {{ option.text }}
+                                        </option>
+                                    </select>
+                                    <div v-else-if="item[Object.keys(item)[n]].Type === 'boolean'">
 
-                                </div>
-                                <input class="w-full FaseDiModifica" v-else />
+                                    </div>
+                                    <input class="w-full FaseDiModifica" v-else />
+                                </span>
                                 <!---->
                             </div>
                             <span v-if="item[Object.keys(item)[n]].Type === 'date'">
@@ -112,8 +118,9 @@
                     </td>
                     <td style="width: 150px;">
                         <span v-if="items[0].Id.Value === 'soloinserimento'">
-                            <button @click="AggiungiRecord(item)">
-                                <BTNSalva class="BTNAzione BTNSalva" />
+                            <button @click="AggiungiRecord(item, parseInt(index))">                                
+                                <BTNSalva class="BTNAzione BTNSalva" :disabled="!select[parseInt(index)]" :class="!select[parseInt(index)] ? 'BTNDisabilitato': 'BTNSalva'" v-if="!item[Object.keys(item)[6]].Value" />
+                                <BTNSalva class="BTNAzione" v-else :class="VerificaEsiste(item, items, pinia.getElenco)" />
                             </button>
                         </span>
                         <span v-else>
@@ -199,6 +206,8 @@ import BTNSalva from './IconeSvg/Salva.vue'
 import BTNIndietro from './IconeSvg/Indietro.vue'
 import BTNConferma from './IconeSvg/Conferma.vue'
 import { Round } from '@/assets/helpers/MyMixin';
+import { useCounterStore } from '@/stores/modules/CostruisciTabella.module';
+
 const props = defineProps(
     {
         items: {
@@ -215,8 +224,8 @@ const props = defineProps(
         }
     }
 )
-const { Intestazione, IdAggiungiModificaElimina, TestModificaElimina, Obj, ConvertiDataInglese, BTNAzione, ClassRiga, ValidareCampi, AbilitaCampo, VerificaCampoModifica, VerificaEliminazione, AssegnaValoreCombo, IdComboNome, AggiungiRecord } = mymixin(props)
-
+const { select, Intestazione, IdAggiungiModificaElimina, TestModificaElimina, Obj, ConvertiDataInglese, BTNAzione, ClassRiga, ValidareCampi, AbilitaCampo, VerificaCampoModifica, VerificaEliminazione, AssegnaValoreCombo, IdComboNome, AggiungiRecord, VerificaEsiste } = mymixin(props)
+const piniainterna = useCounterStore()
 watch(() => props.items, () => {
     if (props.items.length > 0) {
         Intestazione.value = Object.keys(props.items[0])
@@ -225,6 +234,7 @@ watch(() => props.items, () => {
 onMounted(() => {
     setTimeout(() => {
         Intestazione.value = Object.keys(props.items[0])
+        piniainterna.ItemsInterno = props.items
     }, 300)
 })
 </script>

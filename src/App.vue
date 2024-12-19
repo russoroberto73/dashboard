@@ -68,8 +68,17 @@
       </router-link>      
       <router-link :to="{ name: 'Movimenti' }">
         <h2>Movimenti</h2>
+      </router-link>           
+      <router-link :to="{ name: 'Tabellone' }">
+        <h2>Tabellone</h2>
+      </router-link>            
+      <router-link :to="{ name: '730' }">
+        <h2>Rimborso 730</h2>
       </router-link>
-    </div>
+    </div>                
+    <router-link :to="{ name: 'Handiphone' }">
+        <h2>Handiphone</h2>
+      </router-link>
   </aside>
   <div class="mt-[100px]">
     <RouterView />
@@ -89,7 +98,13 @@ const FirebaseCalendarioFilosofico = Pinia.CalendarioFilosofico()
 const FirebaseSuperCategorie = Pinia.SuperCategorie()
 const FirebaseCategorie = Pinia.Categorie()
 const FirebaseMovimenti = Pinia.Movimenti()
-const Scadenze = FirebaseScadenze.getElenco
+const FirebaseRimborsi730 = Pinia.Rimborsi730()
+const FirebaseHandiphoneCategorie = Pinia.HandiphoneCategorie()
+const FirebaseHandiphoneCodiciFrasi = Pinia.HandiphoneParoleFrasi()
+
+const Scadenze = computed(() => {
+  return FirebaseScadenze.getElenco('futuri')
+})
 const Compleanni = computed(() => {
   return FirebaseCompleanni.getElenco('futuri')
 })
@@ -110,6 +125,9 @@ onMounted(() => {
   FirebaseSuperCategorie.Elenco()
   FirebaseCategorie.Elenco()
   FirebaseMovimenti.Elenco()
+  FirebaseRimborsi730.Elenco()
+  FirebaseHandiphoneCategorie.Elenco()
+  FirebaseHandiphoneCodiciFrasi.Elenco()
 })
 
 </script>

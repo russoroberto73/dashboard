@@ -29,36 +29,8 @@ export const Buste = defineStore('Buste', {
     getNomeTabella: () => {
       return 'BustePaga'
     },
-    getAnni: (state) => {
-      const tmp = [
-        ...new Set(
-          state.Collezione.map((item: { Anno: string }) => {
-            //console.log(item)
-            return parseInt(item.Anno)
-          }).sort()
-        )
-      ]
-      return tmp
-    },
-    getElencoTutte: (state) => {
-      return state.Collezione
-    },
     getElenco: (state) => {
-      return (AnnoIdassistente: { Anno: number; IdAssistente: string }) => {
-        //console.log(AnnoIdassistente.Anno, AnnoIdassistente.IdAssistente)
-        const tmp = state.Collezione.map((item) => {
-          //console.log(item.IdAssistente, AnnoIdassistente.IdAssistente)
-          if (
-            parseInt(item.Anno) === AnnoIdassistente.Anno &&
-            item.IdAssistente === AnnoIdassistente.IdAssistente
-          ) {
-            //console.log('p', item)
-            return item
-          }
-        }).filter((itemp) => itemp != undefined)
-        //console.log(tmp)
-        return JSON.parse(JSON.stringify(tmp))
-      }
+      return state.Collezione
     },
     getProssimoElemento: (state) => {
       const ultimabusta = state.Collezione[state.Collezione.length - 1]
@@ -72,7 +44,7 @@ export const Buste = defineStore('Buste', {
         ProssimoAnno++
       }
       //console.log('d',ProssimoAnno, ProssimoMese)
-      return { Nessuno: true, Anno: ProssimoAnno, Mese: ProssimoMese }
+      return { Nessuno: true, Anno: ProssimoAnno, Mese: ProssimoMese, Netto: 1, Lordo: 1, FerieAp: 1, FerieMat: 1, FerieGod: 1 }
     },
     getVerifica: (state) => {
       return (IdAssistente: string) => {
@@ -108,8 +80,8 @@ export const Buste = defineStore('Buste', {
       await ListaAssistenti.forEach((item) => {
         Payload = {
           IdAssistente: item.Id,
-          Anno: Busta.value.Anno,
-          Mese: Busta.value.Mese
+          Anno: Busta.Anno,
+          Mese: Busta.Mese
         }
         push(TabellaRef, Payload)
           .then((response: { key: any }) => {
@@ -124,13 +96,13 @@ export const Buste = defineStore('Buste', {
       })
     },
     async Aggiorna(Busta: any) {
-      const Id = Busta.value.Id
-      delete Busta.value.Id
-      Busta.value.Mese = MeseDaNomeANumero(Busta.value.Mese)
+      const Id = Busta.Id
+      delete Busta.Id
+      Busta.Mese = MeseDaNomeANumero(Busta.value.Mese)
       const index = this.Collezione.findIndex((item) => item.Id === Id)
-      Busta.value.Anno = this.Collezione[index].Anno
+      Busta.Anno = this.Collezione[index].Anno
       //console.log(Busta.value, Id)      
-      await update(child(TabellaRef, Id), Busta.value).then(() => {
+      await update(child(TabellaRef, Id), Busta).then(() => {
         get(child(TabellaRef, Id)).then((res) => {
           const index = this.Collezione.findIndex((item) => item.Id === res.key)
           //console.log(this.Collezione[index])          

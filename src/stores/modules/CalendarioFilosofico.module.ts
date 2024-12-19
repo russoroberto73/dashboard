@@ -87,11 +87,11 @@ export const CalendarioFilosofico = defineStore('CalendarioFilosofico', {
       }
     },
     async Aggiungi(Frase: any) {
-      delete Frase.value.Id
-      Frase.value.Data = Data_aaaammgg_ggmmaaaa(Frase.value.Data)
+      delete Frase.Id
+      Frase.Data = Data_aaaammgg_ggmmaaaa(Frase.Data)
       //console.log(Frase)            
       try {
-        await push(TabellaRef, Frase.value)
+        await push(TabellaRef, Frase)
           .then((response: { key: any }) => {
             const snapshot = get(child(TabellaRef, response.key))
             const Id = response.key
@@ -116,11 +116,11 @@ export const CalendarioFilosofico = defineStore('CalendarioFilosofico', {
       }
     },
     async Aggiorna(Frase: any) {
-      const Id = Frase.value.Id
-      delete Frase.value.Id
-      Frase.value.Data = Data_aaaammgg_ggmmaaaa(Frase.value.Data)
+      const Id = Frase.Id
+      delete Frase.Id
+      Frase.Data = Data_aaaammgg_ggmmaaaa(Frase.Data)
       try {
-        await update(child(TabellaRef, Id), Frase.value)
+        await update(child(TabellaRef, Id), Frase)
           .then(() => {
             get(child(TabellaRef, Id)).then((res) => {
               const index = this.Collezione.findIndex((item) => item.Id === res.key)

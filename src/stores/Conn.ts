@@ -20,8 +20,8 @@ const firebaseConfigsv = {
   storageBucket: "sviluppo-12ba0.firebasestorage.app",
   messagingSenderId: "760928346814",
   appId: "1:760928346814:web:479c00400975db6567f4ef"
-};
-const app = initializeApp(firebaseConfigsv)
+}
+const app = initializeApp(firebaseConfig)
 const db = getDatabase(app)
 
 export default db

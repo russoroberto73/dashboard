@@ -7,6 +7,9 @@ import { CalendarioFilosofico } from "./modules/CalendarioFilosofico.module"
 import { SuperCategorie } from "./modules/Banca/SuperCategorie.module"
 import { Categorie } from './modules/Banca/Categorie.module'
 import { Movimenti } from "./modules/Banca/Movimenti.module"
+import { Rimborsi730 } from "./modules/Banca/Rimborsi730.module"
+import { HandiphoneCategorie } from "./modules/Handiphone/Categorie.module"
+import { HandiphoneParoleFrasi } from "./modules/Handiphone/ParoleFrasi.module"
 
 export const Pinia = {
     Login,
@@ -17,5 +20,8 @@ export const Pinia = {
     CalendarioFilosofico,
     SuperCategorie,
     Categorie,
-    Movimenti
+    Movimenti,
+    Rimborsi730,
+    HandiphoneCategorie,
+    HandiphoneParoleFrasi
 }

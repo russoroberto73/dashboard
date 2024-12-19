@@ -8,21 +8,19 @@
 </template>
 <script setup lang="ts">
 import { Pinia } from '@/stores/'
-import Rtable from '@/components/ComponenteTabella/CostrisciTabella.vue'
-import { computed } from 'vue';
+import Rtable from '@/components/ComponenteTabella/CostruisciTabella.vue'
+import { ref, computed } from 'vue';
 import { Data_ggmmaaaa_aaaammgg } from '@/assets/helpers/MyMixin'
-
-const Elenco = Pinia.CalendarioFilosofico().getElenco
+const Elenco = ref(Pinia.CalendarioFilosofico().getElenco)
 
 const Items = computed(() => {
-    return Elenco.map((item) => {
+    return Elenco.value.map((item) => {
         return {
             Id:
             {
                 Type: "string",
                 Value: item.Id,
-                Class: "text-left",
-                Visibile: false
+                Class: "text-left"
             },
             Data:
             {
@@ -43,7 +41,7 @@ const Items = computed(() => {
                 Type: "text",
                 Value: item.Firma,
                 Class: "text-center",
-            }            
+            }
         }
     })
 })

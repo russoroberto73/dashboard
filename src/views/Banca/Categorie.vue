@@ -8,7 +8,7 @@
 import { Pinia } from '@/stores'
 import { computed } from 'vue';
 
-import RTable from '@/components/ComponenteTabella/CostrisciTabella.vue'
+import RTable from '@/components/ComponenteTabella/CostruisciTabella.vue'
 const Elenco = Pinia.Categorie().getElenco
 
 const Items = computed(() => {
@@ -38,7 +38,7 @@ const Items = computed(() => {
             IdSuperCategoria: {
                 Type: 'select',
                 Array: DatiCombo(),
-                Value: item.IdSuperCategoria, //Pinia.SuperCategorie().getElenco.find((itemsc) => itemsc.Id === item.IdSuperCategoria)?.Nome,
+                Value: item.IdSuperCategoria, 
                 Class: 'text-left'
             },
         }
@@ -48,13 +48,13 @@ const Items = computed(() => {
 const DatiCombo = () => {
     const tmp = Pinia.SuperCategorie().getElenco.sort((a, b) => {
         if (a.Nome < b.Nome) {
-          return -1
+            return -1
         } else if (a.Nome > b.Nome) {
-          return 1
+            return 1
         }
         return 0
-      })
-      return tmp.map((item) => {
+    })
+    return tmp.map((item) => {
         return {
             text: item.Nome,
             value: item.Id
