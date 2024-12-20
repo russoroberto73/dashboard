@@ -12,9 +12,9 @@
 </template>
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-const MovimentiExcel = ref(`28/11/2024\t\t-116,5\tSEPA Direct Debit\tSERVIZIO ELETTRICO NAZIONALE Addebito SDD fattura a Vs carico da IT620010000009633951000 Mand O563610060447783 Per 011910381755832 DD8J002411082411313 0800AC41104VG90000010441\n
-28/11/2024\t1850,6\t\tStipendio	Ord: FONDAZIONE LINKS LEADING INNOVATION KNOWLEDGE FOR SOCIETY Ben: RUSSO ROBERTO Dt-ord: 28/11/2024 Banca Ord: INTESA SANPAOLO SPA Info-Cli: RETRIBUZIONE 11 2024\tContabilizzato
-`)
+const MovimentiExcel = ref('') /* ref(`15/12/2024\t\t-116,5\tSEPA Direct Debit\tSERVIZI ELETTRICO NAZIONALE Addebito SDD fattura a Vs carico da IT620010000009633951000 Mand O563610060447783 Per 011910381755832 DD8J002411082411313 0800AC41104VG90000010441\n
+16/12/2024\t1850,6\t\tStipendio	Ord: FONDAZIONE LINK LEADING INNOVATION KNOWLEDGE FOR SOCIETY Ben: RUSSO ROBERTO Dt-ord: 28/11/2024 Banca Ord: INTESA SANPAOLO SPA Info-Cli: RETRIBUZIONE 11 2024\tContabilizzato
+`)*/
 const ArrayMovimenti: any = ref([])
 import { Data_ggmmaaaa_aaaammgg } from '@/assets/helpers/MyMixin'
 import RTable from '@/components/ComponenteTabella/CostruisciTabella.vue'
@@ -28,11 +28,17 @@ const ConvertiJson = () => {
             Campi[1] = Campi[1].length > 0 ? Campi[1].replace(',', '.') : '0'
             Campi[2] = Campi[1].length > 0 ? Campi[2].substring(1, Campi[2].length) : '0'
             Campi[2] = Campi[2].replace(',', '.')
-            if (Campi[1].split('.')[1] && Campi[1].split('.')[1].length === 1) {
-                Campi[1] = Campi[1]+ '0'
+            if (!(Campi[1].split('.')[1])) {
+                Campi[1] = Campi[1] + '.00'
+            } else if (Campi[1].split('.')[1].length === 1) {
+                Campi[1] = Campi[1] + '0'
             }
-            if (Campi[2].split('.')[1] && Campi[2].split('.')[1].length === 1) {
-                Campi[2] = Campi[2]+ '0'
+            if (!Campi[2]) {
+                Campi[2] = '0.00'
+            } else if (!(Campi[2].split('.')[1])) {
+                Campi[2] = Campi[2] + '.00'
+            } else if (Campi[2].split('.')[1].length === 1) {
+                Campi[2] = Campi[2] + '0'
             }
         }
         if (Campi[0].length > 0) {

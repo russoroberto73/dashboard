@@ -3,7 +3,7 @@
         {{ Use().ObjStore }}
     </p>
     <div class="FormTabella" :id="pinia.getNomeTabella">
-        <table>
+        <table cellspacing="0" cellpadding="0">
             <tr>
                 <template v-for="(etichetta, index) in Intestazione">
                     <th v-if="index > 0">
@@ -16,7 +16,7 @@
             </tr>
             <template v-for="(item, index) in items" :key="index">
                 <tr v-if="parseInt(index) < items.length" :class="ClassRiga(item.Id.Value)"> <!-- Escuode Id-->
-                    <TabellaForm :item="item" :n="n" :index="parseInt(index)"
+                    <TabellaForm :item="item" :Check="VerificaEsiste(item)" :n="n" :index="parseInt(index)"
                         :IdAggiungiModificaElimina="IdAggiungiModificaElimina" v-for="n in Object.keys(item).length - 1"
                         :key="n" :class="item[Object.keys(item)[n]].Class" />
                     <td style="width: 150px;">
@@ -70,7 +70,7 @@
                                 style="width: 100%;" />
                             <select v-else-if="items[0][Object.keys(Use().ItemsStore[0])[n]].Type === 'select'"
                                 :value="Use().ObjStore[Object.keys(Use().ItemsStore[0])[n]]"
-                                @change="AssegnaValoreCombo($event, Object.keys(items[0])[n])"
+                                @change="AssegnaValoreCombo($event, '', index)"
                                 :class="Use().ItemsStore[0][Object.keys(Use().ItemsStore[0])[n]].Class">
                                 <option
                                     v-for="(item, index) in Use().ItemsStore[0][Object.keys(Use().ItemsStore[0])[n]].Array"

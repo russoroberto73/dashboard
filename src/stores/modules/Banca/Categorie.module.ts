@@ -87,10 +87,10 @@ export const Categorie = defineStore('Categorie', {
       }
     },
     async Aggiungi(Categoria: any) {
-      delete Categoria.value.Id
+      delete Categoria.Id
       //console.log(Categoria)
       try {
-        await push(TabellaRef, Categoria.value).then((response: { key: any }) => {
+        await push(TabellaRef, Categoria).then((response: { key: any }) => {
           const snapshot = get(child(TabellaRef, response.key))
           const Id = response.key
           snapshot.then((res: any) => {
@@ -109,11 +109,10 @@ export const Categorie = defineStore('Categorie', {
       }
     },
     async Aggiorna(Categoria: any) {
-      console.log(Categoria.value)
-      const Id = Categoria.value.Id
-      delete Categoria.value.Id
+      const Id = Categoria.Id
+      delete Categoria.Id
       try {
-        await update(child(TabellaRef, Id), Categoria.value).then(() => {
+        await update(child(TabellaRef, Id), Categoria).then(() => {
           get(child(TabellaRef, Id)).then((res) => {
             const index = this.Collezione.findIndex((item) => item.Id === res.key)
             this.Collezione[index].Nome = res.val().Nome

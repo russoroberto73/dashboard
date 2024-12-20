@@ -55,3 +55,10 @@ const abc = computed(() => {
 })
 
 </script>
+
+<style lang="scss" scoped>
+textarea,
+input {
+    margin: 10px !important;
+}
+</style>

@@ -37,11 +37,12 @@ export function mymixin(props: any) {
     if (param.Id && param.Id.length > 1) {
       ObjTrovato = props.items.find((item: { Id: { Value: string } }) => item.Id.Value === param.Id)
       Object.keys(ObjTrovato).forEach((item) => {
+        //console.log(ObjTrovato[item].Value, ObjTrovato[item].Value != undefined)        
         ;(NuovoObj as any)[item] =
-          ObjTrovato[item].Value != 'understand' ? ObjTrovato[item].Value : ''
+          ObjTrovato[item].Value != undefined ? ObjTrovato[item].Value : ''
       })
 
-      //console.log(ObjTrovato)
+      //console.log(NuovoObj)
       if (param.Tipo != 'Salva') {
         Obj.value = NuovoObj
         Use().Assegna(NuovoObj)
@@ -159,21 +160,12 @@ export function mymixin(props: any) {
         })
       }
     })
-    //console.log(Range)
     Range.forEach((element: any) => {
-      //console.log(element)
       let trovato: boolean[] = []
       let n = 0
       Object.keys(objdainserire).forEach((item) => {
         if (item != 'Id' && item != etichetta && item != CampoDaEscludere) {
           n++
-          //if (item === 'Accrediti' || item === 'Addebiti') {
-           // console.log(formatEuro(element[item]), formatEuro(objdainserire[item].Value))
-            //element[item] = formatEuro(element[item])
-            //objdainserire[item].Value = formatEuro(objdainserire[item].Value)
-          //} else {
-            console.log(element[item], objdainserire[item].Value)
-          //}
           if (element[item] === objdainserire[item].Value) {
             trovato.push(true)
           } else {
@@ -181,7 +173,6 @@ export function mymixin(props: any) {
           }
         }
       })
-      //console.log(trovato)
       let conta = 0
       trovato.forEach((it) => {
         if (it) {
@@ -192,7 +183,6 @@ export function mymixin(props: any) {
         Esiste = true
       }
     })
-    //console.log(Esiste)
     return Esiste ? 'BTNDisabilitato' : 'BTNSalva'
   }
 
@@ -269,7 +259,8 @@ export function mymixin(props: any) {
     }
   })
 
-  const AssegnaValoreCombo = (event: any, etichetta: string, index: number) => {
+  const AssegnaValoreCombo = (event: any, nonso: any, index: any) => {
+    console.log(event, nonso, index)    
     Use().IdCategoriaNuovoMovimento[index] = event.target.value
     //console.log('p', event.target.value, etichetta, Use().IdCategoriaNuovoMovimento, index)
   }

@@ -1,7 +1,7 @@
 <template>
     <div>
         {{ IdComboNome(item[Object.keys(item)[n]]) }}
-        <span v-if="item[Object.keys(item)[n]].Value === ''">
+        <span v-if="item[Object.keys(item)[n]].Value === ''">poo
             <textarea v-if="item[Object.keys(item)[n]].Type === 'textarea'" class="FaseDiModifica" />
             <select v-else-if="item[Object.keys(item)[n]].Type === 'select'" class="BTNSalva"
                 v-model="select[parseInt(index)]" @change="AssegnaValoreCombo($event, 'IdCategoria', index)">
@@ -19,8 +19,6 @@
 </template>
 <script setup lang="ts">
 import { mymixin } from './Script'
-import { Use } from '@/stores/modules/CostruisciTabella.module'
-
 
 const props = defineProps(
     {

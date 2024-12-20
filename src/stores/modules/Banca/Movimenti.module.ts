@@ -65,18 +65,27 @@ export const Movimenti = defineStore('Movimenti', {
           const Id: string = doc.key ? doc.key : '0'
           const obj: TypeElemento = doc.val()
 
-          obj.Accrediti = obj.Accrediti ? obj.Accrediti : '0'
-          if (i == 1) {
-            if (obj.Accrediti.split('.')) {
+          obj.Accrediti = obj.Accrediti ? obj.Accrediti.toString() : '0.00'
+          obj.Addebiti = obj.Addebiti ? obj.Addebiti.toString() : '0.00'
+
+          //if (i === 1) {
+          if (!(obj.Accrediti === '0.00')) {
+            if (!obj.Accrediti.split('.')[1]) {
               obj.Accrediti = obj.Accrediti + '.00'
             } else if (obj.Accrediti.split('.')[1].length === 1) {
               obj.Accrediti = obj.Accrediti + '0'
             }
-            console.log(obj.Accrediti)            
-          }          
+          }
+          if (!(obj.Addebiti === '0.00')) {
+            if (!obj.Addebiti.split('.')[1]) {
+              obj.Addebiti = obj.Addebiti + '.00'
+            } else if (obj.Addebiti.split('.')[1].length === 1) {
+              obj.Addebiti = obj.Addebiti + '0'
+            }
+          }
           const Payload = {
             Id,
-            Accrediti: obj.Accrediti ? obj.Accrediti : '0',
+            Accrediti: obj.Accrediti,
             Addebiti: obj.Addebiti ? obj.Addebiti : '0',
             Data: obj.Data,
             Descrizione: obj.Descrizione,

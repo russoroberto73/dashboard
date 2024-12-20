@@ -2,15 +2,19 @@
     <div class="relative top-[120px] text-center">
         <h1 class="text-center text-[30px]">Tabellone</h1>
         <span class="text-[20px] m-6 flex justify-center">
-            <button class="rounded-[45px] mx-5 w-[50px] h-[30px]" @click="CambiaAnno('-')" :class="Anno===parseInt(Anni[0]) ? 'bg-gray-300 cursor-not-allowed': 'bg-yellow-500'" :disabled="Anno===parseInt(Anni[0])">-</button>
+            <button class="rounded-[45px] mx-5 w-[50px] h-[30px]" @click="CambiaAnno('-')"
+                :class="Anno === parseInt(Anni[0]) ? 'bg-gray-300 cursor-not-allowed' : 'bg-yellow-500'"
+                :disabled="Anno === parseInt(Anni[0])">-</button>
             {{ Anno }}
-            <button class="rounded-[45px] mx-5 w-[50px] h-[30px]" @click="CambiaAnno('+')" :class="Anno===parseInt(Anni[Anni.length-1]) ? 'bg-gray-300 cursor-not-allowed': 'bg-yellow-500'" :disabled="Anno===parseInt(Anni[Anni.length-1])">+</button>
+            <button class="rounded-[45px] mx-5 w-[50px] h-[30px]" @click="CambiaAnno('+')"
+                :class="Anno === parseInt(Anni[Anni.length - 1]) ? 'bg-gray-300 cursor-not-allowed' : 'bg-yellow-500'"
+                :disabled="Anno === parseInt(Anni[Anni.length - 1])">+</button>
         </span>
-        <table class="border border-[10px] border-BordoTabella m-auto">
+        <table class="border border-[5px] border-BordoTabella m-auto">
             <tr>
                 <th>Anno {{ Anno }}</th>
                 <th v-for="(item, index) in SuperCategorie" :key="index" :colspan="item.colspan"
-                    class="border border-l-[10px] border-BordoTabella">{{ item.Nome }}</th>
+                    class="border border-l-[5px] border-BordoTabella">{{ item.Nome }}</th>
             </tr>
             <tr>
                 <td v-for="(item, index) in Object.keys(Tabellone_Anno['TabellaAnni'][0])" :key="index"
@@ -20,7 +24,7 @@
             </tr>
             <template v-for="(item, index) in Tabellone_Anno['TabellaAnni']">
                 <tr v-if="index < 13">
-                    <td v-if="index === 12" class="bg-white" rowspan="4">
+                    <td v-if="index === 12" class="bg-white" rowspan="5">
                         Totale
                     </td>
                     <td v-for="(importo, key, index1) in item" :key="index1" v-if="index < 13"
@@ -29,37 +33,50 @@
                         <span v-if="key.toString() === 'Mese'">
                             {{ importo }}
                         </span>
-                        <span v-else>
+                        <span v-else
+                            :class="index < 12 ? 'cursor-pointer' : index === 12 ? 'font-medium cursor-pointer' : ''"
+                            @click="DettaglioMovimenti(index, key)">
                             {{ formatEuro(Math.abs(importo)) }}
                         </span>
                     </td>
                 </tr>
             </template>
             <tr>
-                <td v-for="(item, index) in SommeParziali" :colspan="item.colspan" :key="index"
+                <td v-for="(item, index) in SommeParziali" :colspan="item.colspan" :key="index" class="font-bold"
                     :class="Checkclasstotaliparziali(item)">
                     {{ formatEuro(Math.abs(item.Somma)) }}
                 </td>
             </tr>
             <tr>
                 <td v-for="(item, index) in SommeSuperCategorie" :key="index" :colspan="item.colspan"
-                    :class="Checkclasstotaliparziali(item)" class="border border-l-[10px] border-BordoTabella font-bold">
+                    :rowspan="item.IdSuperCategoria === '-NgUdXdH-WwkXPhYa_O8' ? 2 : 1"
+                    :class="Checkclasstotaliparziali(item)" class="border border-l-[5px] border-BordoTabella font-bold">
                     {{ formatEuro(Math.abs(item.Somma)) }}
                 </td>
             </tr>
             <tr>
                 <td v-for="(somma, index) in SommeTotali" :key="index" :class="somma.Class"
-                    class="border border-[10px] border-BordoTabella font-bold" :colspan="somma.colspan">
+                    class="border border-[5px] border-BordoTabella font-bold" :colspan="somma.colspan">
                     {{ formatEuro(Math.abs(somma.Somma)) }}
                 </td>
             </tr>
+            <tr>
+                <td class="border border-[15px] border-BordoTabella font-bold text-[30px]" :class="TotaleAnno.Class" :colspan="TotaleAnno.colspan">
+                    {{ formatEuro(Math.abs(TotaleAnno.Somma)) }}
+                </td>
+            </tr>
         </table>
+        <div>
+            <RTable :items="MovimentiDettaglio" :pinia="Pinia.Movimenti()" />
+        </div>
     </div>
 </template>
 <script setup lang="ts">
 import { Pinia } from '@/stores'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { Data_ggmmaaaa_aaaammgg, MeseDaNumeroANome, formatEuro } from '@/assets/helpers/MyMixin'
+import RTable from '@/components/ComponenteTabella/CostruisciTabella.vue'
+
 type TypeMovimentiCategoria = {
     IdCategoria: string
     NomeCategoria: string
@@ -92,11 +109,14 @@ const SeparatoreTabella: any = ref([])
 const SommeParziali: any = ref([])
 const SommeSuperCategorie: any = ref([])
 const SommeTotali: any = ref([])
-const Anno = ref((new Date().getFullYear()) - 2)
+const Anno = ref((new Date().getFullYear()))
 const Anni: any = ref([])
+const MovimentiDettaglio: any = ref([])
+const TotaleAnno: any = ref('')
+
 const MovimentiAnno = computed(() => {
     Anni.value = [...new Set(ElencoMovimenti.map((item) => item.Data.substring(6, 10)))].sort()
-    
+
     return ElencoMovimenti.map((item: any) => {
         SeparatoreTabella.valore = []
         SommeParziali.value = []
@@ -441,7 +461,7 @@ const SuperCategorie = computed(() => {
         IdSuperCategoria = ElencoCategorie.find((sc) => sc.Nome === item)?.IdSuperCategoria
     })
     ArraySommeTot.push({ Valore: ArraySomme, IdSuperCategoria })
-    //console.log(ArraySommeTot)
+    console.log(ArraySommeTot)
     //console.log(Tabellone_Anno.value['TabellaAnni'])     
     let VecchioIdSuperCategoria = '' //ArraySommeTot[0].IdSuperCategoria
     ArraySommeTot.forEach((item: any) => {
@@ -468,15 +488,25 @@ const SuperCategorie = computed(() => {
         }
         VecchioIdSuperCategoria = item.IdSuperCategoria
     })
+
+    const ElementoInvestimenti = ArraySommeTot.find((item) => item.IdSuperCategoria === '-NgUdXdH-WwkXPhYa_O8')
+    if (ElementoInvestimenti) {
+        console.log(ElementoInvestimenti.Valore.length)
+    }
     const InvestimentiIndex = SommeSuperCategorie.value.findIndex((item: any) => item.IdSuperCategoria === "-NgUdXdH-WwkXPhYa_O8")
     const Investimenti = SommeSuperCategorie.value[InvestimentiIndex]
 
     //console.log(Object.keys(Tabellone_Anno.value['TabellaAnni'][12]).length)   
     if (Investimenti) {
-        const AccreditiAddebiti = SommeSuperCategorie.value.map((sm) => sm.Somma).reduce((sum, num) => sum + num, 0)
-        SommeTotali.value.push({ Somma: AccreditiAddebiti - Investimenti.Somma, Class: AccreditiAddebiti > 0 ? 'bg-Accrediti' : 'bg-Addebiti', colspan: Object.keys(Tabellone_Anno.value['TabellaAnni'][12]).length - 1 })
+        const AccreditiAddebiti = SommeParziali.value.map((sm) => sm.Somma).reduce((sum, num) => sum + num, 0)
+        SommeTotali.value.push({ Somma: AccreditiAddebiti - Investimenti.Somma, Class: AccreditiAddebiti < 0 ? 'bg-Accrediti' : 'bg-Addebiti', colspan: Object.keys(Tabellone_Anno.value['TabellaAnni'][12]).length - ElementoInvestimenti.Valore.length })
 
-        SommeTotali.value.push({ Somma: Investimenti.Somma, Class: Investimenti.Somma < 0 ? 'bg-Accrediti' : 'bg-Investimenti', colspan: 1 })
+        //SommeTotali.value.push({ Somma: Investimenti.Somma, Class: Investimenti.Somma < 0 ? 'bg-Accrediti' : 'bg-Investimenti', colspan: 1 })
+        //console.log(AccreditiAddebiti - 2 * Investimenti.Somma, Investimenti.Somma)
+        console.log(Object.keys(Tabellone_Anno.value['TabellaAnni'][12]).length)        
+        TotaleAnno.value ={ Somma: AccreditiAddebiti - 2 * Investimenti.Somma, colspan: Object.keys(Tabellone_Anno.value['TabellaAnni'][12]).length, Class: (AccreditiAddebiti - 2 * Investimenti.Somma)<0 ? 'bg-Accrediti': 'bg-Addebiti' }//m + SommeSuperCategorie[SommeSuperCategorie.length - 1].Somma
+
+        //(-(-SommeTotali[0].Somma + SommeSuperCategorie[SommeSuperCategorie.length - 1].Somma))
     }
     return tmp
 })
@@ -488,7 +518,7 @@ const CellaClass = (NomeCategoria: string, index1: number) => {
         const checkinvestimenti = ElencoCategorie.find((item) => item.Nome === NomeCategoria)?.IdSuperCategoria === '-NgUdXdH-WwkXPhYa_O8'
         let bordo = ""
         if (SeparatoreTabella.value.includes(index1)) {
-            bordo = "border-l-[10px] border-BordoTabella"
+            bordo = "border-l-[5px] border-BordoTabella"
         }
         return Tabellone_Anno.value['TabellaAnni'][12][NomeCategoria] < 0 ? 'bg-Accrediti ' + bordo : checkinvestimenti ? 'bg-Investimenti ' + bordo : 'bg-Addebiti ' + bordo
     }
@@ -503,17 +533,106 @@ const Checkclasstotaliparziali = (item: any) => {
             return 'bg-Investimenti'
         }
     } else {
-        return item.Somma < 0 ? item.Bordo ? 'border border-l-[10px] border-BordoTabella bg-Accrediti' : 'bg-Accrediti' : item.Bordo ? 'border border-l-[10px] border-BordoTabella bg-Addebiti' : 'bg-Addebiti'
+        return item.Somma < 0 ? item.Bordo ? 'border border-l-[5px] border-BordoTabella bg-Accrediti' : 'bg-Accrediti' : item.Bordo ? 'border border-l-[5px] border-BordoTabella bg-Addebiti' : 'bg-Addebiti'
     }
 }
 
-const CambiaAnno = (direzione) => {
+const Totale = computed(() => {
+    let tmp = { Somma: 0 }
+    console.log(SommeTotali[0])
+
+    if (SommeTotali[0]) {
+        tmp = {
+            Somma: (-(-SommeTotali[0].Somma + SommeSuperCategorie[SommeSuperCategorie.length - 1].Somma))
+        }
+    }
+    console.log(tmp)
+    return { Somma: 7 }
+})
+
+const CambiaAnno = (direzione: string) => {
     if (direzione === "-") {
         Anno.value--
     } else {
         Anno.value++
     }
 }
+
+const DettaglioMovimenti = (mese: number, categoria: string) => {
+    const IdCategoria = ElencoCategorie.find((item) => item.Nome === categoria)?.Id
+    //console.log(mese, IdCategoria)    
+    let movimenti = []
+    if (mese === 12) {
+        // totale categoria
+        movimenti = MovimentiAnno.value.filter((item) => item.IdCategoria === IdCategoria)
+    } else {
+        movimenti = MovimentiAnno.value.filter((item) => item.IdCategoria === IdCategoria && parseInt(item.Data.substring(3, 5)) === mese + 1)
+    }
+    //console.log(movimenti)
+    MovimentiDettaglio.value = movimenti.map((item) => {
+        return {
+            Id: {
+                Type: 'string',
+                Value: item.Id,
+                Class: 'text-center',
+            },
+            Data: {
+                Type: 'date',
+                Value: Data_ggmmaaaa_aaaammgg(item.Data),
+                Class: 'text-center',
+                Valido: 'p'
+            },
+            Accrediti: {
+                Type: 'number',
+                Value: item.Accrediti,
+                Class: 'text-center',
+                Controlla2Campi: '0'
+            },
+            Addebiti: {
+                Type: 'number',
+                Value: item.Addebiti,
+                Class: 'text-center',
+                Controlla2Campi: '0'
+            },
+            Descrizione: {
+                Type: 'string',
+                Value: item.Descrizione,
+                Class: 'text-left',
+                Valido: 'p'
+            },
+            DescrizioneEstesa: {
+                Type: 'string',
+                Value: item.DescrizioneEstesa,
+                Class: 'text-left w-full',
+                Valido: 'p'
+            },
+            IdCategoria: {
+                Type: 'select',
+                Value: item.IdCategoria,
+                Array: DatiCombo(),
+                Class: 'text-left',
+                Valido: 'p'
+            }
+        }
+    })
+}
+const DatiCombo = () => {
+    const tmp = Pinia.Categorie().getElenco.sort((a, b) => {
+        if (a.Nome < b.Nome) {
+            return -1
+        } else if (a.Nome > b.Nome) {
+            return 1
+        }
+        return 0
+    })
+    return tmp.map((item) => {
+        return {
+            text: item.Nome,
+            value: item.Id
+        }
+    })
+}
+
 </script>
 <style>
 th {
