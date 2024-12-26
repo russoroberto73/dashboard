@@ -34,7 +34,9 @@ export const Scadenze = defineStore('Scadenze', {
             return new Date(a.Data).getTime() - new Date(b.Data).getTime()
           })
         } else {
-          return state.Collezione
+          return state.Collezione.sort((a,b) => {
+            return new Date(a.Data).getTime() - new Date(b.Data).getTime()
+          })
         }
       }
     }

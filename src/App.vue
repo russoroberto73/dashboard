@@ -71,6 +71,9 @@
       </router-link>           
       <router-link :to="{ name: 'Tabellone' }">
         <h2>Tabellone</h2>
+      </router-link>           
+      <router-link :to="{ name: 'Confronto' }">
+        <h2>Confronto</h2>
       </router-link>            
       <router-link :to="{ name: '730' }">
         <h2>Rimborso 730</h2>

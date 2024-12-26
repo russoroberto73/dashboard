@@ -44,9 +44,14 @@ const router = createRouter({
       component: () => import('@/views/Banca/Movimenti.vue')
     },        
     {
-      path: '/tbellone',
+      path: '/tabellone',
       name: 'Tabellone',
       component: () => import('@/views/Banca/Tabellone.vue')
+    },            
+    {
+      path: '/confronto',
+      name: 'Confronto',
+      component: () => import('@/views/Banca/Confronto.vue')
     },    
     {
       path: '/730',

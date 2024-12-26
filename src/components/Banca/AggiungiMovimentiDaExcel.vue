@@ -57,7 +57,7 @@ const Items = computed(() => {
             Data: {
                 Type: 'date',
                 Value: item[0],
-                ControllaIntervallo: 1,
+                ControllaIntervallo: 10,
                 Valido: 'p'
             },
             Accrediti: {

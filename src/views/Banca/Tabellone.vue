@@ -15,22 +15,28 @@
                 <th>Anno {{ Anno }}</th>
                 <th v-for="(item, index) in SuperCategorie" :key="index" :colspan="item.colspan"
                     class="border border-l-[5px] border-BordoTabella">{{ item.Nome }}</th>
+                <th colspan="4">Totali mesi</th>
             </tr>
             <tr>
                 <td v-for="(item, index) in Object.keys(Tabellone_Anno['TabellaAnni'][0])" :key="index"
-                    :class="CellaClass(item, index)" class="font-bold border border-BordoTabella">
+                    :class="CellaClass(item, 13, index)" class="font-bold border border-BordoTabella">
                     {{ item }}
                 </td>
+                <td class="bg-Accrediti border border-l-[5px] border-BordoTabella font-extrabold px-2">
+                    Entrate</td>
+                <td class="bg-Addebiti border border-BordoTabella font-extrabold px-2">Uscite</td>
+                <td class="bg-Investimenti border border-BordoTabella font-extrabold px-2">Investimenti</td>
+                <td class="bg-white border border-BordoTabella font-extrabold px-2">Mesi</td>
             </tr>
             <template v-for="(item, index) in Tabellone_Anno['TabellaAnni']">
                 <tr v-if="index < 13">
-                    <td v-if="index === 12" class="bg-white" rowspan="5">
+                    <td v-if="index === 12" class="bg-white font-bold" rowspan="5">
                         Totale
                     </td>
                     <td v-for="(importo, key, index1) in item" :key="index1" v-if="index < 13"
-                        :class="CellaClass(key.toString(), index === 12 ? index1 + 1 : index1)"
+                        :class="CellaClass(key.toString(), index, index === 12 ? index1 + 1 : index1)"
                         class="border border-BordoTabella">
-                        <span v-if="key.toString() === 'Mese'">
+                        <span v-if="key.toString() === 'Mese'" class="font-bold">
                             {{ importo }}
                         </span>
                         <span v-else
@@ -39,6 +45,21 @@
                             {{ formatEuro(Math.abs(importo)) }}
                         </span>
                     </td>
+                    <template v-if="index >= 0" :class="index===12 ? 'font-bold' : ''">
+                        <td :rowspan="index === 12 ? 2 : 1" class="bg-Accrediti border border-l-[5px] border-BordoTabella"
+                            :class="index === 12 ? 'font-bold' : ''">
+                            {{ formatEuro(Math.abs(TotaliMesi[index]['Entrate'])) }}</td>
+                        <td :rowspan="index === 12 ? 2 : 1" class="bg-Addebiti border border-BordoTabella"
+                            :class="index === 12 ? 'font-bold' : ''">
+                            {{ formatEuro(Math.abs(TotaliMesi[index]['Uscite'])) }}</td>
+                        <td :rowspan="index === 12 ? 4 : 1" class="border border-BordoTabella"
+                            :class="parseFloat(TotaliMesi[index]['Investimenti'], 2) > 0 ? 'bg-Accrediti' + (index == 12 ? ' font-bold' : '') : 'bg-Investimenti' + (index == 12 ? ' font-bold' : '')">
+                            {{ formatEuro(Math.abs(TotaliMesi[index]['Investimenti'])) }}</td>
+                        <td :rowspan="index === 12 ? 2 : 1" class="bg-white border border-BordoTabella font-bold"
+                            v-if="index < 12">{{ MeseDaNumeroANome((index + 1).toString()) }}</td>
+                        <td v-else :rowspan="index === 12 ? 5 : 1" class="bg-white border border-BordoTabella font-bold">
+                            Totole</td>
+                    </template>
                 </tr>
             </template>
             <tr>
@@ -53,6 +74,9 @@
                     :class="Checkclasstotaliparziali(item)" class="border border-l-[5px] border-BordoTabella font-bold">
                     {{ formatEuro(Math.abs(item.Somma)) }}
                 </td>
+                <td colspan="2" rowspan="2" class="font-bold border border-l-[5px] border-BordoTabella"
+                    :class="(TotaliMesi[12].Entrate + TotaliMesi[12].Uscite < 0) ? 'bg-Addebiti' : 'bg-Accrediti'">
+                    {{ formatEuro(Math.abs(TotaliMesi[12].Entrate + TotaliMesi[12].Uscite)) }}</td>
             </tr>
             <tr>
                 <td v-for="(somma, index) in SommeTotali" :key="index" :class="somma.Class"
@@ -61,19 +85,31 @@
                 </td>
             </tr>
             <tr>
-                <td class="border border-[15px] border-BordoTabella font-bold text-[30px]" :class="TotaleAnno.Class" :colspan="TotaleAnno.colspan">
+                <td class="border border-[5px] border-BordoTabella font-bold text-[30px]" :class="TotaleAnno.Class"
+                    :colspan="TotaleAnno.colspan">
                     {{ formatEuro(Math.abs(TotaleAnno.Somma)) }}
                 </td>
+                <td colspan="3" class="font-bold" :class="TotaliMesiFinale > 0 ? 'bg-Accrediti' : 'bg-Addebiti'">
+                    {{ formatEuro(Math.abs(TotaliMesiFinale)) }}</td>
             </tr>
         </table>
-        <div>
+        <div v-if="MovimentiDettaglio.length > 0" class="bg-white w-[fit-content] m-auto text-right">
+            <button @click="MovimentiDettaglio = []">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="15" y1="9" x2="9" y2="15" />
+                    <line x1="9" y1="9" x2="15" y2="15" />
+                </svg>
+
+            </button>
             <RTable :items="MovimentiDettaglio" :pinia="Pinia.Movimenti()" />
         </div>
     </div>
 </template>
 <script setup lang="ts">
 import { Pinia } from '@/stores'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { Data_ggmmaaaa_aaaammgg, MeseDaNumeroANome, formatEuro } from '@/assets/helpers/MyMixin'
 import RTable from '@/components/ComponenteTabella/CostruisciTabella.vue'
 
@@ -109,10 +145,12 @@ const SeparatoreTabella: any = ref([])
 const SommeParziali: any = ref([])
 const SommeSuperCategorie: any = ref([])
 const SommeTotali: any = ref([])
-const Anno = ref((new Date().getFullYear()))
+const Anno = ref(new Date().getFullYear())
 const Anni: any = ref([])
 const MovimentiDettaglio: any = ref([])
 const TotaleAnno: any = ref('')
+const TotaliMesi: any = ref([])
+const TotaliMesiFinale: any = ref([])
 
 const MovimentiAnno = computed(() => {
     Anni.value = [...new Set(ElencoMovimenti.map((item) => item.Data.substring(6, 10)))].sort()
@@ -122,6 +160,9 @@ const MovimentiAnno = computed(() => {
         SommeParziali.value = []
         SommeSuperCategorie.value = []
         SommeTotali.value = []
+        TotaleAnno.value = []
+        TotaliMesi.value = []
+        TotaliMesiFinale.value = []
 
         let Categoria
         let IdSuperCategoria
@@ -285,7 +326,7 @@ const Tabellone_Anno: any = computed(() => {
     const SommaMesiCategorie: ArrayMovimentiCategoria = []
     const GruppoCategorie: object[] = []
     let tutto: object[] = []
-    const Mesi: object[] = []
+    const Mesi: any = []
     let objMovimenti: any
     const Calendario = [
         "gennaio",
@@ -355,9 +396,9 @@ const Tabellone_Anno: any = computed(() => {
             ObjMovimenti["NomeMese"] = MeseDaNumeroANome((item["Mese"] - 1).toString())
             ArrayMovimenti.push(ObjMovimenti)
             ObjMovimenti = {}
-            ObjMovimenti[item["NomeCategoria"]] = Math.abs(item["Somma"])
+            ObjMovimenti[item["NomeCategoria"]] = item["Somma"]
         } else {
-            ObjMovimenti[item["NomeCategoria"]] = Math.abs(item["Somma"])
+            ObjMovimenti[item["NomeCategoria"]] = item["Somma"]
         }
         Meset = item["Mese"]
     })
@@ -421,6 +462,46 @@ const Tabellone_Anno: any = computed(() => {
         Mesi: ArrayMovimenti,
         TabellaAnni: tutto
     })*/
+    let SommaInvestimenti = 0
+    let SommaEntrate = 0
+    let SommaUscite = 0
+    let SommmeAnnoEntrate = 0
+    let SommmeAnnoUscite = 0
+    let SommmeAnnoInvestimenti = 0
+
+    const abc = []
+    for (let m = 0; m < 12; m++) {
+        SommaInvestimenti = 0
+        SommaEntrate = 0
+        SommaUscite = 0
+
+        Object.keys(Mesi[m]).forEach((key) => {
+            const importo = parseFloat(Mesi[m][key]) ? Mesi[m][key] : 0
+            const IdSuperCategoria = ElencoCategorie.find((item) => item.Nome === key)?.IdSuperCategoria
+            if (IdSuperCategoria === '-NgUdXdH-WwkXPhYa_O8') {
+                SommaInvestimenti += importo
+            } else if (importo < 0) {
+                SommaUscite += importo
+            } else {
+                SommaEntrate += importo
+            }
+        })
+        abc.push({ Mese: m, Entrate: SommaEntrate, Uscite: SommaUscite, Investimenti: SommaInvestimenti })
+    }
+    TotaliMesi.value = []
+    abc.forEach((item) => {
+        SommmeAnnoEntrate += item.Entrate
+        SommmeAnnoUscite += item.Uscite
+        SommmeAnnoInvestimenti += item.Investimenti
+        TotaliMesi.value.push(item)
+    })
+    TotaliMesi.value.push({ Mese: 13, Entrate: SommmeAnnoEntrate, Uscite: SommmeAnnoUscite, Investimenti: SommmeAnnoInvestimenti })
+    if (TotaliMesi.value[12].Investimenti < 0) {
+        TotaliMesiFinale.value = TotaliMesi.value[12].Entrate + TotaliMesi.value[12].Uscite - TotaliMesi.value[12].Investimenti
+    } else {
+        TotaliMesiFinale.value = TotaliMesi.value[12].Entrate + TotaliMesi.value[12].Uscite + TotaliMesi.value[12].Investimenti
+    }
+
     return {
         Anno: SommaMesiCategorie,
         Mesi: ArrayMovimenti,
@@ -442,28 +523,20 @@ const SuperCategorie = computed(() => {
         SeparatoreTabella.value[n] = parseInt(colspan) + parseInt(SeparatoreTabella.value[n - 1])
         n++
     })
-    //console.log(SeparatoreTabella.value)    
-
-    //console.log(Object.keys(Tabellone_Anno.value['TabellaAnni'][12])[0])
     const PrimonomeCategoria = Object.keys(Tabellone_Anno.value['TabellaAnni'][12])[0]
     let IdSuperCategoria: string | undefined = ElencoCategorie.find((sc) => sc.Nome === PrimonomeCategoria)?.IdSuperCategoria
     let ArraySomme: any = []
     let ArraySommeTot: any = []
     Object.keys(Tabellone_Anno.value['TabellaAnni'][12]).forEach((item) => {
         if (IdSuperCategoria != ElencoCategorie.find((sc) => sc.Nome === item)?.IdSuperCategoria) {
-            //console.log('---')            
-            //console.log(ArraySomme)
             ArraySommeTot.push({ Valore: ArraySomme, IdSuperCategoria })
             ArraySomme = []
-
         }
         ArraySomme.push(Tabellone_Anno.value['TabellaAnni'][12][item])
         IdSuperCategoria = ElencoCategorie.find((sc) => sc.Nome === item)?.IdSuperCategoria
     })
     ArraySommeTot.push({ Valore: ArraySomme, IdSuperCategoria })
-    console.log(ArraySommeTot)
-    //console.log(Tabellone_Anno.value['TabellaAnni'])     
-    let VecchioIdSuperCategoria = '' //ArraySommeTot[0].IdSuperCategoria
+    let VecchioIdSuperCategoria = ''
     ArraySommeTot.forEach((item: any) => {
         let Bordo = false
         const positiveNumbers = item.Valore.filter(num => num >= 0)
@@ -488,30 +561,38 @@ const SuperCategorie = computed(() => {
         }
         VecchioIdSuperCategoria = item.IdSuperCategoria
     })
-
     const ElementoInvestimenti = ArraySommeTot.find((item) => item.IdSuperCategoria === '-NgUdXdH-WwkXPhYa_O8')
-    if (ElementoInvestimenti) {
-        console.log(ElementoInvestimenti.Valore.length)
-    }
     const InvestimentiIndex = SommeSuperCategorie.value.findIndex((item: any) => item.IdSuperCategoria === "-NgUdXdH-WwkXPhYa_O8")
     const Investimenti = SommeSuperCategorie.value[InvestimentiIndex]
-
-    //console.log(Object.keys(Tabellone_Anno.value['TabellaAnni'][12]).length)   
     if (Investimenti) {
         const AccreditiAddebiti = SommeParziali.value.map((sm) => sm.Somma).reduce((sum, num) => sum + num, 0)
-        SommeTotali.value.push({ Somma: AccreditiAddebiti - Investimenti.Somma, Class: AccreditiAddebiti < 0 ? 'bg-Accrediti' : 'bg-Addebiti', colspan: Object.keys(Tabellone_Anno.value['TabellaAnni'][12]).length - ElementoInvestimenti.Valore.length })
-
-        //SommeTotali.value.push({ Somma: Investimenti.Somma, Class: Investimenti.Somma < 0 ? 'bg-Accrediti' : 'bg-Investimenti', colspan: 1 })
-        //console.log(AccreditiAddebiti - 2 * Investimenti.Somma, Investimenti.Somma)
-        console.log(Object.keys(Tabellone_Anno.value['TabellaAnni'][12]).length)        
-        TotaleAnno.value ={ Somma: AccreditiAddebiti - 2 * Investimenti.Somma, colspan: Object.keys(Tabellone_Anno.value['TabellaAnni'][12]).length, Class: (AccreditiAddebiti - 2 * Investimenti.Somma)<0 ? 'bg-Accrediti': 'bg-Addebiti' }//m + SommeSuperCategorie[SommeSuperCategorie.length - 1].Somma
-
-        //(-(-SommeTotali[0].Somma + SommeSuperCategorie[SommeSuperCategorie.length - 1].Somma))
+        //**
+        // accreditiaddebiti p  -100   investimenti p -90   -100 + -90 = -190
+        // accreditiaddebiti p  -100   investimenti n 90    -100 + 90 = -10
+        // accreditiaddebiti n  100    investimenti p -90    100  + -90 = 10
+        // accreditiaddebiti n  100    investimenti n 90     100 + -90 = 10 */
+        SommeTotali.value.push({ Somma: AccreditiAddebiti - Investimenti.Somma, Class: AccreditiAddebiti - Investimenti.Somma < 0 ? 'bg-Accrediti' : 'bg-Addebiti', colspan: Object.keys(Tabellone_Anno.value['TabellaAnni'][12]).length - ElementoInvestimenti.Valore.length })
+        //console.log(AccreditiAddebiti, Investimenti.Somma)
+        let SommaAlgebrica
+        if (Investimenti.Somma > 0) {
+            SommaAlgebrica = (AccreditiAddebiti - Investimenti.Somma) - Investimenti.Somma
+        } else {
+            SommaAlgebrica = (AccreditiAddebiti - Investimenti.Somma) + Investimenti.Somma
+        }
+        TotaleAnno.value = { Somma: SommaAlgebrica, colspan: Object.keys(Tabellone_Anno.value['TabellaAnni'][12]).length, Class: SommaAlgebrica < 0 ? 'bg-Accrediti' : 'bg-Addebiti' }
     }
+    //console.log(Tabellone_Anno.value['TabellaAnni'][12], Tabellone_Anno.value['TabellaAnni'][15])
+    //console.log(ElencoCategorie)
+    /*for (let m = 1; m < 13; m++) {
+        TotaliMesi.value.push({ Entrate: 10, Uscite: 20, Investimenti: 30 })
+    }*/
+    //console.log(tmp)   
     return tmp
 })
 
-const CellaClass = (NomeCategoria: string, index1: number) => {
+const CellaClass = (NomeCategoria: string, index, index1: number) => {
+    let Class = ''
+    let segno = 1
     if (NomeCategoria === "Mese") {
         return 'bg-white'
     } else {
@@ -520,7 +601,38 @@ const CellaClass = (NomeCategoria: string, index1: number) => {
         if (SeparatoreTabella.value.includes(index1)) {
             bordo = "border-l-[5px] border-BordoTabella"
         }
-        return Tabellone_Anno.value['TabellaAnni'][12][NomeCategoria] < 0 ? 'bg-Accrediti ' + bordo : checkinvestimenti ? 'bg-Investimenti ' + bordo : 'bg-Addebiti ' + bordo
+        //console.log(index)        
+        if (index === 12) {
+            segno = -1
+        }
+        if (index === 13) {
+            index = 12
+            segno = -1
+        }
+        if (Tabellone_Anno.value['TabellaAnni'][12]) {
+            if (Tabellone_Anno.value['TabellaAnni'][12][NomeCategoria] < 0) {
+                Class = 'bg-Accrediti ' + bordo
+            } else {
+                if (checkinvestimenti) {
+                    Class = 'bg-Investimenti ' + bordo
+                } else {
+                    Class = 'bg-Addebiti ' + bordo
+                }
+            }
+        }
+        if (index < 12)
+            if (Tabellone_Anno.value['TabellaAnni'][index]) {
+                if (Tabellone_Anno.value['TabellaAnni'][12][NomeCategoria] < 0) {
+                    if (Tabellone_Anno.value['TabellaAnni'][index][NomeCategoria] < 0) {
+                        Class += ' text-red-900 font-extrabold bg-red-400'
+                    }
+                } else {
+                    if (Tabellone_Anno.value['TabellaAnni'][index][NomeCategoria] > 0) {
+                        Class += ' text-green-900 font-extrabold bg-green-500'
+                    }
+                }
+            }
+        return Class
     }
 }
 const Checkclasstotaliparziali = (item: any) => {
@@ -536,19 +648,6 @@ const Checkclasstotaliparziali = (item: any) => {
         return item.Somma < 0 ? item.Bordo ? 'border border-l-[5px] border-BordoTabella bg-Accrediti' : 'bg-Accrediti' : item.Bordo ? 'border border-l-[5px] border-BordoTabella bg-Addebiti' : 'bg-Addebiti'
     }
 }
-
-const Totale = computed(() => {
-    let tmp = { Somma: 0 }
-    console.log(SommeTotali[0])
-
-    if (SommeTotali[0]) {
-        tmp = {
-            Somma: (-(-SommeTotali[0].Somma + SommeSuperCategorie[SommeSuperCategorie.length - 1].Somma))
-        }
-    }
-    console.log(tmp)
-    return { Somma: 7 }
-})
 
 const CambiaAnno = (direzione: string) => {
     if (direzione === "-") {
@@ -632,6 +731,12 @@ const DatiCombo = () => {
         }
     })
 }
+
+onMounted(() => {
+    /*for (let m = 1; m < 13; m++) {
+        TotaliMesi.value.push({ Entrate: 10, Uscite: 20, Investimenti: 30 })
+    }*/
+})
 
 </script>
 <style>

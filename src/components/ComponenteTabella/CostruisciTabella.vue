@@ -60,14 +60,14 @@
             </template>
             <tr :class="ClassRiga('0')">
                 <td v-for="n in Object.keys(Use().ItemsStore[0]).length - 1" :key="n"
-                    v-if="TestModificaElimina === 'I'">
+                    v-if="TestModificaElimina === 'I'" class="px-[10px]">
                     <span v-if="!Use().ObjStore['Nessuno']">
                         <span v-if="Use().ItemsStore[0][Object.keys(Use().ItemsStore[0])[n]].Visibile != 'hidden'">
                             <textarea
                                 v-if="Use().ItemsStore[0][Object.keys(Use().ItemsStore[0])[n]].Type === 'textarea'"
                                 v-model="Use().ObjStore[Object.keys(Use().ItemsStore[0])[n]]"
                                 :class="Use().ItemsStore[0][Object.keys(Use().ItemsStore[0])[n]].Class"
-                                style="width: 100%;" />
+                                style="margin: 10px;" />
                             <select v-else-if="items[0][Object.keys(Use().ItemsStore[0])[n]].Type === 'select'"
                                 :value="Use().ObjStore[Object.keys(Use().ItemsStore[0])[n]]"
                                 @change="AssegnaValoreCombo($event, '', index)"
@@ -95,15 +95,15 @@
                     </span>
                 </td>
                 <td class="Centra">
-                    <BTNAggiungi class="BTNAzione" @click="BTNAzione({ Tipo: 'AbilitaAggiungi', Id: '0' })"
+                    <BTNAggiungi class="BTNAzione mt-[20px]" @click="BTNAzione({ Tipo: 'AbilitaAggiungi', Id: '0' })"
                         v-if="TestModificaElimina != 'I'" />
                     <span v-else class="Centra">
-                        <BTNSalva class="BTNAzione BTNSalva" @click="BTNAzione({ Tipo: 'Salva', Id: '0' })"
-                            :disabled="ValidareCampi" :class="ValidareCampi ? 'BTNDisabilitato' : 'BTNSalva'" />
+                        <BTNSalva class="BTNAzione BTNSalva mt-[20px]" @click="BTNAzione({ Tipo: 'Salva', Id: '0' })"
+                            :disabled="ValidareCampi" :class="ValidareCampi ? 'BTNDisabilitato' : 'BTNSalva'" style="margin-top: 20px;" />
                         <BTNIndietro class="BTNAzione BTNIndietro" @click="BTNAzione({
                             Tipo: 'Annulla',
                             Id: undefined
-                        })" />
+                        })" style="margin-top: 20px;" />
                     </span>
                 </td>
             </tr>
