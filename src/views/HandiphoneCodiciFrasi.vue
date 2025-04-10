@@ -42,7 +42,8 @@ const Items = computed(() => {
                 CategoriaId: {
                     Type: 'string',
                     Value: item.CategoriaId,
-                    Visibile: 'hidden'
+                    //Visibile: 'hidden'
+                    ReadOnly: true
                 }
             }
         }

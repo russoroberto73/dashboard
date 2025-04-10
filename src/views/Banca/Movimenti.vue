@@ -17,7 +17,7 @@ import RTable from '@/components/ComponenteTabella/CostruisciTabella.vue'
 
 import AggiungiMovimentiDaExcel from '@/components/Banca/AggiungiMovimentiDaExcel.vue'
 
-const DataPartenza = ref('2024-12-02')
+const DataPartenza = ref('2024-12-27')
 const Elenco = ref(Pinia.Movimenti().getElenco)
 
 const Items = computed(() => {       

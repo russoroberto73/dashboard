@@ -11,7 +11,7 @@
                     {{ anno }}
                 </option>
             </select>
-        </div>        
+        </div>
         <Rtable :items="Items" :pinia="Pinia.Buste()" />
     </div>
 </template>
@@ -28,24 +28,49 @@ const Elenco = Pinia.Buste().getElenco
 const Anni = computed(() => {
     return [
         ...new Set(
-          Pinia.Buste().getElenco.map((item) => {
-            return parseInt(item.Anno)
-          }).sort()
+            Pinia.Buste().getElenco.map((item) => {
+                return parseInt(item.Anno)
+            }).sort()
         )
-      ]
+    ]
 })
 
 const Items = computed(() => {
     let PrimaBusta = true
     let FerieAp = 0
-
+    let MovimentiAnno = []
+    const Assistente = ElencoAssistenti.value.filter((item) => item.Id === IdAssistente.value)
+    if (Assistente[0]) {
+        const NomeCognome = (Assistente[0].Nome + ' ' + Assistente[0].Cognome).toUpperCase()
+        //console.log(NomeCognome)
+        //console.log(Assistente[0].Nome);
+        if (Assistente[0].Nome==='Irina 1') {
+            Assistente[0].Nome = "Irina"
+            Assistente[0].Cognome = "Calancea 1"
+        }
+        const IdCategoriaAssistente = Pinia.Categorie().getElenco.find((item) => item.Nome === Assistente[0].Nome) ?
+        Pinia.Categorie().getElenco.find((item) => item.Nome === Assistente[0].Nome).Id : ''
+        //if (IdCategoriaAssistente)        
+        MovimentiAnno = Pinia.Movimenti().getElenco.map((item) => {
+                if (item.Data.substring(6, 10) === Anno.value.toString() && item.IdCategoria === IdCategoriaAssistente) {   
+                    return { Data: item.Data, Mese: item.Data.substring(3,5), Addebiti : item.Addebiti}
+                }
+            
+        }).filter((item) => item != undefined)
+        //console.log(MovimentiAnno)
+    }
     return Elenco.map((item) => {
-        if (parseInt(Anno.value) === parseInt(item.Anno) && IdAssistente.value === item.IdAssistente) {            
+        if (parseInt(Anno.value) === parseInt(item.Anno) && IdAssistente.value === item.IdAssistente) {
             if (PrimaBusta) {
                 PrimaBusta = false
                 FerieAp = Elenco.find((fa) => parseInt(Anno.value) === parseInt(fa.Anno) && IdAssistente.value === fa.IdAssistente).FerieAp
-                console.log(FerieAp)                
             }
+            const BonificiMensili = MovimentiAnno.map((ma) => {
+                if (parseInt(item.Mese) === parseInt(ma.Mese)) {
+                return parseFloat(ma.Addebiti,2)
+                }
+            }).filter((itemundefined) => itemundefined != undefined)
+            const FerieResidue = parseFloat(FerieAp) + parseFloat(item.FerieMat, 2) - parseFloat(item.FerieGod, 2)            
             return {
                 Id: {
                     Type: 'string',
@@ -90,7 +115,7 @@ const Items = computed(() => {
                 },
                 FerieResidue: {
                     Type: 'number',
-                    Value: FerieAp + item.FerieMat - item.FerieGod,
+                    Value:  FerieResidue,
                     Class: "text-center",
                     ReadOnly: true
                 },
@@ -99,31 +124,14 @@ const Items = computed(() => {
                     Value: item.Mav,
                     Class: "text-center",
                     AbilitataModifica: [0, 3, 6, 9]
+                },
+                ImportoBonifico: {
+                    Type: 'number',
+                    Value: BonificiMensili.reduce((acc, num) => acc+num,0),
+                    ReadOnly: true
                 }
             }
         }
     }).filter((item) => item != undefined)
-})
-/*
-watch(Anno, (newValue) => {
-    Elenco.value = Pinia.Buste().getElenco({ Anno: newValue, IdAssistente: IdAssistente.value })
-})
-watch(IdAssistente, (newValue) => {
-    Elenco.value = Pinia.Buste().getElenco({ Anno: Anno.value, IdAssistente: newValue })
-})
-watch(Pinia.Buste().getElenco({ Anno: Anno.value, IdAssistente: IdAssistente }), (newValue) => {
-    console.log(newValue)
-    //IdAssistente.value = Pinia.Assistenti().getPrimoIdAssistente
-    Anni.value = Pinia.Buste().getAnni
-    //Anno.value = Anni.value[Anni.value.length - 1]
-})
-*/
-onBeforeMount(() => {
-    setTimeout(() => {
-        //IdAssistente.value = Pinia.Assistenti().getPrimoIdAssistente
-        //Anni.value = Pinia.Buste().getAnni
-        //Anno.value = Anni.value[Anni.value.length - 1]
-        //Elenco.value = Pinia.Buste().getElenco({ Anno: Anno.value, IdAssistente: IdAssistente.value })
-    }, 600)
 })
 </script>

@@ -1,7 +1,7 @@
 import { ref, get, DataSnapshot, update, child, push, remove } from 'firebase/database'
 import { Data_aaaammgg_ggmmaaaa, DataOggiInglese } from '@/assets/helpers/MyMixin'
 import { defineStore } from 'pinia'
-import db from '../../Conn'
+import { db } from '@/stores/Conn'
 const TabellaRef = ref(db, 'assistenti')
 
 type TypeElemento = {

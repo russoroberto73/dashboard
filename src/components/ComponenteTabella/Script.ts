@@ -20,7 +20,7 @@ export function mymixin(props: any) {
   }
 
   const Intestazione = computed(() => {
-    let tmp: string[] = []
+    let tmp: string[] = []    
     Object.keys(props.items).forEach((item) => {
       if (parseInt(item) === 0) {
         Object.keys(props.items[item]).forEach((iteminterno) => {
@@ -105,20 +105,19 @@ export function mymixin(props: any) {
   }
 
   const AggiungiRecord = (obj: any, index: number) => {
-    //console.log(obj, Use().IdCategoriaNuovoMovimento[index])
-
-    if (select.value[index]) {
+    //console.log(obj, select.value)
+    /*if (select.value[index]) {
       /*console.log(select.value[index]['Obj'])
       console.log(select.value[index]['Etichetta'])
       console.log(select.value[index]['Value'])
-      */
+      *****
       //obj[select.value[index]['Etichetta']].Value = select.value[index]['Value']
       console.log(obj[select.value[index]['Etichetta']])
-    }
+    }  */    
     //console.log(obj)
-    let abc: { [x: string]: { [x: string]: any } } = { Id: '' }
+    let abc: { [x: string]: { [x: string]: any } }= { }
     Object.keys(obj).forEach((item) => {
-      console.log(item, obj[item].Value)
+      //console.log(item, obj[item].Value)
       abc[item] = obj[item].Value
     })
 
@@ -127,6 +126,7 @@ export function mymixin(props: any) {
     }
     //console.log(abc)
     props.pinia.Aggiungi(abc).then(() => AzzeraAzione())
+    
   }
   const VerificaEsiste = (objdainserire: any) => {
     //console.log(objdainserire, itemstabella)
@@ -259,8 +259,8 @@ export function mymixin(props: any) {
     }
   })
 
-  const AssegnaValoreCombo = (event: any, nonso: any, index: any) => {
-    console.log(event, nonso, index)    
+  const AssegnaValoreCombo = (event: any, nonso: any, index: any='') => {
+    console.log(index)    
     Use().IdCategoriaNuovoMovimento[index] = event.target.value
     //console.log('p', event.target.value, etichetta, Use().IdCategoriaNuovoMovimento, index)
   }

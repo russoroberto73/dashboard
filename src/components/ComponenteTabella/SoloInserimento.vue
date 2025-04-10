@@ -3,7 +3,7 @@
         <BTNSalva class="BTNAzione BTNSalva" :disabled="SelectIndex"
             :class="SelectIndex ? 'BTNDisabilitato' : 'BTNSalva'"
             v-if="ControllaCampoSoloInserimento(item)" />
-        <BTNSalva class="BTNAzione" v-else :class="VerificaEsiste(item, Use().ItemsStore)" />
+        <BTNSalva class="BTNAzione" v-else :class="VerificaEsiste(item)" />
     </button>
 </template>
 <script setup lang="ts">
@@ -26,6 +26,6 @@ const props = defineProps(
         }
     }
 )
-const { select, Intestazione, IdAggiungiModificaElimina, TestModificaElimina, Obj, ConvertiDataInglese, BTNAzione, ClassRiga, ValidareCampi, AbilitaCampo, VerificaCampoModifica, VerificaEliminazione, AssegnaValoreCombo, IdComboNome, AggiungiRecord, VerificaEsiste, ControllaCampoSoloInserimento } = mymixin(props)
+const { AggiungiRecord, VerificaEsiste, ControllaCampoSoloInserimento } = mymixin(props)
 
 </script>

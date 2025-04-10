@@ -14,12 +14,18 @@
         </span>
         </span>
         <span v-else>
-            {{ item[Object.keys(item)[n]].Value }}
+            <span v-if="item[Object.keys(item)[n]].Type==='number'">
+                {{ formatEuro(item[Object.keys(item)[n]].Value) }}
+            </span>
+            <span v-else>
+                {{ item[Object.keys(item)[n]].Value }}
+            </span>
         </span>
     </div>
 </template>
 <script setup lang="ts">
 import { mymixin } from './Script'
+import { formatEuro} from '@/assets/helpers/MyMixin'
 import { Use } from '@/stores/modules/CostruisciTabella.module'
 import Textarea from './Textarea.vue'
 import Select from './Select.vue'
@@ -42,7 +48,7 @@ const props = defineProps(
         },
     }
 )
-const { select, Intestazione, IdAggiungiModificaElimina, TestModificaElimina, Obj, ConvertiDataInglese, BTNAzione, ClassRiga, ValidareCampi, AbilitaCampo, VerificaCampoModifica, VerificaEliminazione, AssegnaValoreCombo, IdComboNome, AggiungiRecord, VerificaEsiste } = mymixin(props)
+const { TestModificaElimina } = mymixin(props)
 
 const abc = computed(() => {
     let tmp = true

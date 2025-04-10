@@ -1,4 +1,4 @@
-export const MeseDaNumeroANome = (numeromese: string) => {
+export const MeseDaNumeroANome = (numeromese: any) => {
   let nome = ''
   switch (parseInt(numeromese)) {
     case 1:

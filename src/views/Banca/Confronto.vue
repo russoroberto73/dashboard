@@ -140,19 +140,19 @@ const IdCategoriaNome = computed(() => {
 })
 
 const CercaImporto = computed(() => {
-    return (anno: string, IdCategoria: string, mese: string) => {
+    return (anno: string, IdCategoria: string, mese: number) => {
         let Somma = 0
         let Sommatot = 0
         let Class = ''
         const tmp = ElencoMovimenti.map((item: any) => {
             if (item.Data) {
-                if (item.Data.substring(6, 10) === anno && item.IdCategoria === IdCategoria && parseInt(item.Data.substring(3, 5)) === parseInt(mese)) {
+                if (item.Data.substring(6, 10) === anno && item.IdCategoria === IdCategoria && parseInt(item.Data.substring(3, 5)) === mese) {
                     return item.Accrediti - item.Addebiti
                 }
             }
         }).filter((item) => item != undefined)
         if (tmp.length > 0) {
-            Somma = tmp.reduce((acc, num) => acc += num)
+            Somma = tmp.reduce((acc, num) => acc! += num ? num : 0)!
         }
         const tmptot = ElencoMovimenti.map((item: any) => {
             if (item.Data) {
@@ -162,9 +162,9 @@ const CercaImporto = computed(() => {
             }
         }).filter((item) => item != undefined)
         if (tmptot.length > 0) {
-            Sommatot = tmptot.reduce((acc, num) => acc += num)
+            Sommatot = tmptot.reduce((acc, num) => acc! += num ? num : 0)!
         }
-        if (parseInt(mese) === 13) {
+        if (mese === 13) {
             Somma = Sommatot
             Class = "font-bold "
         }

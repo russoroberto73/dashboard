@@ -8,7 +8,6 @@
 </template>
 <script setup lang="ts">
 import { Use } from '@/stores/modules/CostruisciTabella.module'
-import { mymixin } from './Script'
 
 const props = defineProps(
     {
@@ -18,7 +17,4 @@ const props = defineProps(
         }
     }
 )
-
-const { select, Intestazione, IdAggiungiModificaElimina, TestModificaElimina, Obj, ConvertiDataInglese, BTNAzione, ClassRiga, ValidareCampi, AbilitaCampo, VerificaCampoModifica, VerificaEliminazione, AssegnaValoreCombo, IdComboNome, AggiungiRecord, VerificaEsiste } = mymixin(props)
-
 </script>

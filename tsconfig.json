@@ -1,5 +1,5 @@
 {
-  "types": ["node"],
+  //"types": ["node"],
   "files": [],
   "references": [
     {

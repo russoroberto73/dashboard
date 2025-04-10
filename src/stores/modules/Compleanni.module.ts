@@ -1,7 +1,7 @@
 import { ref, get, DataSnapshot } from 'firebase/database'
 
 import { defineStore } from 'pinia'
-import db from '../Conn'
+import { db } from '@/stores/Conn'
 const TabellaRef = ref(db, 'compleanni')
 
 type TypeElemento = {
@@ -64,7 +64,7 @@ export const Compleanni = defineStore('Compleanni', {
           Mese = Mese.toString()
           const Anno = obj.Anno
           const Data = Giorno + '/' + Mese + '/' + Anno
-          const DataInglese = '2024-' + Mese + '-' + Giorno
+          const DataInglese = (new Date()).getFullYear() + '-' + Mese + '-' + Giorno
           const Passato = !(new Date(DataInglese).getTime() <= new Date().getTime())
           const Oggi = new Date()
           const Ieri = new Date(Oggi.setDate(Oggi.getDate() - 1)).getTime()

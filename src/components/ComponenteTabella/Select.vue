@@ -1,6 +1,6 @@
 <template>
-    <select :value="Use().ObjStore[Object.keys(Use().ItemsStore[0])[n]]"
-        @change="AssegnaValoreCombo($event, Object.keys(Use().ItemsStore[0])[n])" :class="item[Object.keys(item)[n]].Class">
+    <select v-model="Use().ObjStore[Object.keys(Use().ItemsStore[0])[n]]"
+        :class="item[Object.keys(item)[n]].Class">
         <option v-for="(option, index) in item[Object.keys(item)[n]].Array" :key="index" :value="option.value">
             {{ option.text }}
         </option>
@@ -23,6 +23,6 @@ const props = defineProps(
     }
 )
 
-const { select, Intestazione, IdAggiungiModificaElimina, TestModificaElimina, Obj, ConvertiDataInglese, BTNAzione, ClassRiga, ValidareCampi, AbilitaCampo, VerificaCampoModifica, VerificaEliminazione, AssegnaValoreCombo, IdComboNome, AggiungiRecord, VerificaEsiste } = mymixin(props)
+const { AssegnaValoreCombo } = mymixin(props)
 
 </script>

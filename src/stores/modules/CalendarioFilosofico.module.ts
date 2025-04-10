@@ -1,7 +1,7 @@
 import { ref, get, push, update, remove, child, DataSnapshot } from 'firebase/database'
 import { Data_aaaammgg_ggmmaaaa } from '@/assets/helpers/MyMixin'
 import { defineStore } from 'pinia'
-import db from '../Conn'
+import { db } from '@/stores/Conn'
 const TabellaRef = ref(db, 'calendariofilosofico')
 
 type TypeElemento = {

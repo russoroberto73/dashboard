@@ -41,7 +41,7 @@
                         </span>
                         <span v-else
                             :class="index < 12 ? 'cursor-pointer' : index === 12 ? 'font-medium cursor-pointer' : ''"
-                            @click="DettaglioMovimenti(index, key)">
+                            @click="DettaglioMovimenti(index, key.toString())">
                             {{ formatEuro(Math.abs(importo)) }}
                         </span>
                     </td>
@@ -53,7 +53,7 @@
                             :class="index === 12 ? 'font-bold' : ''">
                             {{ formatEuro(Math.abs(TotaliMesi[index]['Uscite'])) }}</td>
                         <td :rowspan="index === 12 ? 4 : 1" class="border border-BordoTabella"
-                            :class="parseFloat(TotaliMesi[index]['Investimenti'], 2) > 0 ? 'bg-Accrediti' + (index == 12 ? ' font-bold' : '') : 'bg-Investimenti' + (index == 12 ? ' font-bold' : '')">
+                            :class="parseFloat(TotaliMesi[index]['Investimenti']) > 0 ? 'bg-Accrediti' + (index == 12 ? ' font-bold' : '') : 'bg-Investimenti' + (index == 12 ? ' font-bold' : '')">
                             {{ formatEuro(Math.abs(TotaliMesi[index]['Investimenti'])) }}</td>
                         <td :rowspan="index === 12 ? 2 : 1" class="bg-white border border-BordoTabella font-bold"
                             v-if="index < 12">{{ MeseDaNumeroANome((index + 1).toString()) }}</td>
@@ -539,12 +539,12 @@ const SuperCategorie = computed(() => {
     let VecchioIdSuperCategoria = ''
     ArraySommeTot.forEach((item: any) => {
         let Bordo = false
-        const positiveNumbers = item.Valore.filter(num => num >= 0)
-        const negativeNumbers = item.Valore.filter(num => num < 0)
-        const positiveSum = positiveNumbers.reduce((sum, num) => sum + num, 0)
-        const negativeSum = negativeNumbers.reduce((sum, num) => sum + num, 0)
+        const positiveNumbers = item.Valore.filter((num: any) => num >= 0)
+        const negativeNumbers = item.Valore.filter((num: any) => num < 0)
+        const positiveSum = positiveNumbers.reduce((sum: any, num: any) => sum + num, 0)
+        const negativeSum = negativeNumbers.reduce((sum: any, num: any) => sum + num, 0)
         if (item.Valore.length > 0) {
-            SommeSuperCategorie.value.push({ Somma: item.Valore.reduce((acc, valore) => acc + valore, 0), colspan: item.Valore.length, IdSuperCategoria: item.IdSuperCategoria })
+            SommeSuperCategorie.value.push({ Somma: item.Valore.reduce((acc: any, valore: any) => acc + valore, 0), colspan: item.Valore.length, IdSuperCategoria: item.IdSuperCategoria })
         }
         if (negativeNumbers.length > 0) {
             Bordo = true
@@ -561,11 +561,11 @@ const SuperCategorie = computed(() => {
         }
         VecchioIdSuperCategoria = item.IdSuperCategoria
     })
-    const ElementoInvestimenti = ArraySommeTot.find((item) => item.IdSuperCategoria === '-NgUdXdH-WwkXPhYa_O8')
+    const ElementoInvestimenti = ArraySommeTot.find((item: any) => item.IdSuperCategoria === '-NgUdXdH-WwkXPhYa_O8')
     const InvestimentiIndex = SommeSuperCategorie.value.findIndex((item: any) => item.IdSuperCategoria === "-NgUdXdH-WwkXPhYa_O8")
     const Investimenti = SommeSuperCategorie.value[InvestimentiIndex]
     if (Investimenti) {
-        const AccreditiAddebiti = SommeParziali.value.map((sm) => sm.Somma).reduce((sum, num) => sum + num, 0)
+        const AccreditiAddebiti = SommeParziali.value.map((sm: any) => sm.Somma).reduce((sum: any, num: any) => sum + num, 0)
         //**
         // accreditiaddebiti p  -100   investimenti p -90   -100 + -90 = -190
         // accreditiaddebiti p  -100   investimenti n 90    -100 + 90 = -10
@@ -590,7 +590,7 @@ const SuperCategorie = computed(() => {
     return tmp
 })
 
-const CellaClass = (NomeCategoria: string, index, index1: number) => {
+const CellaClass = (NomeCategoria: string, index: number, index1: number) => {
     let Class = ''
     let segno = 1
     if (NomeCategoria === "Mese") {

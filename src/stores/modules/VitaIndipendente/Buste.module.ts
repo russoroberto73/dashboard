@@ -1,7 +1,7 @@
 import { ref, get, DataSnapshot, update, child, push, remove } from 'firebase/database'
 import { Assistenti } from './Assistenti.module'
 import { defineStore } from 'pinia'
-import db from '../../Conn'
+import { db } from '@/stores/Conn'
 import { MeseDaNomeANumero } from '@/assets/helpers/MyMixin'
 const TabellaRef = ref(db, 'buste')
 
@@ -83,7 +83,7 @@ export const Buste = defineStore('Buste', {
           Anno: Busta.Anno,
           Mese: Busta.Mese
         }
-        push(TabellaRef, Payload)
+      push(TabellaRef, Payload)
           .then((response: { key: any }) => {
             const snapshot = get(child(TabellaRef, response.key))
             snapshot.then((res: any) => {
@@ -96,9 +96,12 @@ export const Buste = defineStore('Buste', {
       })
     },
     async Aggiorna(Busta: any) {
+      console.log(Busta)      
       const Id = Busta.Id
-      delete Busta.Id
-      Busta.Mese = MeseDaNomeANumero(Busta.value.Mese)
+      delete Busta.Id      
+      delete Busta.FerieResidue
+      Busta.Mese = MeseDaNomeANumero(Busta.Mese)
+      
       const index = this.Collezione.findIndex((item) => item.Id === Id)
       Busta.Anno = this.Collezione[index].Anno
       //console.log(Busta.value, Id)      
@@ -124,7 +127,7 @@ export const Buste = defineStore('Buste', {
             return item.Id
           }
         }).filter((item) => item != undefined)
-        await IdBusteDaEliminare.forEach((Id: string) => {
+        await IdBusteDaEliminare.forEach((Id: any) => {
           remove(child(TabellaRef, Id)).then(() => {
             const index = this.Collezione.findIndex((item) => {
               if (item.Id === Id) {

@@ -69,8 +69,7 @@
                                 :class="Use().ItemsStore[0][Object.keys(Use().ItemsStore[0])[n]].Class"
                                 style="margin: 10px;" />
                             <select v-else-if="items[0][Object.keys(Use().ItemsStore[0])[n]].Type === 'select'"
-                                :value="Use().ObjStore[Object.keys(Use().ItemsStore[0])[n]]"
-                                @change="AssegnaValoreCombo($event, '', index)"
+                                :v-model="Use().ObjStore[Object.keys(Use().ItemsStore[0])[n]]"
                                 :class="Use().ItemsStore[0][Object.keys(Use().ItemsStore[0])[n]].Class">
                                 <option
                                     v-for="(item, index) in Use().ItemsStore[0][Object.keys(Use().ItemsStore[0])[n]].Array"
@@ -142,7 +141,7 @@ const props = defineProps(
     }
 )
 
-const { Obj, select, Intestazione, IdAggiungiModificaElimina, TestModificaElimina, ConvertiDataInglese, BTNAzione, ClassRiga, ValidareCampi, AbilitaCampo, VerificaCampoModifica, VerificaEliminazione, AssegnaValoreCombo, IdComboNome, AggiungiRecord, VerificaEsiste, ControllaCampoSoloInserimento } = mymixin(props)
+const { Intestazione, IdAggiungiModificaElimina, TestModificaElimina, BTNAzione, ClassRiga, ValidareCampi, VerificaEliminazione, AssegnaValoreCombo, IdComboNome, AggiungiRecord, VerificaEsiste, ControllaCampoSoloInserimento } = mymixin(props)
 
 watch(() => props.items, () => {
     if (props.items.length > 0) {

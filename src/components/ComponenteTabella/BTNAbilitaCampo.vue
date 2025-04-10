@@ -15,6 +15,6 @@ const props = defineProps(
         }
     }
 )
-const { select, Intestazione, IdAggiungiModificaElimina, TestModificaElimina, Obj, ConvertiDataInglese, BTNAzione, ClassRiga, ValidareCampi, AbilitaCampo, VerificaCampoModifica, VerificaEliminazione, AssegnaValoreCombo, IdComboNome, AggiungiRecord, VerificaEsiste } = mymixin(props)
+const { AbilitaCampo } = mymixin(props)
 
 </script>

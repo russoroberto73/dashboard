@@ -2,12 +2,11 @@ import { ref, get, DataSnapshot, update, child, push, remove } from 'firebase/da
 import {
   Data_aaaammgg_ggmmaaaa,
   Data_ggmmaaaa_aaaammgg,
-  DataOggiInglese,
-  formatEuro
+  DataOggiInglese
 } from '@/assets/helpers/MyMixin'
 import { defineStore } from 'pinia'
 import { Categorie } from './Categorie.module'
-import db from '../../Conn'
+import { db } from '@/stores/Conn'
 const TabellaRef = ref(db, 'movimenti')
 
 type TypeElemento = {
@@ -108,8 +107,7 @@ export const Movimenti = defineStore('Movimenti', {
       console.log(Movimento)
       delete Movimento.Id
       Movimento.Data = Data_aaaammgg_ggmmaaaa(Movimento.Data)
-      //console.log(Movimento)
-
+      console.log(Movimento)
       try {
         await push(TabellaRef, Movimento).then((response: { key: any }) => {
           const snapshot = get(child(TabellaRef, response.key))

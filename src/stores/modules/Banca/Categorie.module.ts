@@ -1,7 +1,7 @@
 import { ref, get, DataSnapshot, update, child, push, remove } from 'firebase/database'
 import { defineStore } from 'pinia'
 import { SuperCategorie } from './SuperCategorie.module'
-import db from '../../Conn'
+import { db } from '@/stores/Conn'
 const TabellaRef = ref(db, 'categorie')
 
 type TypeElemento = {

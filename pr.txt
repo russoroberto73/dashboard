@@ -1,0 +1,1 @@
+sshfs -o allow_other roberto@192.168.1.18:/mnt/hdd4/Sviluppo_web /mnt/Sviluppo_web/

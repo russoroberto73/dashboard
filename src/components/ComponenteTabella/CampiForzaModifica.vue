@@ -1,10 +1,10 @@
 <template>
     <div>
         {{ IdComboNome(item[Object.keys(item)[n]]) }}
-        <span v-if="item[Object.keys(item)[n]].Value === ''">poo
+        <span v-if="item[Object.keys(item)[n]].Value === ''">
             <textarea v-if="item[Object.keys(item)[n]].Type === 'textarea'" class="FaseDiModifica" />
             <select v-else-if="item[Object.keys(item)[n]].Type === 'select'" class="BTNSalva"
-                v-model="select[parseInt(index)]" @change="AssegnaValoreCombo($event, 'IdCategoria', index)">
+                v-model="select[index]" @change="AssegnaValoreCombo($event, 'IdCategoria', index)">
                 <option v-for="(option, index) in item[Object.keys(item)[n]].Array" :value="option.value"
                     :key="index">
                     {{ option.text }}
@@ -36,6 +36,6 @@ const props = defineProps(
         }
     }
 )
-const { select, Intestazione, IdAggiungiModificaElimina, TestModificaElimina, Obj, ConvertiDataInglese, BTNAzione, ClassRiga, ValidareCampi, AbilitaCampo, VerificaCampoModifica, VerificaEliminazione, AssegnaValoreCombo, IdComboNome, AggiungiRecord, VerificaEsiste } = mymixin(props)
+const { select, AssegnaValoreCombo, IdComboNome } = mymixin(props)
 
 </script>

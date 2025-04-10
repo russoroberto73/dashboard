@@ -1,6 +1,6 @@
 import { ref, get, DataSnapshot, update, child, push, remove } from 'firebase/database'
 import { defineStore } from 'pinia'
-import db from '../../Conn'
+import { db } from '@/stores/Conn'
 const TabellaRef = ref(db, 'handiphonecategorie')
 
 type TypeElemento = {

@@ -24,6 +24,12 @@ const Items = computed(() => {
                 Value: item.Nome,
                 Class: 'text-left',
                 Valido: 'p'
+            },
+            Posizione: {                
+                Type: 'string',
+                Value: item.Posizione,
+                Class: 'text-left',
+                Valido: 'p'
             }
         }
     })

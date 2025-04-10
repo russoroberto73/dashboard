@@ -21,8 +21,31 @@ const firebaseConfigsv = {
   messagingSenderId: "760928346814",
   appId: "1:760928346814:web:479c00400975db6567f4ef"
 }
-const app = initializeApp(firebaseConfig)
+
+export let DatabaseFirebase = "produzione"
+
+//const app = (DatabaseFirebase === "produzione") ? initializeApp(firebaseConfig) : initializeApp(firebaseConfigsv)
+
+let app
+let sourceDB
+let targetDB
+
+if (DatabaseFirebase === "produzione") {
+  app = initializeApp(firebaseConfig)
+  const sourceApp = initializeApp(firebaseConfig)
+  const targetApp = initializeApp(firebaseConfigsv, 'targetDB')
+  
+  sourceDB = getDatabase(sourceApp); // Realtime Database
+  targetDB = getDatabase(targetApp); // Realtime Database  
+} else {
+  app = initializeApp(firebaseConfigsv)
+ 
+}
+
+
 const db = getDatabase(app)
 
-export default db
+
+
+export { db, sourceDB, targetDB }
 

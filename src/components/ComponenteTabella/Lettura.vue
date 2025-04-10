@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div :class="VerificaPassato(item[Object.keys(item)[n]])">
         <span v-if="item[Object.keys(item)[n]].Type === 'date'">
             <span v-if="!item[Object.keys(item)[n]].Visibile || item[Object.keys(item)[n]].Visibile === 'visible'">
                 {{ ConvertiDataInglese(item[Object.keys(item)[n]].Value) }}
@@ -27,6 +27,7 @@
 <script setup lang="ts">
 import { formatEuro } from '@/assets/helpers/MyMixin';
 import { mymixin } from './Script'
+import { computed } from 'vue'
 
 const props = defineProps(
     {
@@ -40,6 +41,17 @@ const props = defineProps(
         }
     }
 )
-const { select, Intestazione, IdAggiungiModificaElimina, TestModificaElimina, Obj, ConvertiDataInglese, BTNAzione, ClassRiga, ValidareCampi, AbilitaCampo, VerificaCampoModifica, VerificaEliminazione, AssegnaValoreCombo, IdComboNome, AggiungiRecord, VerificaEsiste } = mymixin(props)
+const VerificaPassato = computed(() => {
+    return (obj: any) => {
+        const oggi = new Date()
+        if (obj.ControllaDataPassata) {
+            if (new Date(obj.Value).getTime() < oggi.getTime()) {
+                return 'bg-green-300'
+            }
+        }
+        return ''
+    }
+})
+const { ConvertiDataInglese, IdComboNome } = mymixin(props)
 
 </script>
