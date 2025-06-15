@@ -5,7 +5,7 @@
             <button class="p-5 bg-Bottone  w-[300px] m-auto text-[24px] rounded-[45px]"
                 @click="ConvertiJson()">Converti</button>
         </div>
-        <div class="h-[300px] overflow-y-auto">
+        <div>
             <RTable :items="Items" :pinia="Pinia.Movimenti()" v-if="Items.length > 0" />
         </div>
     </div>

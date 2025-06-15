@@ -1,24 +1,23 @@
 import { ref, get, push, update, remove, child, DataSnapshot } from 'firebase/database'
 import { defineStore } from 'pinia'
 import { db } from '@/stores/Conn'
-const TabellaRef = ref(db, 'temanatalegovernatorisegni')
+const TabellaRef = ref(db, 'temanataleaffinitasegni')
 
 type TypeElemento = {
   Id?: string
-  Pianeta: string
-  Segno: string
+  Nome: string
   Significato: string
 }
 
 type TypeCollezione = Array<TypeElemento>
 
-export const TemaNataleGovernatoriSegni = defineStore('TemaNataleGovernatoriSegni', {
+export const TemaNataleAffinitàSegni = defineStore('TemaNataleAffinitàSegni', {
   state: () => ({
     Collezione: [] as TypeCollezione
   }),
   getters: {
     getNomeTabella: () => {
-      return 'TemaNataleGovernatoriSegni'
+      return 'TemaNatalePolaritàSegni'
     },
     getElenco: (state) => {
       return state.Collezione
@@ -26,8 +25,8 @@ export const TemaNataleGovernatoriSegni = defineStore('TemaNataleGovernatoriSegn
     getProssimoElemento: (state) => {
       return {
         Id: '0',
-        Pianeta: '',  
-        Segno: '',
+        IdSegno: '',
+        Livello: '',
         Significato: ''
       }
     }
@@ -40,13 +39,11 @@ export const TemaNataleGovernatoriSegni = defineStore('TemaNataleGovernatoriSegn
         res.forEach((doc: DataSnapshot) => {
           const Id: string = doc.key ? doc.key : '0'
           const obj: TypeElemento = doc.val()
-          const Pianeta = obj.Pianeta
-          const Segno = obj.Segno
+          const Nome = obj.Nome
           const Significato = obj.Significato
           const Payload: TypeElemento = {
             Id,
-            Pianeta,
-            Segno,
+            Nome,
             Significato
           }
           this.Collezione.push(Payload)
@@ -65,10 +62,8 @@ export const TemaNataleGovernatoriSegni = defineStore('TemaNataleGovernatoriSegn
             const Id = response.key
             snapshot.then((res: any) => {
               const Payload = {
-                Id,               
-                Pianeta: res.val().Pianeta,
-                Elemento: res.val().Elemento,
-                Segno: res.val().Segno,
+                Id,
+                Nome: res.val().Nome,
                 Significato: res.val().Significato                
               }
               this.Collezione.push(Payload)
@@ -82,15 +77,15 @@ export const TemaNataleGovernatoriSegni = defineStore('TemaNataleGovernatoriSegn
       }
     },
     async Aggiorna(Casa: any) {
+      console.log('p')      
       const Id = Casa.Id
       delete Casa.Id
       try {
         await update(child(TabellaRef, Id), Casa)
           .then(() => {
             get(child(TabellaRef, Id)).then((res) => {
-              const index = this.Collezione.findIndex((item) => item.Id === res.key)                                    
-              this.Collezione[index].Pianeta = res.val().Pianeta
-              this.Collezione[index].Segno = res.val().Segno
+              const index = this.Collezione.findIndex((item) => item.Id === res.key)
+              this.Collezione[index].Nome = res.val().Nome
               this.Collezione[index].Significato = res.val().Significato
             })
           })

@@ -149,6 +149,15 @@
       </router-link>    
       <router-link :to="{ name: 'TemaNatalePianeti' }">
         <h2>Pianeti</h2>
+      </router-link>          
+      <router-link :to="{ name: 'TemaNatalePianetiSegni' }">
+        <h2>Pianeti Segni</h2>
+      </router-link>          
+      <router-link :to="{ name: 'TemaNatalePianetiElementi' }">
+        <h2>Pianeti Elementi</h2>
+      </router-link>
+      <router-link :to="{ name: 'TemaNataleLetturaTemaNatale' }">
+        <h2>Lettura tema natale</h2>
       </router-link>
     </div>
     <div class="border border-[0px] border-blue-900 p-3 m-3 Bordo">
@@ -175,7 +184,6 @@
 <script setup lang="ts">
 import { Pinia } from '@/stores/index'
 import { DatabaseFirebase } from './stores/Conn'
-
 import { onMounted, computed } from 'vue'
 import { MeseDaNumeroANome, Data_aaaammgg_ggmmaaaa } from './assets/helpers/MyMixin'
 const FirebaseLogin = Pinia.Login()
@@ -244,7 +252,6 @@ const TestScadenza = computed(() => {
 })
 
 onMounted(() => {
-  console.log('app')
   if (DatabaseFirebase === "sviluppo")
   document.documentElement.style.setProperty("--produzione", '#e88686')
   //if (!localStorage.getItem('Token'))

@@ -1,6 +1,6 @@
 <template>
     <div class="relative top-[120px] left-[200px]">
-        <h1>Governtori</h1>
+        <h1 class="text-center text-[30px]">Governatori</h1>
         <div>            
             <Rtable :items="Items" :pinia="Pinia.TemaNataleGovernatoriSegni()" />
         </div>
@@ -30,16 +30,22 @@ const Items = computed(() => {
             {
                 Type: "text",
                 Value: item.Id
+            },            
+            Pianeta:
+            {
+                Type: 'text',
+                Value: item.Pianeta
             },
             Segno:
             {
                 Type: 'text',
                 Value: item.Segno
-            },
+            },            
             Significato:
             {
-                Type: 'text',
+                Type: 'textarea',
                 Value: item.Significato,
+                Class: 'w-full',
                 Valido: 'p'
             }
         }

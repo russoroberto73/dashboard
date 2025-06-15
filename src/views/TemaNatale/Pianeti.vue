@@ -1,7 +1,8 @@
 <template>
     <div class="relative top-[120px] left-[200px]">
-        <h1>I pianeti</h1>
+        <h1 class="text-center text-[30px]">I pianeti</h1>
         <div>            
+            {{Items}}
             <Rtable :items="Items" :pinia="Pinia.TemaNatalePianeti()" />
         </div>
     </div>
@@ -41,13 +42,19 @@ const Items = computed(() => {
             {
                 Type: 'select',
                 Array: DatiCombo(),
-                Value: item.Tipologia,
+                Value: item.Tipologia
+            },
+            ParoleChiavi:
+            {
+                Type: 'text',
+                Value: item.ParoleChiavi,
                 Valido: 'p'
             },
             Significato:
             {
                 Type: 'text',
                 Value: item.Significato,
+                Class: 'w-[400px]',
                 Valido: 'p'
             }
         }

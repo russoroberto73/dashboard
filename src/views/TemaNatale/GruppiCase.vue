@@ -1,6 +1,6 @@
 <template>
     <div class="relative top-[120px] left-[200px]">
-        <h1>Gruppi case</h1>
+        <h1 class="text-center text-[30px]">Gruppi case</h1>
         <div>            
             <Rtable :items="Items" :pinia="Pinia.TemaNataleGruppiCase()" />
         </div>

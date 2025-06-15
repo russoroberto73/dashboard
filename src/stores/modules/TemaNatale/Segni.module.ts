@@ -6,13 +6,16 @@ const TabellaRef = ref(db, 'temanatalesegni')
 type TypeElemento = {
   Id?: string
   Nome: string,
+  Periodo: string,
   Quadruplicità: string,
   Governatore: string,
   Opposto: string,
   Elemento: string,
   Polarità: string
   Significato: string,
-  ParoleChiavi: string
+  ParoleChiavi: string,
+  Forza: string,
+  Debolezza: string
 }
 
 type TypeCollezione = Array<TypeElemento>
@@ -32,13 +35,16 @@ export const TemaNataleSegni = defineStore('TemaNataleSegni', {
       return {
         Id: '0',
         Nome: '',
+        Periodo: '', 
         Quadruplicità: '',
         Governatore: '',
         Opposto: '',
         Elemento: '',
         Polarità: '',
         Significato: '',
-        ParoleChiavi: ''
+        ParoleChiavi: '',
+        Forza: '',
+        Debolezza: ''
       }
     }
   },
@@ -51,6 +57,7 @@ export const TemaNataleSegni = defineStore('TemaNataleSegni', {
           const Id: string = doc.key ? doc.key : '0'
           const obj: TypeElemento = doc.val()
           const Nome = obj.Nome
+          const Periodo = obj.Periodo
           const Quadruplicità = obj.Quadruplicità
           const Governatore = obj.Governatore
           const Opposto = obj.Opposto
@@ -58,16 +65,21 @@ export const TemaNataleSegni = defineStore('TemaNataleSegni', {
           const Polarità = obj.Polarità
           const Significato = obj.Significato
           const ParoleChiavi = obj.ParoleChiavi
+          const Forza = obj.Forza
+          const Debolezza = obj.Debolezza
           const Payload: TypeElemento = {
             Id,
             Nome,
+            Periodo,
             Quadruplicità,
             Governatore,
             Opposto,
             Elemento,
             Polarità,
             Significato,
-            ParoleChiavi
+            ParoleChiavi,
+            Forza,
+            Debolezza
           }
           this.Collezione.push(Payload)
         })
@@ -87,13 +99,16 @@ export const TemaNataleSegni = defineStore('TemaNataleSegni', {
               const Payload = {
                 Id,
                 Nome: res.val().Nome,
+                Periodo: res.val().Periodo,
                 Quadruplicità: res.val().Quadruplicità,              
                 Governatore: res.val().Governtore,
                 Opposto: res.val().Opposto,               
                 Elemento: res.val().Elemento,
                 Polarità: res.val().Polarità,
                 Significato: res.val().Significato,                
-                ParoleChiavi: res.val().ParoleChiavi
+                ParoleChiavi: res.val().ParoleChiavi,
+                Forza: res.val().Forza,
+                Debolezza: res.val().Debolezza
               }
               this.Collezione.push(Payload)
             })
@@ -114,6 +129,7 @@ export const TemaNataleSegni = defineStore('TemaNataleSegni', {
             get(child(TabellaRef, Id)).then((res) => {
               const index = this.Collezione.findIndex((item) => item.Id === res.key)              
               this.Collezione[index].Nome = res.val().Nome
+              this.Collezione[index].Periodo = res.val().Periodo
               this.Collezione[index].Quadruplicità = res.val().Quadruplicità
               this.Collezione[index].Governatore = res.val().Governatore
               this.Collezione[index].Opposto = res.val().Opposto
@@ -121,6 +137,8 @@ export const TemaNataleSegni = defineStore('TemaNataleSegni', {
               this.Collezione[index].Polarità = res.val().Polarità
               this.Collezione[index].Significato = res.val().Significato
               this.Collezione[index].ParoleChiavi = res.val().ParoleChiavi
+              this.Collezione[index].Forza = res.val().Forza
+              this.Collezione[index].Debolezza = res.val().Debolezza
             })
           })
           .catch((e) => {

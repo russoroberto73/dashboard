@@ -6,8 +6,11 @@ const TabellaRef = ref(db, 'temanatalepianeti')
 type TypeElemento = {
   Id?: string
   Nome: string
-  Tipologia: string
-  Significato: string
+  IdTipologia: string,
+  ParoleChiavi: string,
+  Significato: string,
+  Elemento: object,
+  Segno: object
 }
 
 type TypeCollezione = Array<TypeElemento>
@@ -27,6 +30,8 @@ export const TemaNatalePianeti = defineStore('TemaNatalePianeti', {
       return {
         Id: '0',
         Nome: '',
+        IdTipologia: '',
+        ParoleChiavi: '',
         Significato: ''
       }
     }
@@ -40,13 +45,19 @@ export const TemaNatalePianeti = defineStore('TemaNatalePianeti', {
           const Id: string = doc.key ? doc.key : '0'
           const obj: TypeElemento = doc.val()
           const Nome = obj.Nome
-          const Tipologia = obj.Tipologia
+          const Tipologia = obj.IdTipologia
+          const ParoleChiavi = obj.ParoleChiavi
           const Significato = obj.Significato
+          const Elemento = obj.Elemento
+          const Segno = obj.Segno
           const Payload: TypeElemento = {
             Id,
             Nome,
             Tipologia,
-            Significato
+            ParoleChiavi,
+            Significato,
+            Elemento,
+            Segno
           }
           this.Collezione.push(Payload)
         })
@@ -54,23 +65,12 @@ export const TemaNatalePianeti = defineStore('TemaNatalePianeti', {
         console.log(e)
       }
     },
-    async Aggiungi(Casa: any) {
-      delete Casa.Id
-      //console.log(Frase)
+    async Aggiungi(Pianeta: any) {
+      console.log(Pianeta)
       try {
-        await push(TabellaRef, Casa)
+        await push(TabellaRef, Pianeta)
           .then((response: { key: any }) => {
-            const snapshot = get(child(TabellaRef, response.key))
-            const Id = response.key
-            snapshot.then((res: any) => {
-              const Payload = {
-                Id,
-                Nome: res.val().Nome,              
-                Tipologia: res.val().Tipologia,
-                Significato: res.val().Significato                
-              }
-              this.Collezione.push(Payload)
-            })
+            console.log(response)            
           })
           .catch((e) => {
             console.log(e)
@@ -79,17 +79,16 @@ export const TemaNatalePianeti = defineStore('TemaNatalePianeti', {
         console.log(e)
       }
     },
-    async Aggiorna(Casa: any) {
-      const Id = Casa.Id
-      delete Casa.Id
-      try {
-        await update(child(TabellaRef, Id), Casa)
+    async Aggiorna(Pianeta: any) {
+      const Id = Pianeta.IdPianeta
+
+      delete Pianeta.IdPianeta
+      //console.log(Pianeta)
+            try {
+        await update(child(TabellaRef, Id), Pianeta)
           .then(() => {
             get(child(TabellaRef, Id)).then((res) => {
-              const index = this.Collezione.findIndex((item) => item.Id === res.key)
-              this.Collezione[index].Nome = res.val().Nome
-              this.Collezione[index].Tipologia = res.val().Tipologia
-              this.Collezione[index].Significato = res.val().Significato
+              
             })
           })
           .catch((e) => {

@@ -19,9 +19,7 @@
                 </div>
             </label>
         </span>
-        <span v-else>
-            {{ item[Object.keys(item)[n]].Value }}
-        </span>
+        <span v-else v-html="item[Object.keys(item)[n]].Value" />                
     </div>
 </template>
 <script setup lang="ts">

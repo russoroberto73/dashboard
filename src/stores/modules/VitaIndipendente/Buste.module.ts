@@ -48,7 +48,7 @@ export const Buste = defineStore('Buste', {
     },
     getVerifica: (state) => {
       return (IdAssistente: string) => {
-       // console.log(IdAssistente)        
+        // console.log(IdAssistente)        
         const tmp = state.Collezione.find((item) => item.IdAssistente === IdAssistente)
         return tmp
       }
@@ -83,7 +83,9 @@ export const Buste = defineStore('Buste', {
           Anno: Busta.Anno,
           Mese: Busta.Mese
         }
-      push(TabellaRef, Payload)
+        //console.log(Payload)        
+
+        push(TabellaRef, Payload)
           .then((response: { key: any }) => {
             const snapshot = get(child(TabellaRef, response.key))
             snapshot.then((res: any) => {
@@ -96,12 +98,12 @@ export const Buste = defineStore('Buste', {
       })
     },
     async Aggiorna(Busta: any) {
-      console.log(Busta)      
+      console.log(Busta)
       const Id = Busta.Id
-      delete Busta.Id      
+      delete Busta.Id
       delete Busta.FerieResidue
       Busta.Mese = MeseDaNomeANumero(Busta.Mese)
-      
+
       const index = this.Collezione.findIndex((item) => item.Id === Id)
       Busta.Anno = this.Collezione[index].Anno
       //console.log(Busta.value, Id)      
@@ -115,7 +117,7 @@ export const Buste = defineStore('Buste', {
           this.Collezione[index].FerieMat = res.val().FerieMat
           this.Collezione[index].FerieGod = res.val().FerieGod
           this.Collezione[index].Mav = res.val().Mav
-          })
+        })
       })
     },
     async Elimina(Id: any) {

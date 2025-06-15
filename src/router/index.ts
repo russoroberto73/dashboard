@@ -152,6 +152,21 @@ const router = createRouter({
       path: '/temanatale/pianeti',
       name: 'TemaNatalePianeti',
       component: () => import('@/views/TemaNatale/Pianeti.vue')
+    },                      
+    {
+      path: '/temanatale/pianeti/elementi',
+      name: 'TemaNatalePianetiElementi',
+      component: () => import('@/views/TemaNatale/PianetiElementi.vue')
+    },                                 
+    {
+      path: '/temanatale/pianeti/segni',
+      name: 'TemaNatalePianetiSegni',
+      component: () => import('@/views/TemaNatale/PianetiSegni.vue')
+    },     
+    {
+      path: '/temanatale/letturatemanatale',
+      name: 'TemaNataleLetturaTemaNatale',
+      component: () => import('@/views/TemaNatale/LetturaTemaNatale.vue')
     },     
     {
       path: '/word',

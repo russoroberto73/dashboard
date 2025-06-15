@@ -1,6 +1,6 @@
 <template>
     <div class="relative top-[120px] left-[200px]">
-        <h1>Le case</h1>
+        <h1 class="text-center text-[30px]">Gli opposti</h1>
         <div>            
             <Rtable :items="Items" :pinia="Pinia.TemaNataleOppostoSegni()" />
         </div>
@@ -40,7 +40,8 @@ const Items = computed(() => {
             {
                 Type: 'text',
                 Value: item.Significato,
-                Valido: 'p'
+                Valido: 'p',
+                Class: 'w-full'
             }
         }
     })
