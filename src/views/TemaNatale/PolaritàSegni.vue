@@ -43,14 +43,20 @@ const Items = computed(() => {
             {
                 Type: "text",
                 Value: item.Nome,
-                Class: 'w-[800px]',
+                Class: 'w-[400px]',
                 Valido: 'p'
             },
             Significato:
             {
                 Type: 'text',
                 Value: item.Significato,
-                Class: 'w-[800px]',
+                Class: 'w-[500px]',
+                Valido: 'p'
+            },
+            Discorsivo: {                
+                Type: 'text',
+                Value: item.Discorsivo,
+                Class: 'w-[500px]',
                 Valido: 'p'
             }
         }

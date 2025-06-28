@@ -8,6 +8,7 @@ type TypeElemento = {
   IdStagione: string
   IdNatura: string
   Significato: string
+  Discorsivo: string
 }
 
 type TypeCollezione = Array<TypeElemento>
@@ -43,11 +44,13 @@ export const TemaNataleQuadruplicitàSegni = defineStore('TemaNataleQuadruplicit
           const IdStagione = obj.IdStagione
           const IdNatura = obj.IdNatura
           const Significato = obj.Significato
+          const Discorsivo = obj.Discorsivo
           const Payload: TypeElemento = {
             Id,
             IdStagione,
             IdNatura,
-            Significato
+            Significato,
+            Discorsivo
           }
           this.Collezione.push(Payload)
         })
@@ -68,7 +71,8 @@ export const TemaNataleQuadruplicitàSegni = defineStore('TemaNataleQuadruplicit
                 Id,
                 IdStagione: res.val().IdStagione,              
                 IdNatura: res.val().IdNatura,
-                Significato: res.val().Significato                
+                Significato: res.val().Significato,
+                Discorsivo: res.val().Discorsivo
               }
               this.Collezione.push(Payload)
             })
@@ -91,7 +95,8 @@ export const TemaNataleQuadruplicitàSegni = defineStore('TemaNataleQuadruplicit
               this.Collezione[index].IdStagione = res.val().IdStagione
               this.Collezione[index].IdNatura = res.val().IdNatura
               this.Collezione[index].Significato = res.val().Significato
-            })            
+              this.Collezione[index].Discorsivo = res.val().Discorsivo
+            })                        
           })
           .catch((e) => {
             console.log(e)

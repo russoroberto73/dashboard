@@ -45,7 +45,14 @@ const Items = computed(() => {
             {
                 Type: 'textarea',
                 Value: item.Significato,
-                Class: 'w-full',
+                Class: 'w-[400px]',
+                Valido: 'p'
+            },            
+            Discorsivo:
+            {
+                Type: 'textarea',
+                Value: item.Discorsivo,
+                Class: 'w-[400px]',
                 Valido: 'p'
             }
         }

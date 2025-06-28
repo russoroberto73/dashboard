@@ -6,8 +6,8 @@ const TabellaRef = ref(db, 'temanatalecase')
 type TypeElemento = {
   Id?: string
   Sigla: string
-  Elemento: string
   Segno: string
+  PianetaDominante: string
   Significato: string
 }
 
@@ -28,8 +28,8 @@ export const TemaNataleCase = defineStore('TemaNataleCase', {
       return {
         Id: '0',
         Sigla: '',
-        Elemento: '',
         Segno: '',
+        PianetaDominante: '',
         Significato: ''
       }
     }
@@ -43,14 +43,14 @@ export const TemaNataleCase = defineStore('TemaNataleCase', {
           const Id: string = doc.key ? doc.key : '0'
           const obj: TypeElemento = doc.val()
           const Sigla = obj.Sigla
-          const Elemento = obj.Elemento
           const Segno = obj.Segno
+          const PianetaDominante = obj.PianetaDominante
           const Significato = obj.Significato
           const Payload: TypeElemento = {
             Id,
             Sigla,
-            Elemento,
             Segno,
+            PianetaDominante,
             Significato
           }
           this.Collezione.push(Payload)
@@ -72,7 +72,7 @@ export const TemaNataleCase = defineStore('TemaNataleCase', {
                 Id,
                 Sigla: res.val().Sigla,
                 Segno: res.val().Segno,
-                Elemento: res.val().Elemento,
+                PianetaDominante: res.val().PianetaDominante,
                 Significato: res.val().Significato                
               }
               this.Collezione.push(Payload)
@@ -95,7 +95,7 @@ export const TemaNataleCase = defineStore('TemaNataleCase', {
               const index = this.Collezione.findIndex((item) => item.Id === res.key)
               this.Collezione[index].Sigla = res.val().Sigla
               this.Collezione[index].Segno = res.val().Segno
-              this.Collezione[index].Elemento = res.val().Elemento
+              this.Collezione[index].PianetaDominante = res.val().PianetaDominante
               this.Collezione[index].Significato = res.val().Significato
             })
           })

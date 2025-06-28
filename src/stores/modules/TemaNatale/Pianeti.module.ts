@@ -6,9 +6,12 @@ const TabellaRef = ref(db, 'temanatalepianeti')
 type TypeElemento = {
   Id?: string
   Nome: string
-  IdTipologia: string,
+  IdTipologia?: string,
+  Tipologia?: string,
   ParoleChiavi: string,
+  ParoleChiaviRetrogrado: string,
   Significato: string,
+  SignificatoRetrogrado: string,
   Elemento: object,
   Segno: object
 }
@@ -32,7 +35,9 @@ export const TemaNatalePianeti = defineStore('TemaNatalePianeti', {
         Nome: '',
         IdTipologia: '',
         ParoleChiavi: '',
-        Significato: ''
+        ParoleChiaviRetrogrado: '',
+        Significato: '',
+        SignificatoRetrogrado: ''
       }
     }
   },
@@ -47,7 +52,9 @@ export const TemaNatalePianeti = defineStore('TemaNatalePianeti', {
           const Nome = obj.Nome
           const Tipologia = obj.IdTipologia
           const ParoleChiavi = obj.ParoleChiavi
+          const ParoleChiaviRetrogrado = obj.ParoleChiaviRetrogrado
           const Significato = obj.Significato
+          const SignificatoRetrogrado = obj.SignificatoRetrogrado
           const Elemento = obj.Elemento
           const Segno = obj.Segno
           const Payload: TypeElemento = {
@@ -55,7 +62,9 @@ export const TemaNatalePianeti = defineStore('TemaNatalePianeti', {
             Nome,
             Tipologia,
             ParoleChiavi,
+            ParoleChiaviRetrogrado,
             Significato,
+            SignificatoRetrogrado,
             Elemento,
             Segno
           }
@@ -83,7 +92,7 @@ export const TemaNatalePianeti = defineStore('TemaNatalePianeti', {
       const Id = Pianeta.IdPianeta
 
       delete Pianeta.IdPianeta
-      //console.log(Pianeta)
+      console.log(Pianeta)
             try {
         await update(child(TabellaRef, Id), Pianeta)
           .then(() => {
@@ -95,7 +104,7 @@ export const TemaNatalePianeti = defineStore('TemaNatalePianeti', {
             console.log(e)
           })
       } catch (e) {
-        console.log(e)
+        console.log(e, Pianeta)
       }
     },
     async Elimina(Id: string) {

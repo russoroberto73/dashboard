@@ -7,6 +7,7 @@ type TypeElemento = {
   Id?: string
   Nome: string
   Significato: string
+  Discorsivo: string
   Eccesso: string
   Carenza: string
 }
@@ -42,6 +43,7 @@ export const TemaNataleElementi = defineStore('TemaNataleElementi', {
           const obj: TypeElemento = doc.val()
           const Nome = obj.Nome
           const Significato = obj.Significato
+          const Discorsivo = obj.Discorsivo
           const Eccesso = obj.Eccesso
           const Carenza = obj.Carenza
           const Payload: TypeElemento = {
@@ -49,7 +51,8 @@ export const TemaNataleElementi = defineStore('TemaNataleElementi', {
             Nome,
             Eccesso,
             Carenza,
-            Significato
+            Significato,
+            Discorsivo
           }
           this.Collezione.push(Payload)
         })
@@ -70,6 +73,7 @@ export const TemaNataleElementi = defineStore('TemaNataleElementi', {
                 Id,
                 Nome: res.val().Nome,              
                 Significato: res.val().Significato,
+                Discorsivo: res.val().Discorsivo,
                 Eccesso: res.val().Eccesso,
                 Carenza: res.val().Carenza
               }
@@ -93,9 +97,9 @@ export const TemaNataleElementi = defineStore('TemaNataleElementi', {
               const index = this.Collezione.findIndex((item) => item.Id === res.key)
               this.Collezione[index].Nome = res.val().Nome
               this.Collezione[index].Significato = res.val().Significato
+              this.Collezione[index].Discorsivo = res.val().Discorsivo
               this.Collezione[index].Eccesso = res.val().Eccesso
               this.Collezione[index].Carenza = res.val().Carenza
-
             })            
           })
           .catch((e) => {

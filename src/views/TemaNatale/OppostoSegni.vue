@@ -41,7 +41,14 @@ const Items = computed(() => {
                 Type: 'text',
                 Value: item.Significato,
                 Valido: 'p',
-                Class: 'w-full'
+                Class: 'w-[400px]'
+            },            
+            Discorsivo:
+            {
+                Type: 'text',
+                Value: item.Discorsivo,
+                Valido: 'p',
+                Class: 'w-[400px]'
             }
         }
     })

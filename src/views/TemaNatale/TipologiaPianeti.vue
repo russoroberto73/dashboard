@@ -41,7 +41,8 @@ const Items = computed(() => {
             {
                 Type: 'text',
                 Value: item.Significato,
-                Valido: 'p'
+                Valido: 'p',
+                Class: 'w-[full]'
             }
         }
     })

@@ -6,7 +6,8 @@ const TabellaRef = ref(db, 'temanatalenatura')
 type TypeElemento = {
   Id?: string
   Nome: string
-  Significato: string
+  Significato: string,
+  Discorsivo: string
 }
 
 type TypeCollezione = Array<TypeElemento>
@@ -26,7 +27,8 @@ export const TemaNataleNatura = defineStore('TemaNataleNatura', {
       return {
         Id: '0',
         Nome: '',
-        Significato: ''
+        Significato: '',
+        Discorsivo: ''
       }
     }
   },
@@ -40,10 +42,12 @@ export const TemaNataleNatura = defineStore('TemaNataleNatura', {
           const obj: TypeElemento = doc.val()
           const Nome = obj.Nome
           const Significato = obj.Significato
+          const Discorsivo = obj.Discorsivo
           const Payload: TypeElemento = {
             Id,
             Nome,
-            Significato
+            Significato,
+            Discorsivo
           }
           this.Collezione.push(Payload)
         })
@@ -63,7 +67,8 @@ export const TemaNataleNatura = defineStore('TemaNataleNatura', {
               const Payload = {
                 Id,
                 Nome: res.val().Nome,              
-                Significato: res.val().Significato
+                Significato: res.val().Significato,
+                Discorsivo: res.val().Discorsivo
               }
               this.Collezione.push(Payload)
             })
@@ -85,6 +90,7 @@ export const TemaNataleNatura = defineStore('TemaNataleNatura', {
               const index = this.Collezione.findIndex((item) => item.Id === res.key)
               this.Collezione[index].Nome = res.val().Nome
               this.Collezione[index].Significato = res.val().Significato
+              this.Collezione[index].Discorsivo = res.val().Discorsivo
             })            
           })
           .catch((e) => {

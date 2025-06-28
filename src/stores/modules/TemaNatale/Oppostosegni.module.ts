@@ -7,6 +7,7 @@ type TypeElemento = {
   Id?: string
   Opposto: string
   Significato: string
+  Discorsivo: string
 }
 
 type TypeCollezione = Array<TypeElemento>
@@ -40,10 +41,12 @@ export const TemaNataleOppostoSegni = defineStore('TemaNataleOppostoSegni', {
           const obj: TypeElemento = doc.val()
           const Opposto = obj.Opposto
           const Significato = obj.Significato
+          const Discorsivo = obj.Discorsivo
           const Payload: TypeElemento = {
             Id,
             Opposto,
-            Significato
+            Significato,
+            Discorsivo
           }
           this.Collezione.push(Payload)
         })
@@ -63,7 +66,8 @@ export const TemaNataleOppostoSegni = defineStore('TemaNataleOppostoSegni', {
               const Payload = {
                 Id,
                 Opposto: res.val().Opposto,
-                Significato: res.val().Significato                
+                Significato: res.val().Significato,
+                Discorsivo: res.val().Discorsivo
               }
               this.Collezione.push(Payload)
             })
@@ -85,6 +89,7 @@ export const TemaNataleOppostoSegni = defineStore('TemaNataleOppostoSegni', {
               const index = this.Collezione.findIndex((item) => item.Id === res.key)              
               this.Collezione[index].Opposto = res.val().Opposto
               this.Collezione[index].Significato = res.val().Significato
+              this.Collezione[index].Discorsivo = res.val().Discorsivo
             })
           })
           .catch((e) => {

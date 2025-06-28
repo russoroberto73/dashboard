@@ -1,18 +1,22 @@
 import { ref, get, push, update, remove, child, DataSnapshot } from 'firebase/database'
 import { defineStore } from 'pinia'
 import { db } from '@/stores/Conn'
-const TabellaRef = ref(db, 'temanatalepolaritasegni')
+const TabellaRef = ref(db, 'temanatalepianeticasesegni')
 
 type TypeElemento = {
   Id?: string
-  Nome: string
+  IdPianeta: string
+  IdSegnoPianeta: string,
+  Retrogrado: boolean,
+  Casa: string,
+  IdSegnoCasa: string,
   Significato: string,
-  Discorsivo: string
+  ParoleChiavi: string
 }
 
 type TypeCollezione = Array<TypeElemento>
 
-export const TemaNatalePolaritàSegni = defineStore('TemaNatalePolaritàSegni', {
+export const TemaNatalePianetiCaseSegni = defineStore('TemaNatalePianetiCaseSegni', {
   state: () => ({
     Collezione: [] as TypeCollezione
   }),
@@ -26,8 +30,13 @@ export const TemaNatalePolaritàSegni = defineStore('TemaNatalePolaritàSegni', 
     getProssimoElemento: (state) => {
       return {
         Id: '0',
-        Nome: '',
-        Significato: ''
+        IdPianeta: '0',
+        IdSegnoPianeta: '0',
+        Retrogrado: false,
+        Casa: '',
+        IdSegnoCasa: '0',
+        Significato: '',
+        ParoleChiavi: ''
       }
     }
   },
@@ -36,17 +45,25 @@ export const TemaNatalePolaritàSegni = defineStore('TemaNatalePolaritàSegni', 
       const snapshot = get(TabellaRef)
       try {
         const res: DataSnapshot = await snapshot     
-        res.forEach((doc: DataSnapshot) => {          
+        res.forEach((doc: DataSnapshot) => {
           const Id: string = doc.key ? doc.key : '0'
           const obj: TypeElemento = doc.val()
-          const Nome = obj.Nome
+          const IdPianeta = obj.IdPianeta
+          const IdSegnoPianeta = obj.IdSegnoPianeta
+          const Retrogrado = obj.Retrogrado
+          const Casa = obj.Casa
+          const IdSegnoCasa = obj.IdSegnoCasa
           const Significato = obj.Significato
-          const Discorsivo = obj.Discorsivo
+          const ParoleChiavi = obj.ParoleChiavi
           const Payload: TypeElemento = {
             Id,
-            Nome,
+            IdPianeta,
+            IdSegnoPianeta,
+            Retrogrado,
+            Casa,
+            IdSegnoCasa,
             Significato,
-            Discorsivo
+            ParoleChiavi
           }
           this.Collezione.push(Payload)
         })
@@ -65,9 +82,13 @@ export const TemaNatalePolaritàSegni = defineStore('TemaNatalePolaritàSegni', 
             snapshot.then((res: any) => {
               const Payload = {
                 Id,
-                Nome: res.val().Nome,
-                Significato: res.val().Significato                ,
-                Discorsivo: res.val().Discorsivo
+                IdPianeta: res.val().IdPianeta,
+                IdSegnoPianeta: res.val().IdSegnoPianeta,
+                Retrogrado: res.val().Retrogrado,
+                Casa: res.val().Casa,
+                IdSegnoCasa: res.val().IdSegnoCasa,
+                Significato: res.val().Significato,
+                ParoleChiavi: res.val().ParoleChiavi
               }
               this.Collezione.push(Payload)
             })
@@ -88,9 +109,13 @@ export const TemaNatalePolaritàSegni = defineStore('TemaNatalePolaritàSegni', 
           .then(() => {
             get(child(TabellaRef, Id)).then((res) => {
               const index = this.Collezione.findIndex((item) => item.Id === res.key)
-              this.Collezione[index].Nome = res.val().Nome
+              this.Collezione[index].IdPianeta = res.val().IdPianeta
+              this.Collezione[index].IdSegnoPianeta = res.val().IdSegnoPianeta
+              this.Collezione[index].Retrogrado = res.val().Retrogrado
+              this.Collezione[index].Casa = res.val().Casa
+              this.Collezione[index].IdSegnoCasa = res.val().IdSegnoCasa
               this.Collezione[index].Significato = res.val().Significato
-              this.Collezione[index].Discorsivo = res.val().Discorsivo
+              this.Collezione[index].ParoleChiavi = res.val().ParoleChiavi
             })
           })
           .catch((e) => {

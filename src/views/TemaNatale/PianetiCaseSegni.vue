@@ -1,8 +1,8 @@
 <template>
     <div class="relative top-[120px] left-[200px]">
-        <h1 class="text-center text-[30px]">Le case</h1>
+        <h1 class="text-center text-[30px]">Pianeti case segni</h1>
         <div>            
-            <Rtable :items="Items" :pinia="Pinia.TemaNataleCase()" />
+            <Rtable :items="Items" :pinia="Pinia.TemaNatalePianetiCaseSegni()" />
         </div>
     </div>
 </template>
@@ -21,7 +21,7 @@
 import Rtable from '@/components/ComponenteTabella/CostruisciTabella.vue'
 import { ref, computed } from 'vue';
 
-const Elenco = ref(Pinia.TemaNataleCase().getElenco)
+const Elenco = ref(Pinia.TemaNatalePianetiCaseSegni().getElenco)
 
 const Items = computed(() => {
     return Elenco.value.map((item) => {
@@ -31,23 +31,34 @@ const Items = computed(() => {
                 Type: "text",
                 Value: item.Id
             },
-            Sigla: 
+            IdPianeta: 
             {
-                Type: "text",
-                Value: item.Sigla,
-                Valido: 'p'
+                Type: "select",
+                Array: DatiComboPianeti(),
+                Value: item.IdPianeta                
             },
-            Segno:
+            IdSegnoPianeta:
             {
                 Type: 'select',
                 Array: DatiComboSegni(),
-                Value: item.Segno
+                Value: item.IdSegnoPianeta
             },
-            PianetaDominante:
+            Retrogrado:
+            {
+                Type: 'boolean',
+                Value: item.Retrogrado
+            },
+            Casa:
             {
                 Type: 'select',
-                Array: DatiComboPianeti(),
-                Value: item.PianetaDominante
+                Array: DatiComboCase(),
+                Value: item.Casa
+            },
+            IdSegnoCasa:
+            {
+                Type: 'select',
+                Array: DatiComboSegni(),
+                Value: item.IdSegnoCasa
             },
             Significato:
             {
@@ -55,11 +66,17 @@ const Items = computed(() => {
                 Value: item.Significato,
                 Valido: 'p',
                 Class: 'w-[400px]'
+            },
+            ParoleChiavi:
+            {
+                Type: 'text',
+                Value: item.ParoleChiavi,
+                Valido: 'p',
+                Class: 'w-[400px]'
             }
         }
     })
 })
-
 const DatiComboPianeti = () => {
     const tmp = Pinia.TemaNatalePianeti().getElenco.sort((a, b) => {
         if (a.Nome < b.Nome) {
@@ -77,6 +94,15 @@ const DatiComboPianeti = () => {
     })
 }
 
+const DatiComboCase = () => {
+    const tmp = Pinia.TemaNataleCase().getElenco
+    return tmp.map((item) => {
+        return {
+            text: item.Sigla,
+            value: item.Id
+        }
+    })
+}
 const DatiComboSegni = () => {
     const tmp = Pinia.TemaNataleSegni().getElenco.sort((a, b) => {
         if (a.Nome < b.Nome) {

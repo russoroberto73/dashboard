@@ -42,7 +42,14 @@ const Items = computed(() => {
             {
                 Type: 'text',
                 Value: item.Significato,
-                Class: 'w-[800px]',
+                Class: 'w-[400px]',
+                Valido: 'p'
+            },
+            Discorsivo:
+            {
+                Type: 'text',
+                Value: item.Discorsivo,
+                Class: 'w-[400px]',
                 Valido: 'p'
             },
             Eccesso:

@@ -8,6 +8,7 @@ type TypeElemento = {
   Pianeta: string
   Segno: string
   Significato: string
+  Discorsivo: string
 }
 
 type TypeCollezione = Array<TypeElemento>
@@ -28,7 +29,8 @@ export const TemaNataleGovernatoriSegni = defineStore('TemaNataleGovernatoriSegn
         Id: '0',
         Pianeta: '',  
         Segno: '',
-        Significato: ''
+        Significato: '',
+        Discorsivo: ''
       }
     }
   },
@@ -43,11 +45,13 @@ export const TemaNataleGovernatoriSegni = defineStore('TemaNataleGovernatoriSegn
           const Pianeta = obj.Pianeta
           const Segno = obj.Segno
           const Significato = obj.Significato
+          const Discorsivo = obj.Discorsivo
           const Payload: TypeElemento = {
             Id,
             Pianeta,
             Segno,
-            Significato
+            Significato,
+            Discorsivo
           }
           this.Collezione.push(Payload)
         })
@@ -69,7 +73,8 @@ export const TemaNataleGovernatoriSegni = defineStore('TemaNataleGovernatoriSegn
                 Pianeta: res.val().Pianeta,
                 Elemento: res.val().Elemento,
                 Segno: res.val().Segno,
-                Significato: res.val().Significato                
+                Significato: res.val().Significato,
+                Discorsivo: res.val().Discorsivo
               }
               this.Collezione.push(Payload)
             })
@@ -92,6 +97,7 @@ export const TemaNataleGovernatoriSegni = defineStore('TemaNataleGovernatoriSegn
               this.Collezione[index].Pianeta = res.val().Pianeta
               this.Collezione[index].Segno = res.val().Segno
               this.Collezione[index].Significato = res.val().Significato
+              this.Collezione[index].Discorsivo = res.val().Discorsivo
             })
           })
           .catch((e) => {

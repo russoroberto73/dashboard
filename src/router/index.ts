@@ -169,6 +169,11 @@ const router = createRouter({
       component: () => import('@/views/TemaNatale/LetturaTemaNatale.vue')
     },     
     {
+      path: '/temanatale/pianeticasesegn',
+      name: 'TemaNatalePianetiCaseSegni',
+      component: () => import('@/views/TemaNatale/PianetiCaseSegni.vue')
+    },     
+    {
       path: '/word',
       name: 'Word',
       component: () => import('@/views/Word.vue')

@@ -159,6 +159,9 @@
       <router-link :to="{ name: 'TemaNataleLetturaTemaNatale' }">
         <h2>Lettura tema natale</h2>
       </router-link>
+      <router-link :to="{ name: 'TemaNatalePianetiCaseSegni' }">
+        <h2>PianetiCaseSegni</h2>
+      </router-link>
     </div>
     <div class="border border-[0px] border-blue-900 p-3 m-3 Bordo">
       <div class="bg-gray-300">Password</div>
@@ -203,6 +206,7 @@ const FirebaseAccountPassword = Pinia.AccountPassword()
 const FirebaseBotulinoDistretti = Pinia.BotulinoDistretti()
 const FirebaseBotulinoMuscoli = Pinia.BotulinoMuscoli()
 const FirebaseBotulinoQtyDate = Pinia.BotulinoQtyDate()
+const FirebaseTemaNataleUtenti = Pinia.TemaNataleUtenti()
 const FirebaseTemaNataleElementi = Pinia.TemaNataleElementi()
 const FirebaseTemaNatalePolaritàSegni = Pinia.TemaNatalePolaritàSegni()
 const FirebaseTemaNataleGovernatoriSegni = Pinia.TemaNataleGovernatoriSegni()
@@ -215,6 +219,7 @@ const FirebaseTemaNatalePianeti = Pinia.TemaNatalePianeti()
 const FirebaseTemaNataleStagioni = Pinia.TemaNataleStagioni()
 const FirebaseTemaNataleNatura = Pinia.TemaNataleNatura()
 const FirebaseTemaNataleQuadrupliitàSegni = Pinia.TemaNataleQuadruplicitàSegni()
+const FirebaseTemaNatalePianetiCaseSegni = Pinia.TemaNatalePianetiCaseSegni()
 const FirebaseUltimoBackup = Pinia.UltimoBackup()
 
 const Scadenze = computed(() => {
@@ -275,6 +280,7 @@ onMounted(() => {
   FirebaseBotulinoDistretti.Elenco()
   FirebaseBotulinoMuscoli.Elenco()
   FirebaseBotulinoQtyDate.Elenco()
+  FirebaseTemaNataleUtenti.Elenco()
   FirebaseTemaNataleElementi.Elenco()
   FirebaseTemaNatalePolaritàSegni.Elenco()
   FirebaseTemaNataleGovernatoriSegni.Elenco()
@@ -287,6 +293,7 @@ onMounted(() => {
   FirebaseTemaNataleStagioni.Elenco()
   FirebaseTemaNataleNatura.Elenco()
   FirebaseTemaNataleQuadrupliitàSegni.Elenco()
+  FirebaseTemaNatalePianetiCaseSegni.Elenco()
   FirebaseUltimoBackup.Elenco()
 })
 </script>

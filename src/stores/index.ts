@@ -15,6 +15,7 @@ import { UltimoBackup } from "./modules/UltimoBackup.module"
 import { GruppiPassword } from "./modules/Password/GruppiPassword.module"
 import { AccountPassword } from "./modules/Password/AccountPassword.module"
 import { BotulinoDistretti } from './modules/Botulino/Distretti.module'
+import { TemaNataleUtenti } from './modules/TemaNatale/Utenti.module';
 import { TemaNataleGruppiCase } from "./modules/TemaNatale/GruppiCase.module"
 import { TemaNataleCase } from "./modules/TemaNatale/Case.module"
 import { TemaNataleSegni } from "./modules/TemaNatale/Segni.module"
@@ -25,9 +26,10 @@ import { TemaNatalePolaritàSegni } from "./modules/TemaNatale/PolaritaSegni.mod
 import { TemaNataleStagioni } from "./modules/TemaNatale/Stagioni.module"
 import { TemaNataleNatura } from "./modules/TemaNatale/Natura.module"
 import { BotulinoMuscoli } from "./modules/Botulino/Muscoli.module"
-import { TemaNataleQuadruplicitàSegni } from './modules/TemaNatale/QuadruplicitaSegni.module';
-import { TemaNataleGovernatoriSegni } from './modules/TemaNatale/Governatore.module';
-import { TemaNataleOppostoSegni } from './modules/TemaNatale/Oppostosegni.module';
+import { TemaNataleQuadruplicitàSegni } from './modules/TemaNatale/QuadruplicitaSegni.module'
+import { TemaNataleGovernatoriSegni } from './modules/TemaNatale/Governatore.module'
+import { TemaNataleOppostoSegni } from './modules/TemaNatale/Oppostosegni.module'
+import { TemaNatalePianetiCaseSegni } from './modules/TemaNatale/PianetiCaseSegni.module'
 
 export const Pinia = {
     Login,
@@ -47,6 +49,7 @@ export const Pinia = {
     BotulinoDistretti,
     BotulinoMuscoli,
     BotulinoQtyDate,
+    TemaNataleUtenti,
     TemaNataleElementi,
     TemaNatalePolaritàSegni,
     TemaNataleQuadruplicitàSegni,
@@ -59,5 +62,6 @@ export const Pinia = {
     TemaNatalePianeti,
     TemaNataleStagioni,
     TemaNataleNatura,
+    TemaNatalePianetiCaseSegni,
     UltimoBackup
 }
