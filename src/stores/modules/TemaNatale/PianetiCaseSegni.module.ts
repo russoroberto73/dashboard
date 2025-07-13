@@ -6,11 +6,11 @@ const TabellaRef = ref(db, 'temanatalepianeticasesegni')
 type TypeElemento = {
   Id?: string
   IdPianeta: string
-  IdSegnoPianeta: string,
-  Retrogrado: boolean,
-  Casa: string,
-  IdSegnoCasa: string,
-  Significato: string,
+  IdSegnoPianeta: string
+  Retrogrado: boolean
+  Casa: string
+  IdSegnoCasa: string
+  Significato: string
   ParoleChiavi: string
 }
 
@@ -44,7 +44,7 @@ export const TemaNatalePianetiCaseSegni = defineStore('TemaNatalePianetiCaseSegn
     async Elenco() {
       const snapshot = get(TabellaRef)
       try {
-        const res: DataSnapshot = await snapshot     
+        const res: DataSnapshot = await snapshot
         res.forEach((doc: DataSnapshot) => {
           const Id: string = doc.key ? doc.key : '0'
           const obj: TypeElemento = doc.val()
@@ -101,7 +101,7 @@ export const TemaNatalePianetiCaseSegni = defineStore('TemaNatalePianetiCaseSegn
       }
     },
     async Aggiorna(Casa: any) {
-      console.log('p')      
+      console.log('aggiorna')
       const Id = Casa.Id
       delete Casa.Id
       try {
@@ -109,13 +109,15 @@ export const TemaNatalePianetiCaseSegni = defineStore('TemaNatalePianetiCaseSegn
           .then(() => {
             get(child(TabellaRef, Id)).then((res) => {
               const index = this.Collezione.findIndex((item) => item.Id === res.key)
-              this.Collezione[index].IdPianeta = res.val().IdPianeta
-              this.Collezione[index].IdSegnoPianeta = res.val().IdSegnoPianeta
-              this.Collezione[index].Retrogrado = res.val().Retrogrado
-              this.Collezione[index].Casa = res.val().Casa
-              this.Collezione[index].IdSegnoCasa = res.val().IdSegnoCasa
-              this.Collezione[index].Significato = res.val().Significato
-              this.Collezione[index].ParoleChiavi = res.val().ParoleChiavi
+              if (index > 0) {
+                this.Collezione[index].IdPianeta = res.val().IdPianeta
+                this.Collezione[index].IdSegnoPianeta = res.val().IdSegnoPianeta
+                this.Collezione[index].Retrogrado = res.val().Retrogrado
+                this.Collezione[index].Casa = res.val().Casa
+                this.Collezione[index].IdSegnoCasa = res.val().IdSegnoCasa
+                this.Collezione[index].Significato = res.val().Significato
+                this.Collezione[index].ParoleChiavi = res.val().ParoleChiavi
+              }
             })
           })
           .catch((e) => {

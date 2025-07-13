@@ -9,6 +9,7 @@ type TypeElemento = {
   Segno: string
   PianetaDominante: string
   Significato: string
+  ParoleChiavi: string
 }
 
 type TypeCollezione = Array<TypeElemento>
@@ -30,7 +31,8 @@ export const TemaNataleCase = defineStore('TemaNataleCase', {
         Sigla: '',
         Segno: '',
         PianetaDominante: '',
-        Significato: ''
+        Significato: '',
+        ParoleChiavi: ''
       }
     }
   },
@@ -38,7 +40,7 @@ export const TemaNataleCase = defineStore('TemaNataleCase', {
     async Elenco() {
       const snapshot = get(TabellaRef)
       try {
-        const res: DataSnapshot = await snapshot     
+        const res: DataSnapshot = await snapshot
         res.forEach((doc: DataSnapshot) => {
           const Id: string = doc.key ? doc.key : '0'
           const obj: TypeElemento = doc.val()
@@ -46,12 +48,14 @@ export const TemaNataleCase = defineStore('TemaNataleCase', {
           const Segno = obj.Segno
           const PianetaDominante = obj.PianetaDominante
           const Significato = obj.Significato
+          const ParoleChiavi = obj.ParoleChiavi ? obj.ParoleChiavi : ''
           const Payload: TypeElemento = {
             Id,
             Sigla,
             Segno,
             PianetaDominante,
-            Significato
+            Significato,
+            ParoleChiavi
           }
           this.Collezione.push(Payload)
         })
@@ -73,7 +77,8 @@ export const TemaNataleCase = defineStore('TemaNataleCase', {
                 Sigla: res.val().Sigla,
                 Segno: res.val().Segno,
                 PianetaDominante: res.val().PianetaDominante,
-                Significato: res.val().Significato                
+                Significato: res.val().Significato,
+                ParoleChiavi: res.val().ParoleChiavi ? res.val().ParoleChiavi : ''
               }
               this.Collezione.push(Payload)
             })
@@ -87,16 +92,19 @@ export const TemaNataleCase = defineStore('TemaNataleCase', {
     },
     async Aggiorna(Casa: any) {
       const Id = Casa.Id
-      delete Casa.Id
+      delete Casa.Id      
       try {
         await update(child(TabellaRef, Id), Casa)
           .then(() => {
             get(child(TabellaRef, Id)).then((res) => {
-              const index = this.Collezione.findIndex((item) => item.Id === res.key)
+              const index = this.Collezione.findIndex((item) => item.Id === res.key) 
               this.Collezione[index].Sigla = res.val().Sigla
               this.Collezione[index].Segno = res.val().Segno
               this.Collezione[index].PianetaDominante = res.val().PianetaDominante
               this.Collezione[index].Significato = res.val().Significato
+              this.Collezione[index].ParoleChiavi = res.val().ParoleChiavi
+                ? res.val().ParoleChiavi
+                : ''
             })
           })
           .catch((e) => {

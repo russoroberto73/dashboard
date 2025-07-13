@@ -52,7 +52,22 @@ onMounted(() => {
     'rimborsi730',
     'scadenzecondominio',
     'supercategorie',
-    'tipologiecondominio'
+    'tipologiecondominio',
+    'temanataleAffinitasegni',
+    'temanatalecase',
+    'temanataleelementi',
+    'temanatalegovernatorisegni',
+    'temanatalegruppiscase',
+    'temanatalenatura',
+    'temanataleopposizionisegni',
+    'temanatalepianeti',
+    'temantalepianeticasesegni',
+    'temanatalepolaritasegni',
+    'temanatalequadruplicitasegni',
+    'temanatalesegni',
+    'temanatalestagioni',
+    'temanataletipologapianeti',
+    'temanataaleutenti'
   ]
   ArrayTabelle.forEach((item) => {
     Copy(item)

@@ -9,6 +9,9 @@ import { SuperCategorie } from "./modules/Banca/SuperCategorie.module"
 import { Categorie } from './modules/Banca/Categorie.module'
 import { Movimenti } from "./modules/Banca/Movimenti.module"
 import { Rimborsi730 } from "./modules/Banca/Rimborsi730.module"
+import { PatrimonioBanche } from "./modules/Banca/PatrimonioBanche.module"
+import { PatrimonioGruppi } from "./modules/Banca/PatrimonioGruppi.module"
+import { PatrimonioTitoli } from "./modules/Banca/PatrimonioTitoli.module"
 import { HandiphoneCategorie } from "./modules/Handiphone/Categorie.module"
 import { HandiphoneParoleFrasi } from "./modules/Handiphone/ParoleFrasi.module"
 import { UltimoBackup } from "./modules/UltimoBackup.module"
@@ -30,6 +33,7 @@ import { TemaNataleQuadruplicitàSegni } from './modules/TemaNatale/Quadruplicit
 import { TemaNataleGovernatoriSegni } from './modules/TemaNatale/Governatore.module'
 import { TemaNataleOppostoSegni } from './modules/TemaNatale/Oppostosegni.module'
 import { TemaNatalePianetiCaseSegni } from './modules/TemaNatale/PianetiCaseSegni.module'
+import { PatrimonioDate } from './modules/Banca/PatrimonioDate.module';
 
 export const Pinia = {
     Login,
@@ -42,6 +46,10 @@ export const Pinia = {
     Categorie,
     Movimenti,
     Rimborsi730,
+    PatrimonioBanche,
+    PatrimonioGruppi,
+    PatrimonioTitoli,
+    PatrimonioDate,
     HandiphoneCategorie,
     HandiphoneParoleFrasi,
     GruppiPassword,

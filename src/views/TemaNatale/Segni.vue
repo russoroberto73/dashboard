@@ -53,6 +53,11 @@ const Items = computed(() => {
                 Valido: 'p',
                 Class: 'w-[100px]'
             },
+            Immagine: {
+                Type: "text",
+                Value: item.Immagine,
+                Class: 'w-[100px]'
+            },
             Periodo: {
                 Type: "text",
                 Value: item.Periodo,

@@ -6,6 +6,7 @@ const TabellaRef = ref(db, 'temanatalesegni')
 type TypeElemento = {
   Id?: string
   Nome: string,
+  Immagine: string,
   Periodo: string,
   Quadruplicità: string,
   Governatore: string,
@@ -35,6 +36,7 @@ export const TemaNataleSegni = defineStore('TemaNataleSegni', {
       return {
         Id: '0',
         Nome: '',
+        Immagine: '',
         Periodo: '', 
         Quadruplicità: '',
         Governatore: '',
@@ -57,6 +59,7 @@ export const TemaNataleSegni = defineStore('TemaNataleSegni', {
           const Id: string = doc.key ? doc.key : '0'
           const obj: TypeElemento = doc.val()
           const Nome = obj.Nome
+          const Immagine = obj.Immagine
           const Periodo = obj.Periodo
           const Quadruplicità = obj.Quadruplicità
           const Governatore = obj.Governatore
@@ -70,6 +73,7 @@ export const TemaNataleSegni = defineStore('TemaNataleSegni', {
           const Payload: TypeElemento = {
             Id,
             Nome,
+            Immagine,
             Periodo,
             Quadruplicità,
             Governatore,
@@ -99,6 +103,7 @@ export const TemaNataleSegni = defineStore('TemaNataleSegni', {
               const Payload = {
                 Id,
                 Nome: res.val().Nome,
+                Immagine: res.val().Immagine,
                 Periodo: res.val().Periodo,
                 Quadruplicità: res.val().Quadruplicità,              
                 Governatore: res.val().Governtore,
@@ -129,6 +134,7 @@ export const TemaNataleSegni = defineStore('TemaNataleSegni', {
             get(child(TabellaRef, Id)).then((res) => {
               const index = this.Collezione.findIndex((item) => item.Id === res.key)              
               this.Collezione[index].Nome = res.val().Nome
+              this.Collezione[index].Immagine = res.val().Immagine
               this.Collezione[index].Periodo = res.val().Periodo
               this.Collezione[index].Quadruplicità = res.val().Quadruplicità
               this.Collezione[index].Governatore = res.val().Governatore

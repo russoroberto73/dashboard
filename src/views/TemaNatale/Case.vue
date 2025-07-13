@@ -55,7 +55,14 @@ const Items = computed(() => {
                 Value: item.Significato,
                 Valido: 'p',
                 Class: 'w-[400px]'
-            }
+            },
+            ParoleChiavi:
+            {
+                Type: 'text',
+                Value: item.ParoleChiavi,
+                Valido: 'p',
+                Class: 'w-[400px]'
+            }   
         }
     })
 })

@@ -27,7 +27,7 @@ const router = createRouter({
       path: '/vitaindipendente/bustepaga',
       name: 'BustePaga',
       component: () => import('@/views/VitaIndipendente/BustePaga.vue')
-    },    
+    },
     {
       path: '/supercategorie',
       name: 'SuperCategorie',
@@ -37,27 +37,47 @@ const router = createRouter({
       path: '/categorie',
       name: 'Categorie',
       component: () => import('@/views/Banca/Categorie.vue')
-    },    
+    },
     {
       path: '/movimenti',
       name: 'Movimenti',
       component: () => import('@/views/Banca/Movimenti.vue')
-    },        
+    },
     {
       path: '/tabellone',
       name: 'Tabellone',
       component: () => import('@/views/Banca/Tabellone.vue')
-    },            
+    },
     {
       path: '/confronto',
       name: 'Confronto',
       component: () => import('@/views/Banca/Confronto.vue')
-    },    
+    },
     {
       path: '/730',
       name: '730',
       component: () => import('@/views/Banca/Rimborso730.vue')
-    },    
+    },
+    {
+      path: '/patrimonio/banche',
+      name: 'Banche',
+      component: () => import('@/views/Banca/Patrimonio/Banche.vue')
+    },
+    {
+      path: '/patrimonio/gruppiprimo',
+      name: 'GruppiPrimoLivello',
+      component: () => import('@/views/Banca/Patrimonio/Gruppi.vue')
+    },
+    {
+      path: '/patrimonio/date',
+      name: 'PatrimonioDate',
+      component: () => import('@/views/Banca/Patrimonio/Date.vue')
+    },
+    {
+      path: '/patrimonio/titoli',
+      name: 'Titoli',
+      component: () => import('@/views/Banca/Patrimonio/Titoli.vue')
+    },
     {
       path: '/handiphone',
       name: 'Handiphone',
@@ -172,12 +192,12 @@ const router = createRouter({
       path: '/temanatale/pianeticasesegn',
       name: 'TemaNatalePianetiCaseSegni',
       component: () => import('@/views/TemaNatale/PianetiCaseSegni.vue')
-    },     
+    },     /*
     {
       path: '/word',
       name: 'Word',
       component: () => import('@/views/Word.vue')
-    },     
+    },*/     
     {
       path: '/copydb',
       name: 'CopyDb',

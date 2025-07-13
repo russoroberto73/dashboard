@@ -1,9 +1,9 @@
 <template>
   <header>
     <div class="fixed right-[1000px] top-[50px]">
-      Ultimo backup: {{UltimoBackup}} 
-      <div style="position: fixed;left: 200px;top: 20px; font-size: 30px; font-weight: bold;">
-        {{DatabaseFirebase}}
+      Ultimo backup: {{ UltimoBackup }}
+      <div style="position: fixed; left: 200px; top: 20px; font-size: 30px; font-weight: bold">
+        {{ DatabaseFirebase }}
       </div>
       <router-link :to="{ name: 'CopyDb' }">
         <button class="bg-Bottone p-2 rounded-[45px]">Esegui backup</button>
@@ -96,6 +96,18 @@
       <router-link :to="{ name: '730' }">
         <h2>Rimborso 730</h2>
       </router-link>
+      <router-link :to="{ name: 'Banche' }">
+        <h2>Banche</h2>
+      </router-link>
+      <router-link :to="{ name: 'GruppiPrimoLivello' }">
+        <h2>Gruppi primo livello</h2>
+      </router-link>
+      <router-link :to="{ name: 'Titoli' }">
+        <h2>Titoli</h2>
+      </router-link>
+      <router-link :to="{ name: 'PatrimonioDate' }">
+        <h2>Date</h2>
+      </router-link>
     </div>
     <div class="border border-[0px] border-blue-900 p-3 m-3 Bordo">
       <div class="bg-gray-300">Botulino</div>
@@ -119,19 +131,19 @@
       </router-link>
       <router-link :to="{ name: 'TemaNatalePolaritàSegni' }">
         <h2>Le polarità dei segni zodiacali</h2>
-      </router-link>      
+      </router-link>
       <router-link :to="{ name: 'TemaNataleStagioni' }">
         <h2>Le stagioni</h2>
-      </router-link>      
+      </router-link>
       <router-link :to="{ name: 'TemaNataleNatura' }">
         <h2>La natura dei segni zodiacali</h2>
-      </router-link>      
+      </router-link>
       <router-link :to="{ name: 'TemaNataleQuadruplicitàSegni' }">
         <h2>Quadruplicità segni zodiacali</h2>
       </router-link>
       <router-link :to="{ name: 'TemaNataleGovernatoriSegni' }">
         <h2>Governatori segni</h2>
-      </router-link>      
+      </router-link>
       <router-link :to="{ name: 'TemaNataleOppostoSegni' }">
         <h2>Opposti segni</h2>
       </router-link>
@@ -143,16 +155,16 @@
       </router-link>
       <router-link :to="{ name: 'TemaNataleCase' }">
         <h2>Le case</h2>
-      </router-link>      
+      </router-link>
       <router-link :to="{ name: 'TemaNataleTipologiaPianeti' }">
         <h2>Tipologia pianeti</h2>
-      </router-link>    
-      <router-link :to="{ name: 'TemaNatalePianeti' }">
+      </router-link>
+      <router-link :to="{ name: 'TemaNatalePianeti' }" class="hidden">
         <h2>Pianeti</h2>
-      </router-link>          
+      </router-link>
       <router-link :to="{ name: 'TemaNatalePianetiSegni' }">
         <h2>Pianeti Segni</h2>
-      </router-link>          
+      </router-link>
       <router-link :to="{ name: 'TemaNatalePianetiElementi' }">
         <h2>Pianeti Elementi</h2>
       </router-link>
@@ -171,7 +183,7 @@
       <router-link :to="{ name: 'AccountPassword' }">
         <h2>Account password</h2>
       </router-link>
-     </div>
+    </div>
     <router-link :to="{ name: 'Home' }">
       <h2>Scadenze</h2>
     </router-link>
@@ -199,6 +211,10 @@ const FirebaseSuperCategorie = Pinia.SuperCategorie()
 const FirebaseCategorie = Pinia.Categorie()
 const FirebaseMovimenti = Pinia.Movimenti()
 const FirebaseRimborsi730 = Pinia.Rimborsi730()
+  const FirebasePatrimonioBanche = Pinia.PatrimonioBanche()
+  const FirebasePatrimonioGruppi = Pinia.PatrimonioGruppi()
+  const FirebasePatrimonioDate = Pinia.PatrimonioDate()
+const FirebasePatrimonioTitoli = Pinia.PatrimonioTitoli()
 const FirebaseHandiphoneCategorie = Pinia.HandiphoneCategorie()
 const FirebaseHandiphoneCodiciFrasi = Pinia.HandiphoneParoleFrasi()
 const FirebaseGruppiPassword = Pinia.GruppiPassword()
@@ -229,7 +245,7 @@ const Compleanni = computed(() => {
   return FirebaseCompleanni.getElenco('futuri')
 })
 
-const UltimoBackup = computed(()=>{
+const UltimoBackup = computed(() => {
   return FirebaseUltimoBackup.getElenco[0] ? FirebaseUltimoBackup.getElenco[0]['Data'] : ''
 })
 
@@ -257,8 +273,8 @@ const TestScadenza = computed(() => {
 })
 
 onMounted(() => {
-  if (DatabaseFirebase === "sviluppo")
-  document.documentElement.style.setProperty("--produzione", '#e88686')
+  if (DatabaseFirebase === 'sviluppo')
+    document.documentElement.style.setProperty('--produzione', '#e88686')
   //if (!localStorage.getItem('Token'))
   //{
   FirebaseLogin.Login()
@@ -273,6 +289,10 @@ onMounted(() => {
   FirebaseCategorie.Elenco()
   FirebaseMovimenti.Elenco()
   FirebaseRimborsi730.Elenco()
+  FirebasePatrimonioBanche.Elenco()
+  FirebasePatrimonioGruppi.Elenco()
+  FirebasePatrimonioTitoli.Elenco()
+  FirebasePatrimonioDate.Elenco()
   FirebaseHandiphoneCategorie.Elenco()
   FirebaseHandiphoneCodiciFrasi.Elenco()
   FirebaseGruppiPassword.Elenco()

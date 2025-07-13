@@ -6,13 +6,13 @@ const TabellaRef = ref(db, 'temanatalepianeti')
 type TypeElemento = {
   Id?: string
   Nome: string
-  IdTipologia?: string,
-  Tipologia?: string,
-  ParoleChiavi: string,
-  ParoleChiaviRetrogrado: string,
-  Significato: string,
-  SignificatoRetrogrado: string,
-  Elemento: object,
+  IdTipologia?: string
+  Tipologia?: string
+  ParoleChiavi: string
+  ParoleChiaviRetrogrado: string
+  Significato: string
+  SignificatoRetrogrado: string
+  Elemento: object
   Segno: object
 }
 
@@ -27,6 +27,7 @@ export const TemaNatalePianeti = defineStore('TemaNatalePianeti', {
       return 'TemaNatalePianeti'
     },
     getElenco: (state) => {
+      //console.log('getElenco', state.Collezione)      
       return state.Collezione
     },
     getProssimoElemento: (state) => {
@@ -45,7 +46,7 @@ export const TemaNatalePianeti = defineStore('TemaNatalePianeti', {
     async Elenco() {
       const snapshot = get(TabellaRef)
       try {
-        const res: DataSnapshot = await snapshot     
+        const res: DataSnapshot = await snapshot
         res.forEach((doc: DataSnapshot) => {
           const Id: string = doc.key ? doc.key : '0'
           const obj: TypeElemento = doc.val()
@@ -75,11 +76,11 @@ export const TemaNatalePianeti = defineStore('TemaNatalePianeti', {
       }
     },
     async Aggiungi(Pianeta: any) {
-      console.log(Pianeta)
+      //console.log(Pianeta)
       try {
         await push(TabellaRef, Pianeta)
           .then((response: { key: any }) => {
-            console.log(response)            
+            console.log(response)
           })
           .catch((e) => {
             console.log(e)
@@ -92,13 +93,11 @@ export const TemaNatalePianeti = defineStore('TemaNatalePianeti', {
       const Id = Pianeta.IdPianeta
 
       delete Pianeta.IdPianeta
-      console.log(Pianeta)
-            try {
+      //console.log(Pianeta, Id)
+      try {
         await update(child(TabellaRef, Id), Pianeta)
           .then(() => {
-            get(child(TabellaRef, Id)).then((res) => {
-              
-            })
+            get(child(TabellaRef, Id)).then((res) => {})
           })
           .catch((e) => {
             console.log(e)
