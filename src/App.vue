@@ -63,6 +63,9 @@
     </div>
     <router-link :to="{ name: 'CalendarioFilosofico' }">
       <h2>Calendario Filosofico</h2>
+    </router-link>    
+    <router-link :to="{ name: 'SituazioneMamma' }">
+      <h2>Situazione Mamma</h2>
     </router-link>
     <router-link :to="{ name: 'Compleanni' }">
       <h2>Compleanni</h2>
@@ -237,6 +240,7 @@ const FirebaseTemaNataleNatura = Pinia.TemaNataleNatura()
 const FirebaseTemaNataleQuadrupliitàSegni = Pinia.TemaNataleQuadruplicitàSegni()
 const FirebaseTemaNatalePianetiCaseSegni = Pinia.TemaNatalePianetiCaseSegni()
 const FirebaseUltimoBackup = Pinia.UltimoBackup()
+const FirebaseDeclinoMamma = Pinia.DeclinoMamma()
 
 const Scadenze = computed(() => {
   return FirebaseScadenze.getElenco('futuri')
@@ -289,10 +293,12 @@ onMounted(() => {
   FirebaseCategorie.Elenco()
   FirebaseMovimenti.Elenco()
   FirebaseRimborsi730.Elenco()
+  
   FirebasePatrimonioBanche.Elenco()
   FirebasePatrimonioGruppi.Elenco()
   FirebasePatrimonioTitoli.Elenco()
   FirebasePatrimonioDate.Elenco()
+
   FirebaseHandiphoneCategorie.Elenco()
   FirebaseHandiphoneCodiciFrasi.Elenco()
   FirebaseGruppiPassword.Elenco()
@@ -315,6 +321,7 @@ onMounted(() => {
   FirebaseTemaNataleQuadrupliitàSegni.Elenco()
   FirebaseTemaNatalePianetiCaseSegni.Elenco()
   FirebaseUltimoBackup.Elenco()
+  FirebaseDeclinoMamma.Elenco()
 })
 </script>
 

@@ -34,8 +34,8 @@ export const PatrimonioDate = defineStore('PatrimonioDate', {
         const res: DataSnapshot = await snapshot
         res.forEach((doc: DataSnapshot) => {
           const Id: string = doc.key ? doc.key : '0'
-          const obj: TypeElemento = doc.val()
-          const Payload: TypeElemento = { Id, ...obj }
+          const obj: any = doc.val()
+          const Payload = { Id, ...obj }
           this.Collezione.push(Payload)
         })
         //console.log(this.Collezione)        
@@ -47,17 +47,16 @@ export const PatrimonioDate = defineStore('PatrimonioDate', {
       delete Record.Id
       try {
         await push(TabellaRef, Record).then((response: { key: any }) => {
-          const snapshot = get(child(TabellaRef, response.key))
+          /*const snapshot = get(child(TabellaRef, response.key))
           const Id = response.key
           snapshot.then((res: any) => {
             const Payload = {
               Id,
               Nome: res.val().Nome,
               Data: res.val().Data,
-              Titoli: res.val().Titoli
             }
             this.Collezione.push(Payload)
-          })
+          })*/
         })
       } catch (e) {
         console.log(e)
@@ -67,11 +66,11 @@ export const PatrimonioDate = defineStore('PatrimonioDate', {
       console.log(Record)
       const Id = Record.Id
       delete Record.Id
+      
       try {
         await update(child(TabellaRef, Id), Record).then(() => {
           get(child(TabellaRef, Id)).then((res) => {
             const index = this.Collezione.findIndex((item) => item.Id === res.key)
-            this.Collezione[index].Nome = res.val().Nome
             this.Collezione[index].Data = res.val().Data
             this.Collezione[index].Titoli = res.val().Titoli
           })

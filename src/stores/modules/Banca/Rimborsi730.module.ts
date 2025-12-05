@@ -45,10 +45,10 @@ export const Rimborsi730 = defineStore('Rimborsi730', {
       }
     },
     async Aggiungi(NuovoRimborso: any) {
-      delete NuovoRimborso.value.Id
-      //console.log(Categoria)
+      delete NuovoRimborso.Id
+      //console.log(NuovoRimborso.value)
       try {
-        await push(TabellaRef, NuovoRimborso.value).then((response: { key: any }) => {
+        await push(TabellaRef, NuovoRimborso).then((response: { key: any }) => {
           const snapshot = get(child(TabellaRef, response.key))
           const Id = response.key
           snapshot.then((res: any) => {

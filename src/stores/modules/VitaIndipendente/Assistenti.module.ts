@@ -58,11 +58,11 @@ export const Assistenti = defineStore('Assistenti', {
     },
     async Aggiungi(Assistente: any) {
       //delete Assistente.value.Licenziamento
-      delete Assistente.value.Id
-      Assistente.value.Assunzione = Data_aaaammgg_ggmmaaaa(Assistente.value.Assunzione)
-      Assistente.value.Licenziamento = ''
+      delete Assistente.Id
+      Assistente.Assunzione = Data_aaaammgg_ggmmaaaa(Assistente.Assunzione)
+      Assistente.Licenziamento = ''
       try {
-        await push(TabellaRef, Assistente.value).then((response: { key: any }) => {
+        await push(TabellaRef, Assistente).then((response: { key: any }) => {
           const snapshot = get(child(TabellaRef, response.key))
           const Id = response.key
           snapshot.then((res: any) => {

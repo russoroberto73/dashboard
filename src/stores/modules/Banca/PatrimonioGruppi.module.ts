@@ -4,7 +4,7 @@ import { db } from '../../Conn'
 const TabellaRef = ref(db, 'patrimoniogruppi')
 
 type TypeElemento = {
-  Id: string
+  Id?: string
   Nome: string
   IdBanca: string
   Posizione: string
@@ -19,6 +19,9 @@ export const PatrimonioGruppi = defineStore('PatrimonioGruppi', {
   getters: {
     getElenco: (state) => {
       return state.Collezione
+    },
+    getNomeTabella: () => {
+      return 'PatrimonioGruppi'
     },
     getProssimoElemento: () => {
       return {
@@ -49,7 +52,7 @@ export const PatrimonioGruppi = defineStore('PatrimonioGruppi', {
           }
           return 0
         })
-        console.log(this.Collezione)
+        //console.log(this.Collezione)
       } catch (e) {
         console.log(e)
       }

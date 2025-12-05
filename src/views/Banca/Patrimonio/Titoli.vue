@@ -8,7 +8,7 @@
         </span>
       <div v-for="(item, index) in ElencoBanche" :key="index" class="mb-5">
         <h2 class="text-lg font-bold">{{ item.Nome }}</h2>
-        <div v-for="(gruppo, index) in Gruppi(item.Id)" :key="index" class="ml-5">
+        <div v-for="(gruppo, index) in Gruppi(item.Id ?? '')" :key="index" class="ml-5">
           <h3 class="text-md font-semibold">{{ gruppo.Nome }}</h3>
           <ul>
             <li v-for="(titolo, index) in Titoli(gruppo.Id)" :key="index" class="ml-5 flex justify-between">
@@ -43,7 +43,7 @@ const Items = computed(() => {
       Nome: {
         Type: 'string',
         Value: item.Nome,
-        Class: 'text-left ml-5',
+        Class: 'text-left ml-5 w-full',
         Valido: 'p'
         },
       IdGruppo: {
@@ -55,7 +55,17 @@ const Items = computed(() => {
       Posizione: {
         Type: 'text',
         Value: item.Posizione,
-        Class: 'text-left'
+        Class: 'text-center'
+      },
+      ControvaloreIniziale: {
+        Type: 'number',
+        Value: item.ControvaloreIniziale,
+        Class: 'text-right w-[120px]'
+      },
+      Data: {
+        Type: 'date',
+        Value: item.Data,
+        Class: 'text-center w-[120px]'
       }
     }
   })
@@ -97,7 +107,7 @@ const Gruppi = computed(() => {
     }
 })
 const Titoli = computed(() => {
-  return (IdGruppo: string) => {
+  return (IdGruppo: string | undefined) => {
     const ElencoTitoli = Pinia.PatrimonioTitoli().getElenco.filter((item) => item.IdGruppo === IdGruppo)
     return ElencoTitoli.sort((a, b) => {
       if (parseInt(a.Posizione) < parseInt(b.Posizione)) {

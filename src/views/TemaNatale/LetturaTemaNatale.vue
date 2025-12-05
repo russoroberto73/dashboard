@@ -582,7 +582,20 @@ const FaseAggiungi = () => {
   LuogoNascita.value = ''
 }
 
-const CaricaDaDb = (Id: string) => {
+  const AggiungiPersona = () => {
+    console.log(Nome.value)
+    Pinia.TemaNataleUtenti().Aggiungi({
+      Nome: Nome.value,
+      Sesso: Sesso.value,
+      Nikname: Nikname.value,
+      Password: Password.value,
+      DataNascita: DataNascita.value,
+      OraNascita: OraNascita.value,
+      LuogoNascita: LuogoNascita.value,
+      IdSegni: IdSegno.value
+    })
+  } 
+  const CaricaDaDb = (Id: string) => {
   const dati = Pinia.TemaNataleUtenti().getElenco.find((item) => item.Id === Id)
   if (dati) {
     IdUtente.value = dati.Id!

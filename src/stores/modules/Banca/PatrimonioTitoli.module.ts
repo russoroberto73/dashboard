@@ -6,8 +6,8 @@ const TabellaRef = ref(db, 'patrimoniotitoli')
 type TypeElemento = {
   Id?: string
   Nome: string
-  Controvalore: string
-  Percentuale: string
+  ControvaloreIniziale: string
+  Data: string
   IdGruppo: string
   Posizione: string
 }
@@ -28,8 +28,8 @@ export const PatrimonioTitoli = defineStore('PatrimonioTitoli', {
         Nome: '',
         IdGruppo: '',
         Posizione: '',
-        Controvalore: '',
-        Percentuale: ''
+        ControvaloreIniziale: '',
+        Data: ''
       }
     }
   },
@@ -70,8 +70,8 @@ export const PatrimonioTitoli = defineStore('PatrimonioTitoli', {
               Nome: res.val().Nome,
               IdGruppo: res.val().IdGruppo,
               Posizione: res.val().Posizione,
-              Controvalore: res.val().Controvalore,
-              Percentuale: res.val().Percentuale
+              ControvaloreIniziale: res.val().ControvaloreIniziale,
+              Data: res.val().Data
             }
             this.Collezione.push(Payload)
           })
@@ -91,8 +91,8 @@ export const PatrimonioTitoli = defineStore('PatrimonioTitoli', {
             this.Collezione[index].Nome = res.val().Nome
             this.Collezione[index].IdGruppo = res.val().IdGruppo
             this.Collezione[index].Posizione = res.val().Posizione
-            this.Collezione[index].Controvalore = res.val().Controvalore
-            this.Collezione[index].Percentuale = res.val().Percentuale
+            this.Collezione[index].ControvaloreIniziale = res.val().ControvaloreIniziale
+            this.Collezione[index].Data = res.val().Data
           })
         })
       } catch (e) {

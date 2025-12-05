@@ -29,12 +29,12 @@ const Items = computed(() => {
                 Type: 'select',
                 Array: DatiCombo(),
                 Value: item.IdBanca,
-                Class: 'text-left'
+                Class: 'text-left w-[60px]',
             },
             Posizione: {
                 Type: 'text',
                 Value: item.Posizione,
-                Class: 'text-left'
+                Class: 'text-center'
             }
         }
     })
@@ -58,6 +58,10 @@ const DatiCombo = () => {
     })
 }
 </script>
-<style lang="">
-
+<style lang="scss">
+#PatrimonioGruppi {
+th {
+padding: 0px !important;
+}
+}
 </style>

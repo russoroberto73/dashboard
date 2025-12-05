@@ -189,15 +189,20 @@ const router = createRouter({
       component: () => import('@/views/TemaNatale/LetturaTemaNatale.vue')
     },     
     {
-      path: '/temanatale/pianeticasesegn',
+      path: '/temanatale/pianeticasesegni',
       name: 'TemaNatalePianetiCaseSegni',
       component: () => import('@/views/TemaNatale/PianetiCaseSegni.vue')
-    },     /*
+    },         
     {
-      path: '/word',
-      name: 'Word',
-      component: () => import('@/views/Word.vue')
-    },*/     
+      path: '/situazionemamma',
+      name: 'SituazioneMamma',
+      component: () => import('@/views/DeclinoMamma.vue')
+    },     
+    {
+      path: '/download',
+      name: 'Download',
+      component: () => import('@/views/Download.vue')
+    },  
     {
       path: '/copydb',
       name: 'CopyDb',

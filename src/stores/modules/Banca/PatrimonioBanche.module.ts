@@ -4,7 +4,7 @@ import { db } from '../../Conn'
 const TabellaRef = ref(db, 'patrimoniobanche')
 
 type TypeElemento = {
-  Id: string
+  Id?: string
   Nome: string
   Posizione: string
 }
@@ -18,6 +18,9 @@ export const PatrimonioBanche = defineStore('PatrimonioBanche', {
   getters: {
     getElenco: (state) => {
       return state.Collezione
+    },
+    getNomeTabella: () => {
+      return 'PatrimonioBanche'
     },
     getProssimoElemento: () => {
       return {

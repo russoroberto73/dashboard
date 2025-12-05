@@ -34,6 +34,7 @@ import { TemaNataleGovernatoriSegni } from './modules/TemaNatale/Governatore.mod
 import { TemaNataleOppostoSegni } from './modules/TemaNatale/Oppostosegni.module'
 import { TemaNatalePianetiCaseSegni } from './modules/TemaNatale/PianetiCaseSegni.module'
 import { PatrimonioDate } from './modules/Banca/PatrimonioDate.module';
+import { DeclinoMamma } from './modules/DeclinoMamma.module';
 
 export const Pinia = {
     Login,
@@ -71,5 +72,6 @@ export const Pinia = {
     TemaNataleStagioni,
     TemaNataleNatura,
     TemaNatalePianetiCaseSegni,
+    DeclinoMamma,
     UltimoBackup
 }

@@ -28,13 +28,17 @@ const Items = computed(() => {
             Posizione: {
                 Type: 'text',
                 Value: item.Posizione,
-                Class: 'text-left'
+                Class: 'text-center w-[60px]',
             },
         }
     })
 })
 
 </script>
-<style lang="">
-
+<style lang="scss">
+#PatrimonioBanche {
+    th {
+        padding: 0px !important;
+    }
+}
 </style>
