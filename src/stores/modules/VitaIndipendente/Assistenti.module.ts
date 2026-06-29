@@ -11,6 +11,7 @@ type TypeElemento = {
   Assunzione: string
   Livello: string
   Licenziamento?: string
+  Colore?: string
 }
 
 type TypeCollezione = Array<TypeElemento>
@@ -36,7 +37,8 @@ export const Assistenti = defineStore('Assistenti', {
         Cognome: '',
         Assunzione: DataOggiInglese(),
         Livello: '',
-        Licenziamento: '2024-09-09'
+        Licenziamento: '2024-09-09',
+        Colore: ''
       }
     }
   },
@@ -75,15 +77,15 @@ export const Assistenti = defineStore('Assistenti', {
       }
     },
     async Aggiorna(Assistente: any) {
-      console.log('Aggiorna')
-      const Id = Assistente.value.Id
-      delete Assistente.value.Id
-      Assistente.value.Assunzione = Data_aaaammgg_ggmmaaaa(Assistente.value.Assunzione)
-      if (Assistente.value.Licenziamento != 'vuoto' || Assistente.value.Licenziamento != '') {
-        Assistente.value.Licenziamento = Data_aaaammgg_ggmmaaaa(Assistente.value.Licenziamento)
+      //console.log('Aggiorna', Assistente)
+      const Id = Assistente.Id
+      delete Assistente.Id
+      Assistente.Assunzione = Data_aaaammgg_ggmmaaaa(Assistente.Assunzione)
+      if (Assistente.Licenziamento != 'vuoto' || Assistente.Licenziamento != '') {
+        Assistente.Licenziamento = Data_aaaammgg_ggmmaaaa(Assistente.Licenziamento)
       }
       try {
-        await update(child(TabellaRef, Id), Assistente.value).then(() => {
+        await update(child(TabellaRef, Id), Assistente).then(() => {
           get(child(TabellaRef, Id)).then((res) => {
             const index = this.Collezione.findIndex((item) => item.Id === res.key)
             this.Collezione[index].Nome = res.val().Nome
@@ -91,6 +93,7 @@ export const Assistenti = defineStore('Assistenti', {
             this.Collezione[index].Assunzione = res.val().Assunzione 
             this.Collezione[index].Livello = res.val().Livello 
             this.Collezione[index].Licenziamento = res.val().Licenziamento
+            this.Collezione[index].Colore = res.val().Colore
           })
         })
       } catch (e) {

@@ -200,6 +200,12 @@ export const formatEuro = (amount: any) => {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
   }).format(amount)
-  numreturn = numreturn === 'NaN' ? '': numreturn
+  if (amount > 1000 && amount < 10000) { 
+    numreturn = numreturn.toString().substring(0,1) + "." + numreturn.toString().substring(1,numreturn.toString().length)    
+  }
+  if (numreturn === 'NaN') {
+    numreturn = ''
+  }
   return numreturn
 }
+

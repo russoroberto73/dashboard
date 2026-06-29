@@ -69,7 +69,7 @@
                                 :class="Use().ItemsStore[0][Object.keys(Use().ItemsStore[0])[n]].Class"
                                 style="margin: 10px;" />
                             <select v-else-if="items[0][Object.keys(Use().ItemsStore[0])[n]].Type === 'select'"
-                                :v-model="Use().ObjStore[Object.keys(Use().ItemsStore[0])[n]]"
+                                v-model="Use().ObjStore[Object.keys(Use().ItemsStore[0])[n]]"
                                 :class="Use().ItemsStore[0][Object.keys(Use().ItemsStore[0])[n]].Class">
                                 <option
                                     v-for="(item, index) in Use().ItemsStore[0][Object.keys(Use().ItemsStore[0])[n]].Array"

@@ -6,7 +6,14 @@
             </span>
         </span>
         <span v-else-if="item[Object.keys(item)[n]].Type === 'number'">
+            <span v-if="item[Object.keys(item)[n]].Value === '1'">                
+            </span>
+            <span v-else-if="item[Object.keys(item)[n]].Intero">
+                {{ item[Object.keys(item)[n]].Value }}
+            </span>
+            <span v-else>
             {{ formatEuro(item[Object.keys(item)[n]].Value) }}
+            </span>
         </span>
         <span v-else-if="item[Object.keys(item)[n]].Type === 'select'">
             {{ IdComboNome(item[Object.keys(item)[n]]) }}

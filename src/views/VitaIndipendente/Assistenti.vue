@@ -55,6 +55,13 @@ const Items = computed(() => {
                 Value: item.Licenziamento === 'vuoto' || item.Licenziamento === '' ? DataOggiInglese() : Data_ggmmaaaa_aaaammgg(item.Licenziamento!),
                 Class: "text-center",
                 Visibile: item.Licenziamento === 'vuoto' || item.Licenziamento === '' ? 'hidden' : 'visible'
+            },
+            Colore:
+            {
+                Type: "color",
+                Value: item.Colore,
+                Class: "text-center",
+                Valido: 'p'
             }
         }
     })

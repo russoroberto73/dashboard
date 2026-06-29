@@ -2,12 +2,11 @@
 
 <div class="relative top-[120px] left-[200px]">
     <h1>Tabellone</h1>        
+    <Rtable :items="Items" :pinia="Pinia.Assistenti()" :piniaverifica="Pinia.Buste()" />
     <table
           style="
             background-color: #fff;
-            width: 98%;
             border: 3px red solid;
-            position: fixed;
             left: 0px;
           "
         >
@@ -32,12 +31,12 @@
             ></td>
             <td>
               <template v-if="AbilitaElimina">
-                <b-button @click="EliminaQtyData(DataModificaElimina)">
+                <button @click="EliminaQtyData(DataModificaElimina)">
                   <i class="fa fa-check p-1"></i>
-                </b-button>
-                <b-button>
+                </button>
+                <button>
                   <i class="fa fa-undo p-1" @click="AbilitaElimina = false"></i>
-                </b-button>
+                </button>
               </template>
               <template v-else>
                 <span
@@ -46,20 +45,20 @@
                 >
                   {{ DataModificaElimina }}
                 </span>
-                <b-button :disabled="DataModificaElimina === 0">
+                <button :disabled="DataModificaElimina === 0">
                   <i class="fa fa-pencil"></i>
-                </b-button>
-                <b-button
+                </button>
+                <button
                   @click="AbilitaElimina = true"
                   :disabled="DataModificaElimina === 0"
                 >
                   <i class="fa fa-trash"></i>
-                </b-button>
-                <b-button
+                </button>
+                <button
                   v-if="DataModificaElimina != 0"
                   @click="DataModificaElimina = 0"
                   style="background-color: var(--Bottoni)"
-                  >Deselezione</b-button
+                  >Deselezione</button
                 >
               </template>
             </td>
@@ -98,9 +97,9 @@
           <tr>
             <td style="width: 150px">
               <input type="date" v-if="NuovaData" v-model="ValueData" />
-              <b-button v-else class="btn p-3" @click="NuovaData = true">
+              <button v-else class="btn p-3" @click="NuovaData = true">
                 <i class="fa fa-plus-circle p-2" aria-hidden="true"></i>
-              </b-button>
+              </button>
             </td>
             <td v-for="(muscolo, index) in Muscoli" :key="index">
               <div v-if="NuovaData">
@@ -128,6 +127,7 @@
 import { Pinia } from '@/stores'
 import { ref, computed } from 'vue'
 import { Data_aaaammgg_ggmmaaaa } from '@/assets/helpers/MyMixin'
+import Rtable from '@/components/ComponenteTabella/CostruisciTabella.vue'
 
 const NuovaData = ref(false)
 const ValueData = ref('2000-12-13')
@@ -169,12 +169,72 @@ type TypeQtyDate = {
 
 type ArrayQtyDate = Array<TypeQtyDate>
 
+
+  const Items = computed(() => {
+    return ElencoQtyDate.map((item) => {
+      return {
+        Id: {
+          Type: "string",
+          Value: item.Id,
+          Class: "text-left",
+          VerificaEliminazione: true
+        },
+        Parte: {
+          Type: "string",
+          Value: item.Parte,
+          Class: "text-left ml-5",
+          Valido: 'p'
+        },
+        Distretto: {
+          Type: "string",
+          Value: item.Qty,
+          Class: "text-left ml-5",
+          Valido: 'p'
+        },
+        Muscolo: {
+          Type: "string",
+          Value: item.IdMuscolo,
+          Class: "text-left ml-5",
+          Valido: 'p'
+        },
+        Data: {
+          Type: "date",
+          Value: item.Data,
+          Class: "text-center",
+          Valido: 'p'
+        },
+        Qty: {
+          Type: "number",
+          Value: item.Qty,
+          Class: "text-center",
+          Valido: 'p'
+        }
+      }
+    })
+  })
 const EliminaQtyData=(p: any) => {
     console.log('o0p')    
 }
 
 const AggiornaQtyData =(Id: any, Parte: any, data: any, event:any) => {
-  console.log('p')  
+  //console.log('p')  
+  //console.log(Id, Parte, data, event);
+  const Payload = {
+    IdMuscolo: Id,
+    Parte: Parte,
+    Data: data,
+    Qty: event.target.value
+  }
+  console.log(Payload)
+  const IdQtyDate = ElencoQtyDate.findIndex(
+    (item) =>
+      item.Data === data && item.IdMuscolo === Id && item.Parte === Parte
+  )
+  if (IdQtyDate != -1) {
+    Pinia.BotulinoQtyDate().Aggiorna({Id: ElencoQtyDate[IdQtyDate].Id, ...Payload})
+  } else {
+    Pinia.BotulinoQtyDate().Aggiungi(Payload)  
+  }
 }
 
 const Distretti = computed(() => {
@@ -191,7 +251,7 @@ const Distretti = computed(() => {
             tmp.push({Sigla: item.Sigla, Descrizione: item.Descrizione, col})
         }
     })
-    tmp.push({Sigla: 'AIdx', Descrizione: "Arto inferiore sinistro", col})
+    tmp.push({Sigla: 'AIdx', Descrizione: "Arto inferiore destro", col})
     return tmp
 })
 const Muscoli = computed(() => {
@@ -298,10 +358,12 @@ const DateDistinte = computed(() => {
       let tmp = [""]
       /* eslint-disable */
       date.forEach((item: any) => {
-        console.log(item)
+        //console.log(item)
         tmp.push(item)
       })
-      tmp.splice(0, 1)
+  tmp.splice(0, 1)
+      console.log(tmp);
+      
       return tmp
 })
 const TrovaQty = computed(() => {

@@ -64,7 +64,7 @@ export const BotulinoQtyDate = defineStore('BotulinoQtyDate', {
     },
     async Aggiungi(Frase: any) {
       delete Frase.Id
-      //console.log(Frase)
+      console.log(Frase)
       try {
         await push(TabellaRef, Frase)
           .then((response: { key: any }) => {
@@ -91,7 +91,9 @@ export const BotulinoQtyDate = defineStore('BotulinoQtyDate', {
     async Aggiorna(Frase: any) {
       const Id = Frase.Id
       delete Frase.Id
-      Frase.Data = Data_aaaammgg_ggmmaaaa(Frase.Data)
+      //Frase.Data = Data_aaaammgg_ggmmaaaa(Frase.Data)
+      console.log(Frase)      
+      
       try {
         await update(child(TabellaRef, Id), Frase)
           .then(() => {
@@ -101,6 +103,7 @@ export const BotulinoQtyDate = defineStore('BotulinoQtyDate', {
               this.Collezione[index].IdMuscolo = res.val().IdMuscolo
               this.Collezione[index].Qty = res.val().Qty
               this.Collezione[index].Parte = res.val().Parte
+              
             })            
           })
           .catch((e) => {

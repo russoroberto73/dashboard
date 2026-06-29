@@ -99,7 +99,7 @@ const DatiCombo = () => {
             return 1
         }
         return 0
-    })
+    }).filter((item) => item.Visibile===true)
     return tmp.map((item) => {
         return {
             text: item.Nome,

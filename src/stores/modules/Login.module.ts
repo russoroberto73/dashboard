@@ -16,7 +16,7 @@ export const Login = defineStore('Login', {
       const provide = new GoogleAuthProvider()
       auth.onAuthStateChanged((user) => {
         if (user) {
-          console.log('Utente loggato')
+          //console.log('Utente loggato')
         } else {
           signInWithPopup(auth, provide)
             .then((response) => {

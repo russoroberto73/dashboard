@@ -1,7 +1,14 @@
-import { BotulinoQtyDate } from './modules/Botulino/QtyDate.module';
+import { BotulinoQtyDate } from './modules/Botulino/QtyDate.module'
 import { Login } from "./modules/Login.module"
 import { Assistenti } from "./modules/VitaIndipendente/Assistenti.module"
+import { AssistentiNero } from './modules/VitaIndipendente/AssistentiNero.module'
 import { Buste } from "./modules/VitaIndipendente/Buste.module"
+import { CalendarioTurni } from './modules/VitaIndipendente/CalendarioTurni.module'
+import { DistribuzioneTurniAssistenti } from './modules/VitaIndipendente/DistribuzioneTurniAssistenti.module'
+import { AssistentiSabati } from './modules/VitaIndipendente/Sabati.module'
+import { AssistentiFerie } from './modules/VitaIndipendente/AssistentiFerie.module'
+import { AssistentiGiorniFestivi } from './modules/VitaIndipendente/GiorniFestivi'
+import { BloccaMeseCalendario } from './modules/VitaIndipendente/BloccaMeseCalendario.module'
 import { Compleanni } from "./modules/Compleanni.module"
 import { Scadenze } from "./modules/Condomini/Scadenze.module"
 import { CalendarioFilosofico } from "./modules/CalendarioFilosofico.module"
@@ -12,6 +19,7 @@ import { Rimborsi730 } from "./modules/Banca/Rimborsi730.module"
 import { PatrimonioBanche } from "./modules/Banca/PatrimonioBanche.module"
 import { PatrimonioGruppi } from "./modules/Banca/PatrimonioGruppi.module"
 import { PatrimonioTitoli } from "./modules/Banca/PatrimonioTitoli.module"
+import { SituazioneFideuram } from "./modules/Banca/SituazioneFideuram.module"
 import { HandiphoneCategorie } from "./modules/Handiphone/Categorie.module"
 import { HandiphoneParoleFrasi } from "./modules/Handiphone/ParoleFrasi.module"
 import { UltimoBackup } from "./modules/UltimoBackup.module"
@@ -35,11 +43,26 @@ import { TemaNataleOppostoSegni } from './modules/TemaNatale/Oppostosegni.module
 import { TemaNatalePianetiCaseSegni } from './modules/TemaNatale/PianetiCaseSegni.module'
 import { PatrimonioDate } from './modules/Banca/PatrimonioDate.module';
 import { DeclinoMamma } from './modules/DeclinoMamma.module';
+import { PagaAssistentiNero } from './modules/VitaIndipendente/PagaAssistentiNero.module'
+import { AssistentiOrariNero } from './modules/VitaIndipendente/AssistentiOrariNero.odule'
+import { Libri } from './modules/Libri/Libri.module'
+import { ProvvigioniLibroSilvia } from './modules/Libri/ProvvigioniLibroSilvia.module'
+import { Recensioni } from './modules/Libri/Recensioni.module'
+import { Libro } from './modules/Libri/Libro.module'
 
 export const Pinia = {
     Login,
     Assistenti,
+    AssistentiNero,
+    PagaAssistentiNero,
     Buste,
+    CalendarioTurni,
+    DistribuzioneTurniAssistenti,
+    AssistentiSabati,
+    AssistentiFerie,
+    AssistentiGiorniFestivi,
+    AssistentiOrariNero,
+    BloccaMeseCalendario,
     Compleanni,
     Scadenze,
     CalendarioFilosofico,
@@ -51,6 +74,7 @@ export const Pinia = {
     PatrimonioGruppi,
     PatrimonioTitoli,
     PatrimonioDate,
+    SituazioneFideuram,
     HandiphoneCategorie,
     HandiphoneParoleFrasi,
     GruppiPassword,
@@ -72,6 +96,10 @@ export const Pinia = {
     TemaNataleStagioni,
     TemaNataleNatura,
     TemaNatalePianetiCaseSegni,
+    Libro,
+    Libri,
+    ProvvigioniLibroSilvia,
+    Recensioni,
     DeclinoMamma,
     UltimoBackup
 }

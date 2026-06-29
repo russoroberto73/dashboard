@@ -4,7 +4,7 @@
     <div class="m-5">
       <select v-model="IdAssistente" class="p-3 m-3 rounded-[45px]">
         <template v-for="(assistente, index) in ElencoAssistenti" :key="index">
-          <option :value="assistente.Id" v-if="assistente?.Licenziamento === 'vuoto'">
+          <option :value="assistente.Id" v-if="assistente?.Licenziamento === 'vuoto' || assistente?.Licenziamento === ''">
             {{ assistente.Nome + ' ' + assistente.Cognome }}
           </option>
         </template>

@@ -86,13 +86,13 @@ export function mymixin(props: any) {
                 Obj.value[item] = ''
               }
             })
-            //console.log(Obj.value)
+            //console.log(Use().ObjStore)
             props.pinia.Aggiorna(Use().ObjStore).then(() => {
               //console.log(ObjTrovato.Id.Value, props.items[0])
               AzzeraAzione()
             })
           } else {
-            console.log('agg', Use().ObjStore)
+            //console.log('agg', Use().ObjStore)
             props.pinia.Aggiungi(Use().ObjStore).then(() => AzzeraAzione())
           }
         }

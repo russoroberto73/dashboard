@@ -29,23 +29,26 @@
                 <td class="bg-white border border-BordoTabella font-extrabold px-2">Mesi</td>
             </tr>
             <template v-for="(item, index) in Tabellone_Anno['TabellaAnni']">
-                <tr v-if="index < 13">
+                <tr v-if="index as any < 13">
                     <td v-if="index === 12" class="bg-white font-bold" rowspan="5">
                         Totale
                     </td>
-                    <td v-for="(importo, key, index1) in item" :key="index1" v-if="index < 13"
-                        :class="CellaClass(key.toString(), index, index === 12 ? index1 + 1 : index1)"
+                    <td v-for="(importo, key, index1) in item" :key="index1" v-if="index as any < 13"
+                        :class="CellaClass(key.toString(), (index as number), index === 12 ? ((index1 as number) + 1) : (index1 as number))"
                         class="border border-BordoTabella">
                         <span v-if="key.toString() === 'Mese'" class="font-bold">
                             {{ importo }}
                         </span>
                         <span v-else
-                            :class="index < 12 ? 'cursor-pointer' : index === 12 ? 'font-medium cursor-pointer' : ''"
-                            @click="DettaglioMovimenti(index, key.toString())">
+                            :class="index as any < 12 ? 'cursor-pointer' : index as any === 12 ? 'font-medium cursor-pointer' : ''"
+                            @click="DettaglioMovimenti(index as any, key.toString())">                            
+                             
+                            <div :class="Anno === 2026 && key.toString() === 'Rimborso VI' && !(index as any < 5 || index as any === 12) ? 'bg-Investimenti w-[90%] m-auto ' : 'text-black-900'">
                             {{ formatEuro(Math.abs(importo)) }}
+                            </div>
                         </span>
                     </td>
-                    <template v-if="index >= 0" :class="index===12 ? 'font-bold' : ''">
+                    <template v-if="index as any >= 0" :class="index===12 ? 'font-bold' : ''">
                         <td :rowspan="index === 12 ? 2 : 1" class="bg-Accrediti border border-l-[5px] border-BordoTabella"
                             :class="index === 12 ? 'font-bold' : ''">
                             {{ formatEuro(Math.abs(TotaliMesi[index]['Entrate'])) }}</td>
@@ -56,9 +59,9 @@
                             :class="parseFloat(TotaliMesi[index]['Investimenti']) > 0 ? 'bg-Accrediti' + (index == 12 ? ' font-bold' : '') : 'bg-Investimenti' + (index == 12 ? ' font-bold' : '')">
                             {{ formatEuro(Math.abs(TotaliMesi[index]['Investimenti'])) }}</td>
                         <td :rowspan="index === 12 ? 2 : 1" class="bg-white border border-BordoTabella font-bold"
-                            v-if="index < 12">{{ MeseDaNumeroANome((index + 1).toString()) }}</td>
+                            v-if="index as any < 12">{{ MeseDaNumeroANome((index as any + 1).toString()) }}</td>
                         <td v-else :rowspan="index === 12 ? 5 : 1" class="bg-white border border-BordoTabella font-bold">
-                            Totole</td>
+                            Totale</td>
                     </template>
                 </tr>
             </template>
@@ -590,15 +593,16 @@ const SuperCategorie = computed(() => {
     return tmp
 })
 
-const CellaClass = (NomeCategoria: string, index: number, index1: number) => {
+const CellaClass = (NomeCategoria: string, index: number, index1: string | number) => {
     let Class = ''
     let segno = 1
+    const index1Num = typeof index1 === 'string' ? parseInt(index1) : index1
     if (NomeCategoria === "Mese") {
         return 'bg-white'
     } else {
         const checkinvestimenti = ElencoCategorie.find((item) => item.Nome === NomeCategoria)?.IdSuperCategoria === '-NgUdXdH-WwkXPhYa_O8'
         let bordo = ""
-        if (SeparatoreTabella.value.includes(index1)) {
+        if (SeparatoreTabella.value.includes(index1Num)) {
             bordo = "border-l-[5px] border-BordoTabella"
         }
         //console.log(index)        
@@ -723,7 +727,7 @@ const DatiCombo = () => {
             return 1
         }
         return 0
-    })
+    }).filter((item) => item.Visibile===true)
     return tmp.map((item) => {
         return {
             text: item.Nome,

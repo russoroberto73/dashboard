@@ -14,7 +14,7 @@
         </span>
         </span>
         <span v-else>
-            <span v-if="item[Object.keys(item)[n]].Type==='number'">
+            <span v-if="item[Object.keys(item)[n]].Type==='number'">                
                 {{ formatEuro(item[Object.keys(item)[n]].Value) }}
             </span>
             <span v-else>

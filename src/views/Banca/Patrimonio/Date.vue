@@ -226,7 +226,7 @@ const AggiungiData = () => {
 const Dataggmmaaaa = (iddata: string) => {
   return Data_aaaammgg_ggmmaaaa(ElencoDate.find((item) => item.Id === iddata)?.Data || '')
 }
-
+/*
   const reformat = computed(() => { 
     return (element: any) => {
       console.log(element);
@@ -244,7 +244,7 @@ const Dataggmmaaaa = (iddata: string) => {
       intpart = intpart.substring (intpart.length () - 3);
    }
    res = intpart + res;
-      element = res;*/
+      element = res;*
    return element +'0'
        }
    }) 
@@ -260,9 +260,9 @@ const Dataggmmaaaa = (iddata: string) => {
       intpart = intpart.substring (intpart.length () - 3);
    }
    res = intpart + res;
-   element.value = res;*/
+   element.value = res;*
 }
-
+*/
 const TotaleBanca = computed(() => {
   return Object.values(objTitoli.value).reduce((acc, titolo) => {
     return acc + titolo.Controvalore
