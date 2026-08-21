@@ -10,6 +10,11 @@ type TypeElemento = {
   IdAssistente: string
   NomeAssistente: string
   Orario: string
+  Nero?: boolean,
+  Ferie?: boolean,
+  PagaOraria?: number,
+  NumeroOre?: number,
+  Festivo?: boolean
 }
 
 type TypeCollezione = Array<TypeElemento>
@@ -34,14 +39,19 @@ export const CalendarioTurni = defineStore('CalendarioTurni ', {
         Data: '',
         NomeAssistente: '',
         Orario: '',
-        Ordine: '0'
+        Ordine: '0',
+        IdAssistente: '',
+        Nero: false,
+        Ferie: false,
+        PagaOraria: 0,
+        NumeroOre: 0,
+        Festivo: false
       }
     }
   },
   actions: {
     async Elenco() {
-      console.log('AssistentiCalendarioTurni');
-      
+      //console.log('AssistentiCalendarioTurni');      
       const snapshot = get(TabellaRef)
       try {
         const res: DataSnapshot = await snapshot
@@ -86,7 +96,12 @@ export const CalendarioTurni = defineStore('CalendarioTurni ', {
             this.Collezione[index].IdAssistente = res.val().IdAssistente
             this.Collezione[index].NomeAssistente = res.val().NomeAssistente
             this.Collezione[index].Orario = res.val().Orario
-            //this.Collezione[index].Ordine = res.val().Ordine
+            this.Collezione[index].Nero = res.val().Nero
+            this.Collezione[index].Ferie = res.val().Ferie
+            this.Collezione[index].Festivo = res.val().Festivo
+            this.Collezione[index].Ordine = res.val().Ordine
+            this.Collezione[index].PagaOraria = res.val().PagaOraria
+            this.Collezione[index].NumeroOre = res.val().NumeroOre
           })
         })
       } catch (e) {

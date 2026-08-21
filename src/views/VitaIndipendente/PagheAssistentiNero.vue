@@ -8,6 +8,9 @@
         </option>
       </template>
     </select>
+    <div>
+      <input v-model="mese" />
+    </div>
     <rtable :items="Items" :pinia="Pinia.PagaAssistentiNero()" />
     <table class="text-center m-auto w-[470px] border border-black mt-5">
       <tr>
@@ -93,7 +96,8 @@ const ElencoAssistentiNero = Pinia.AssistentiNero().getElenco
 const ElencoPagaAssistentiNero = Pinia.PagaAssistentiNero().getElenco
 
 const IdAssistente = ref('-OnBmJgWDPUL2OJPp63r')
-const IdAssistenteCategoriaBanca = ref('')
+  const IdAssistenteCategoriaBanca = ref('')
+const mese = ref('')
 const Items = computed(() => {
   const tmp = ElencoPagaAssistentiNero.filter(
     (item) => item.IdAssistenteNero === IdAssistente.value
@@ -135,6 +139,11 @@ const Items = computed(() => {
         Class: 'text-center'
       }
     }
+  }).filter(item => {
+    if (mese.value === '') {
+      return true
+    }
+    return item.Data.Value.split('/')[1] === mese.value
   }).sort((a, b) => {
     if (a.Data.Value.split('/')[1] < b.Data.Value.split('/')[1]) {
       return -1
@@ -195,7 +204,7 @@ const CheckAssistente = (item: any) => {
       return null
     })
     .filter((item) => item !== null)
-  console.log(Movimenti[0]?.Addebiti);
+  //console.log(Movimenti[0]?.Addebiti);
 
   return Movimenti[0]?.Addebiti
 }

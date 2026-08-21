@@ -1,6 +1,11 @@
 <template>
-  <div class="calendar mt-4" id="Turni">
+  <div class="calendar" id="Turni" :class="route.params.id === 'stampa' ? 'mt-[-100px]': 'mt-4'">
     <h1 class="text-center text-[30px]">Turni assistenti</h1>
+    <template v-if="route.params.id !== 'stampa'">
+      <h2 class="text-center text-[25px]">Calendario</h2>
+    <template v-if="route.params.id === 'dettaglio'">
+      <h2 class="text-center text-[25px]">Gestione turni</h2>
+    </template>    
     <router-link
       :to="{ name: 'TurniDettaglio', params: { id: 'dettaglio' } }"
       v-if="route.params.id !== 'dettaglio'"
@@ -10,6 +15,7 @@
     <router-link :to="{ name: 'TurniCalendario' }" v-else>
       <button class="BTNAzione !w-[150px]">Calendario</button>
     </router-link>
+    </template>
     <div v-if="route.params.id === 'dettaglio'">
       <div class="text-center">
         <select class="m-2" v-model="NomeAssistente">
@@ -44,6 +50,7 @@
       <div v-if="state === 0">
         <h1 class="text-[25px] text-center">0 - Turni nel calendario</h1>
         <div class="bg-gray-300 my-4 p-2 rounded-lg w-[250px] m-auto text-center">
+          (As.value, FiltroAnnoMese.value, FiltroAssistente.value)
           <div class="text-center font-bold">Filtri</div>
           <div class="text-left flex justify-center grid grid-cols-2">
             <div>MeseAnno:</div>
@@ -72,8 +79,9 @@
         </div>
         <Rtable :items="Items" :pinia="Pinia.CalendarioTurni()" />
       </div>
-      <div v-else-if="state === 1">
+      <div v-else-if="state === 1" class="text-center">
         <h1 class="text-[25px] text-center">1 - Distribuzione nomi turni</h1>
+        (ItemsDistribuzioneNomiTurni.value, senza filtro)
         <Rtable
           :items="ItemsDistribuzioneNomiTurni"
           :pinia="Pinia.DistribuzioneTurniAssistenti()"
@@ -81,14 +89,31 @@
       </div>
       <div v-else-if="state === 2" class="text-center">
         <h1 class="text-[25px]">2 - Sabati non lavorati</h1>
+        (ItemsTurniSabati.value, senza filtro)
         <Rtable :items="ItemsTurniSabati" :pinia="Pinia.AssistentiSabati()" />
       </div>
       <div v-else-if="state === 3" class="text-center">
         <h1 class="text-[25px]">3 - Ferie assistenti</h1>
+        (ItemAssistentiFerie.value, FiltroAnnoMese.value)<br />
+        Anno-Mese:
+        <input v-model="FiltroAnnoMese" placeholder="Filtra per mese" class="m-2 p-1 rounded-lg" />
         <Rtable :items="ItemAssistentiFerie" :pinia="Pinia.AssistentiFerie()" />
       </div>
       <div v-else-if="state === 4" class="text-center">
         <h1 class="text-[25px]">4 - Giorni Festivi</h1>
+        (ItemGiorniFestivi.value, Filtromesefestivo)<br />
+        Anno-Mese:
+        <input
+          v-model="Filtromesefestivo"
+          placeholder="Filtra per mese"
+          class="m-2 p-1 rounded-lg"
+        /><br />
+        Assistenti:<select class="m-2" v-model="FiltroAssistente">
+                  <option value="">Nessuno</option>
+                  <option v-for="assistente in As" :value="assistente.Id">
+                    {{ assistente.Nome }}
+                  </option>
+                </select>
         <Rtable :items="ItemGiorniFestivi" :pinia="Pinia.AssistentiGiorniFestivi()" />
       </div>
       <div v-else-if="state === 5" class="text-center">
@@ -99,19 +124,75 @@
         <h1 class="text-[25px]">6 - Blocca mese</h1>
         <Rtable :items="ItemsBloccaMese" :pinia="Pinia.BloccaMeseCalendario()" />
       </div>
+      <div v-else-if="state === 7" class="text-center">
+        <h1 class="text-[25px]">7 - Id Assistenti</h1>
+        <table class="w-[500px] h-[200px] m-auto" style="border: 1px solid black !important">
+          <thead>
+            <tr>
+              <th class="!border !border-black border-5">IdAssistenti</th>
+              <th class="!border !border-black border-5">IdNero</th>
+              <th class="!border !border-black border-5">Nome</th>
+              <th class="!border !border-black border-5">Weekend</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="assistente in As" :key="assistente.Id" class="!h-[30px]">
+              <td class="!h-[20px] !w-[300px] !border !border-black border-2">
+                {{ Pinia.Assistenti().getElenco.find((a) => a.Id === assistente.Id)?.Id }}
+              </td>
+              <td class="!h-[20px] !border !border-black border-2">
+                {{ Pinia.AssistentiNero().getElenco.find((a) => a.Id === assistente.Id)?.Id }}
+              </td>
+              <td class="!h-[20px] !border !border-black border-2">{{ assistente.Nome }}</td>
+              <td class="!h-[20px] !border !border-black border-2">{{ assistente.Weekend }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     <div class="text-center">
       <h2>{{ nomeMese }} {{ anno }}</h2>
       <button @click="mesePrecedente">◀</button>
       <button @click="meseSuccessivo">▶</button>
     </div>
-    <div class="w-[1800px] m-auto">
+    <div class="w-[1800px] m-auto" v-if="route.params.id !== 'stampa'">
       <span v-if="TestMeseBloccato">
-        <button class="BTNAzione !w-[180px]" @click="CompilaTabelleFuoriBusta">Compila tabella fuori busta</button>
+        <button class="BTNAzione !w-[180px]" @click="CompilaTabelleFuoriBusta">
+          Compila tabella fuori busta
+        </button>
       </span>
       <span v-else-if="TestMese">
         <button class="BTNAzione !w-[180px]" @click="BloccaMese">Blocca mese</button>
       </span>
+    </div>
+    <div v-if="ArrayFuoriBusta.length" class="text-center">
+      <table class="m-auto border border-black w-[700px] bg-white">
+        <tr>
+          <th class="border border-black p-2">IdAssistenteNero</th>
+          <th class="border border-black p-2 !w-[300px]">Data</th>
+          <th class="border border-black p-2">Ore</th>
+          <th class="border border-black p-2">PagaOraria</th>
+          <th class="border border-black p-2">Azione</th>
+        </tr>
+        <tr v-for="(item, index) in ArrayFuoriBusta" :key="index">
+          <td class="border border-black" style="height: 50px">
+            {{ As.find((a) => a.Id === item.IdAssistenteNero)?.Nome }}
+          </td>
+          <td class="border border-black" style="height: 50px">{{ item.Data }}</td>
+          <td class="border border-black" style="height: 50px">{{ item.Ore }}</td>
+          <td class="border border-black" style="height: 50px">{{ item.PagaOraria }}</td>
+          <td class="text-center flex justify-center" style="height: 50px">
+            <div v-if="TestEsisteBustaPagaNero(item)" class="text-green-600 font-bold">
+              Già presente
+            </div>
+            <BTNSalva
+              class="BTNAzione BTNSalva"
+              @click="AggiungiBustePagaNero(item)"
+              v-else
+            ></BTNSalva>
+          </td>
+        </tr>
+      </table>
     </div>
     <table class="w-[1800px]">
       <thead>
@@ -142,7 +223,7 @@
                 </div>
                 <div>
                   <template v-for="Turni in TurniDate" :key="Turni.Data">
-                    <div v-if="ComponiData(giorno) === Turni.Data">
+                    <div v-if="ComponiData(giorno) === Turni.Data" :class="Turni.elementi.some(e => e.Ferie) ? 'bg-blue-900 p-2' : Turni.elementi.some(e => e.Festivo) ? 'bg-orange-400 p-2' : ''">                                          
                       <div
                         v-for="(element, idx) in Turni.elementi.sort((a, b) => a.Ordine - b.Ordine)"
                         :key="idx"
@@ -179,14 +260,17 @@
                           </div>
                           <div class="Assistente !text-[15px]">
                             {{ As.filter((p) => p.Id === element.IdAssistente)[0].Nome }}
-                            <span v-if="element.Ferie === true">
-                              {{
-                                TestFerieAssente(element.IdAssistente, giorno, element.Orario)
-                                  ? 'Assente'
-                                  : 'Ferie'
-                              }}
-                            </span>
+                            <span>{{ element.Nero ? '(N)' : '' }}</span>
+                            <span>{{ element.Ferie ? (element.Nero ? ' (A)' : '(F)') : '' }}</span>
                             <span v-if="false">({{ element.Ordine }})</span>
+                            <span v-if="false">
+                              <span v-if="element.PagaOraria !== undefined">
+                                {{ element.PagaOraria }}
+                              </span>
+                              <span v-if="element.NumeroOre !== undefined && element.NumeroOre > 0">
+                                ,{{ element.NumeroOre }}
+                              </span>
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -203,12 +287,11 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { Pinia } from '@/stores'
 import Rtable from '@/components/ComponenteTabella/CostruisciTabella.vue'
 import BTNSalva from '@/assets/IconeSvg/Salva.vue'
-import { Data_aaaammgg_ggmmaaaa } from '@/assets/helpers/MyMixin'
 
 const route = useRoute()
 const Elenco = Pinia.CalendarioTurni().getElenco
@@ -221,6 +304,9 @@ const ModiAssistente = ref('')
 const ModiId = ref('')
 const ModiGiorno = ref('')
 const ModiFerie = ref(false)
+
+const Filtromesefestivo = ref('')
+const ArrayFuoriBusta = ref([])
 const Items = computed(() => {
   return Elenco.map((item) => {
     //console.log('item', item.Data)
@@ -237,6 +323,12 @@ const Items = computed(() => {
           Type: 'string',
           Value: item.Id,
           Class: 'text-left'
+        },
+        vIdAssistente: {
+          Type: 'text',
+          Value: item.IdAssistente,
+          Class: 'text-center',
+          Readonly: true
         },
         Data: {
           Type: 'Data',
@@ -262,10 +354,41 @@ const Items = computed(() => {
           Value: item.Ordine,
           Class: 'text-center',
           Valido: 'p'
+        },
+        Nero: {
+          Type: 'boolean',
+          Value: item.Nero,
+          Class: 'text-center'
+        },
+        Ferie: {
+          Type: 'boolean',
+          Value: item.Ferie,
+          Class: 'text-center'
+        },
+        PagaOraria: {
+          Type: 'string',
+          Value: item.PagaOraria,
+          Class: 'text-center'
+        },
+        NumeroOre: {
+          Type: 'string',
+          Value: item.NumeroOre,
+          Class: 'text-center'
+        },
+        Festivo: {
+          Type: 'boolean',
+          Value: item.Festivo,
+          Class: 'text-center'
         }
       }
     }
-  }).filter((item) => item !== undefined)
+  })
+    .filter((item) => item !== undefined)
+    .sort((a, b) => {
+      if (a.IdAssistente.Value < b.IdAssistente.Value) return -1
+      if (a.IdAssistente.Value > b.IdAssistente.Value) return 1
+      return 0
+    })
 })
 const ItemsTurniSabati = computed(() => {
   return ElencoTurniSabati.map((item) => {
@@ -274,6 +397,12 @@ const ItemsTurniSabati = computed(() => {
         Type: 'string',
         Value: item.Id,
         Class: 'text-left'
+      },
+      vIdAssistente: {
+        Type: 'text',
+        Value: item.IdAssistente,
+        Class: 'text-center',
+        Readonly: true
       },
       IdAssistente: {
         Type: 'select',
@@ -301,67 +430,126 @@ const ItemsTurniSabati = computed(() => {
         Valido: 'p'
       }
     }
+  }).sort((a, b) => {
+    if (a.IdAssistente.Value < b.IdAssistente.Value) return -1
+    if (a.IdAssistente.Value > b.IdAssistente.Value) return 1
+    return 0
   })
 })
 const ItemGiorniFestivi = computed(() => {
-  return Pinia.AssistentiGiorniFestivi().getElenco.map((item) => {
-    return {
-      Id: {
-        Type: 'string',
-        Value: item.Id,
-        Class: 'text-left'
-      },
-      IdAssistente: {
-        Type: 'select',
-        Value: item.IdAssistente,
-        Class: 'text-center',
-        Array: DatiComboAssistenti(),
-        Valido: 'p'
-      },
-      Data: {
-        Type: 'date',
-        Value: item.Data,
-        Class: 'text-center',
-        Valido: 'p'
-      },
-      Orario: {
-        Type: 'string',
-        Value: item.Orario,
-        Class: 'text-center',
-        Valido: 'p'
-      },
-      Ordine: {
-        Type: 'string',
-        Value: item.Ordine,
-        Class: 'text-center',
-        Valido: 'p'
+  return Pinia.AssistentiGiorniFestivi()
+    .getElenco.map((item) => {
+      let Filtro = true
+      if (Filtromesefestivo.value !== '') {
+        Filtro = Filtro && Filtromesefestivo.value === item.Data?.substring(0, 7)
       }
-    }
-  })
+      if (FiltroAssistente.value !== '') {
+        Filtro = Filtro && FiltroAssistente.value === item.IdAssistente
+      }
+      if (Filtro) {
+        return {
+          Id: {
+            Type: 'string',
+            Value: item.Id,
+            Class: 'text-left'
+          },
+
+          vIdAssistente: {
+            Type: 'text',
+            Value: item.IdAssistente,
+            Class: 'text-center'
+          },
+
+          IdAssistente: {
+            Type: 'select',
+            Value: item.IdAssistente,
+            Class: 'text-center',
+            Array: DatiComboAssistenti(),
+            Valido: 'p'
+          },
+          Data: {
+            Type: 'date',
+            Value: item.Data,
+            Class: 'text-center',
+            Valido: 'p'
+          },
+          Orario: {
+            Type: 'string',
+            Value: item.Orario,
+            Class: 'text-center',
+            Valido: 'p'
+          },
+          Ordine: {
+            Type: 'string',
+            Value: item.Ordine,
+            Class: 'text-center',
+            Valido: 'p'
+          },
+          PagaOraria: {
+            Type: 'string',
+            Value: item.PagaOraria,
+            Class: 'text-center'
+          },
+          NumeroOre: {
+            Type: 'string',
+            Value: item.NumeroOre,
+            Class: 'text-center'
+          }
+        }
+      }
+    })
+    .filter((item) => item !== undefined)
+    .sort((a, b) => {
+      if (a.IdAssistente.Value < b.IdAssistente.Value) return -1
+      if (a.IdAssistente.Value > b.IdAssistente.Value) return 1
+      return 0
+    })
 })
 const ItemAssistentiFerie = computed(() => {
-  return Pinia.AssistentiFerie().getElenco.map((item) => {
-    return {
-      Id: {
-        Type: 'string',
-        Value: item.Id,
-        Class: 'text-left'
-      },
-      IdAssistente: {
-        Type: 'select',
-        Value: item.IdAssistente,
-        Class: 'text-center',
-        Array: DatiComboAssistenti(),
-        Valido: 'p'
-      },
-      Data: {
-        Type: 'date',
-        Value: item.Data,
-        Class: 'text-center',
-        Valido: 'p'
+  return Pinia.AssistentiFerie()
+    .getElenco.map((item) => {
+      let Filtro = true
+      if (FiltroAnnoMese.value !== '') {
+        Filtro = Filtro && FiltroAnnoMese.value === item.Data?.substring(0, 7)
       }
-    }
-  })
+      if (FiltroAssistente.value !== '') {
+        Filtro = Filtro && FiltroAssistente.value === item.IdAssistente
+      }
+      if (Filtro) {
+        return {
+          Id: {
+            Type: 'string',
+            Value: item.Id,
+            Class: 'text-left'
+          },
+          vIdAssistente: {
+            Type: 'text',
+            Value: item.IdAssistente,
+            Class: 'text-center',
+            Readonly: true
+          },
+          IdAssistente: {
+            Type: 'select',
+            Value: item.IdAssistente,
+            Class: 'text-center',
+            Array: DatiComboAssistenti(),
+            Valido: 'p'
+          },
+          Data: {
+            Type: 'date',
+            Value: item.Data,
+            Class: 'text-center',
+            Valido: 'p'
+          }
+        }
+      }
+    })
+    .filter((item) => item !== undefined)
+    .sort((a, b) => {
+      if (a.IdAssistente.Value < b.IdAssistente.Value) return -1
+      if (a.IdAssistente.Value > b.IdAssistente.Value) return 1
+      return 0
+    })
 })
 const ItemsDistribuzioneNomiTurni = computed(() => {
   return ElencoDistribuzioneNomiTurni.map((item) => {
@@ -370,6 +558,12 @@ const ItemsDistribuzioneNomiTurni = computed(() => {
         Type: 'string',
         Value: item.Id,
         Class: 'text-left'
+      },
+      vIdAssistente: {
+        Type: 'text',
+        Value: item.IdAssistente,
+        Class: 'text-center',
+        Readonly: true
       },
       IdAssistente: {
         Type: 'select',
@@ -398,6 +592,10 @@ const ItemsDistribuzioneNomiTurni = computed(() => {
         Valido: 'p'
       }
     }
+  }).sort((a, b) => {
+    if (a.IdAssistente.Value < b.IdAssistente.Value) return -1
+    if (a.IdAssistente.Value > b.IdAssistente.Value) return 1
+    return 0
   })
 })
 const ItemAssistentiOrariNero = computed(() => {
@@ -407,6 +605,12 @@ const ItemAssistentiOrariNero = computed(() => {
         Type: 'string',
         Value: item.Id,
         Class: 'text-left'
+      },
+      vIdAssistente: {
+        Type: 'text',
+        Value: item.IdAssistente,
+        Class: 'text-center',
+        Readonly: true
       },
       IdAssistente: {
         Type: 'select',
@@ -441,6 +645,77 @@ const ItemAssistentiOrariNero = computed(() => {
         Valido: 'p'
       }
     }
+  }).sort((a, b) => {
+    if (a.IdAssistente.Value < b.IdAssistente.Value) return -1
+    if (a.IdAssistente.Value > b.IdAssistente.Value) return 1
+    return 0
+  })
+})
+const ItemsBloccaMese = computed(() => {
+  return Pinia.BloccaMeseCalendario().getElenco.map((item) => {
+    return {
+      Id: {
+        Type: 'string',
+        Value: item.Id,
+        Class: 'text-left'
+      },
+      Anno: {
+        Type: 'string',
+        Value: item.Anno,
+        Class: 'text-center',
+        Valido: 'p',
+        Readonly: true
+      },
+      Mese: {
+        Type: 'string',
+        Value: item.Mese,
+        Class: 'text-center',
+        Valido: 'p'
+      }
+    }
+  }).sort((a, b) => {
+    if (a.Anno.Value < b.Anno.Value) return -1
+    if (a.Anno.Value > b.Anno.Value) return 1
+    if (a.Mese.Value < b.Mese.Value) return -1
+    if (a.Mese.Value > b.Mese.Value) return 1
+    return 0
+  })
+})
+
+const ItemBustePagaNero = computed(() => {
+  return ArrayFuoriBusta.value.map((item) => {
+    return {
+      Id: {
+        Type: 'string',
+        Value: '0',
+        Class: 'text-left'
+      },
+      IdAssistenteNero: {
+        Type: 'select',
+        Value: item.IdAssistenteNero,
+        Class: 'text-center',
+        Array: DatiComboAssistenti(),
+        Valido: 'p'
+      },
+      Data: {
+        Type: 'string',
+        Value: item.Data,
+        Class: 'text-center',
+        Valido: 'p'
+      },
+      Ore: {
+        Type: 'string',
+        Value: item.Ore,
+        Class: 'text-center',
+        Valido: 'p'
+      },
+      PagaOraria: {
+        Type: 'string',
+        Value: item.PagaOraria,
+        Class: 'text-center',
+        Valido: 'p'
+      }
+    }
   })
 })
 const NomeAssistente = ref('Silvia')
@@ -464,7 +739,11 @@ const TurniDate = computed(() => {
         Orario: curr.Orario,
         Ordine: curr.Ordine,
         Ferie: curr.Ferie,
-        Data: curr.Data
+        Nero: curr.Nero,
+        Data: curr.Data,
+        PagaOraria: curr.PagaOraria,
+        NumeroOre: curr.NumeroOre,
+        Festivo: curr.Festivo
       })
 
       return acc
@@ -485,7 +764,7 @@ const As = computed(() => {
     ...Pinia.AssistentiNero()
       .getElenco.map((a) => {
         if (a.Colore !== undefined) {
-          return { Id: a.Id, Nome: a.Nome, Colore: a.Colore }
+          return { Id: a.Id, Nome: a.Nome, Colore: a.Colore, Weekend: a.Weekend }
         }
       })
       .filter((a) => a !== undefined)
@@ -494,7 +773,7 @@ const As = computed(() => {
 })
 const oggi = new Date()
 const anno = ref(oggi.getFullYear())
-const mese = ref(oggi.getMonth() - 1)
+const mese = ref(oggi.getMonth())
 
 const nomeMese = computed(() => {
   return new Date(anno.value, mese.value).toLocaleDateString('it-IT', { month: 'long' })
@@ -614,11 +893,11 @@ const ComponiData = (giorno) => {
   return `${anno.value}-${mmese}-${giorno}`
 }
 
-const state = ref(0)
+const state = ref(7)
 
 const nextState = () => {
-  state.value = (state.value + 1) % 7
-  if (state.value === 6) {
+  state.value = (state.value + 1) % 9
+  if (state.value === 8) {
     state.value = 0
   }
 }
@@ -632,6 +911,8 @@ const bgColor = computed(() => {
   if (state.value === 4) return 'bg-purple-600'
   if (state.value === 5) return 'bg-pink-600'
   if (state.value === 6) return 'bg-gray-600'
+  if (state.value === 7) return 'bg-indigo-600'
+  if (state.value === 8) return 'bg-teal-600'
 })
 
 // posizione pallino
@@ -643,6 +924,8 @@ const knobPosition = computed(() => {
   if (state.value === 4) return 'translate-x-[40px]'
   if (state.value === 5) return 'translate-x-[50px]'
   if (state.value === 6) return 'translate-x-[60px]'
+  if (state.value === 7) return 'translate-x-[70px]'
+  if (state.value === 8) return 'translate-x-[80px]'
 })
 
 const DatiComboAssistenti = () => {
@@ -676,7 +959,7 @@ const Settimana = () => {
 }
 
 const TurniGiorno = (Data) => {
-  console.log('TurniGiorno', Data)
+  //console.log('TurniGiorno', Data)
   const giorni = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato']
 
   const tmp = new Date(Data).getDay()
@@ -705,7 +988,8 @@ const TurniGiorno = (Data) => {
                   Data: g.Data,
                   Orario: o.Orario,
                   Ordine: g.Ordine,
-                  Ferie: false
+                  Ferie: false,
+                  Festivo: true
                 }
               })
             } else {
@@ -715,8 +999,22 @@ const TurniGiorno = (Data) => {
                 Data: g.Data,
                 Orario: Orario,
                 Ordine: g.Ordine,
-                Ferie: false
+                Ferie: false,
+                Festivo: true
               }
+
+              /*const TestNero = TestFerieAssente(
+                Payload.IdAssistente,
+                Payload.Data?.substring(8, 10),
+                Payload.Orario
+              )
+              //console.log('TestNero', Payload.IdAssistente, Payload.Data.substring(8, 10), Payload.Orario, TestNero)
+              /*if (TestNero !== undefined) {
+                console.log('TestNero', TestNero)
+                Payload.NumeroOre = TestNero.NumeroOre
+                Payload.PagaOraria = TestNero.PagaOraria
+                Payload.Nero = true
+              }*/
             }
             const TestFerie = Pinia.AssistentiFerie().getElenco.find((f) => {
               if (f.IdAssistente === Payload.IdAssistente && f.Data === Payload.Data) {
@@ -727,6 +1025,42 @@ const TurniGiorno = (Data) => {
             if (TestFerie !== undefined) {
               Payload.Ferie = true
             }
+            const TestNero = TestFerieAssente(
+              Payload.IdAssistente,
+              Payload.Data.substring(8, 10),
+              Payload.Orario
+            ) /*
+            console.log(
+              'TestNero',
+              Payload.IdAssistente,
+              Payload.Data.substring(8, 10),
+              Payload.Orario,
+              TestNero,
+              TestFerie
+            )*/
+            if (TestNero) {
+              Payload.Nero = true
+              Payload.NumeroOre = TestNero.NumeroOre
+              Payload.PagaOraria = TestNero.PagaOraria
+            }
+            Pinia.AssistentiGiorniFestivi().getElenco.forEach((ferie) => {
+              const IdWeekend = As.value.find((a) => a.Weekend === true)?.Id
+              /*if (ferie.Data === Payload.Data) {
+                console.log('TestNoemi', ferie.NumeroOre, ferie.PagaOraria, IdWeekend)
+              }*/
+              if (
+                ferie.IdAssistente === IdWeekend &&
+                ferie.Data === Payload.Data &&
+                Payload.IdAssistente === IdWeekend
+              ) {
+                Payload.Nero = true
+                if (ferie.NumeroOre !== undefined && ferie.NumeroOre > 0) {
+                  Payload.NumeroOre = ferie.NumeroOre
+                  Payload.PagaOraria = ferie.PagaOraria
+                }
+              }
+            })
+            //console.log(TestNoemi)
             PPayload.push(Payload)
           }
         })
@@ -766,6 +1100,18 @@ const TurniGiorno = (Data) => {
             }
             Payload.Ferie = Ferie
           })
+          const TestNero = TestFerieAssente(
+            Payload.IdAssistente,
+            Payload.Data?.substring(8, 10),
+            Payload.Orario
+          )
+          //console.log('TestNero', Payload.IdAssistente, Payload.Data.substring(8, 10), Payload.Orario, TestNero)
+          if (TestNero !== undefined) {
+            console.log('TestNero', TestNero)
+            Payload.NumeroOre = TestNero.NumeroOre
+            Payload.PagaOraria = TestNero.PagaOraria
+            Payload.Nero = true
+          }
           PPayload.push(Payload)
         })
       }
@@ -846,41 +1192,173 @@ const TestFerieAssente = (IdAssistente, giorno, orario) => {
       return true
     }
   })
-  return Test !== undefined
+  return Test
 }
 
-  const CompilaTabelleFuoriBusta = () => { 
-    const lastDay = new Date(anno.value, mese.value + 1, 0).getDate()
-    for (let day = 1; day <= lastDay; day++) {
-      const data = ComponiData(day)
-      //console.log('CompilaTabelleFuoriBusta giorno', data)      
-      //const AssistentiDelGiono =
-        Pinia.CalendarioTurni().getElenco.forEach((t) => {
-        if (t.Data === data && t.Ferie === false) {
-          const GetNomeGiorno = NomeGiorno(data)
-          //console.log('AssistentiDelGiono', GetNomeGiorno, t.Orario, t.IdAssistente)
-          const TestNero = Pinia.AssistentiOrariNero().getElenco.find((n) => {
-            if (n.IdAssistente === t.IdAssistente && n.Giorni === GetNomeGiorno && n.Orario === t.Orario) {
-              return true
-            }
+const CompilaTabelleFuoriBusta = () => {
+  const lastDay = new Date(anno.value, mese.value + 1, 0).getDate()
+  let FuoriBusta = []
+  let FuoriBustaWeekEnd = []
+  for (let day = 1; day <= lastDay; day++) {
+    const data = ComponiData(day)
+    const Anno = data.substring(0, 4)
+    const Mese = data.substring(5, 7)
+    const TurniNero = Pinia.CalendarioTurni().getElenco.filter((t) => {
+      if (t.Data === data && t.Nero === true && t.Ferie === false) {
+        return true
+      }
+    })
+    if (TurniNero.length > 0) {
+      //console.log('TurniNero', TurniNero, TurniNero.length)
+      TurniNero.forEach((t) => {
+        if (As.value.filter((p) => p.Id === t.IdAssistente)[0].Weekend === true) {
+          FuoriBustaWeekEnd.push({
+            IdAssistente: t.IdAssistente,
+            NomeAssistente: As.value.filter((p) => p.Id === t.IdAssistente)[0].Nome,
+            Giorno: data.substring(8, 10),
+            PagaOraria: t.PagaOraria,
+            Ore: t.NumeroOre,
+            GiornoSettimana: NomeGiorno(data)
           })
-          //console.log('TestNero', TestNero)
-          if (TestNero !== undefined) {
-            const Payload = {
-              IdAssistente: t.IdAssistente,
-              //NomeAssistente: As.value.filter((p) => p.Id === t.IdAssistente)[0].Nome,
-              Data: Data_aaaammgg_ggmmaaaa(t.Data).replace(/-/g, '/'),
-              //Orario: t.Orario,
-              PagaOraria: TestNero.PagaOraria,
-              Ore: TestNero.NumeroOre
-            }
-            console.log('Aggiungo fuori busta', Payload)
-          }
+        } else {
+          FuoriBusta.push({
+            IdAssistente: t.IdAssistente,
+            NomeAssistente: As.value.filter((p) => p.Id === t.IdAssistente)[0].Nome,
+            Giorno: data.substring(8, 10),
+            PagaOraria: t.PagaOraria,
+            Ore: t.NumeroOre,
+            GiornoSettimana: NomeGiorno(data)
+          })
         }
       })
     }
   }
+  //console.log('FuoriBusta', FuoriBusta, 'FuoriBustaWeekEnd', FuoriBustaWeekEnd)
+  FuoriBusta = FuoriBusta.reduce((acc, item) => {
+    const id = item.IdAssistente
+    if (!acc[id]) {
+      acc[id] = []
+    }
+    acc[id].push(item)
+    return acc
+  }, {})
+  //console.log('FuoriBusta', FuoriBusta)
 
+  const GroupbyFuoriBusta = FuoriBusta
+  const settimanePerMese = DividiMesePerSettimaneLunedì()
+  const TurniPerSettimana = Object.keys(GroupbyFuoriBusta).reduce((acc, assistenteObj) => {
+    GroupbyFuoriBusta[assistenteObj].forEach((giornoObj) => {
+      const giorno = parseInt(giornoObj.Giorno)
+      const settimanaIndex = settimanePerMese.findIndex((settimana) => settimana.includes(giorno))
+
+      if (settimanaIndex !== -1) {
+        const key = `${assistenteObj}_${settimanaIndex + 1}`
+        if (!acc[key]) {
+          acc[key] = {
+            IdAssistente: assistenteObj,
+            NomeAssistente: GroupbyFuoriBusta[assistenteObj][0].NomeAssistente,
+            Settimana: settimanaIndex + 1,
+            PagaOraria: giornoObj.PagaOraria,
+            Giorni: []
+          }
+        }
+        acc[key].Giorni.push({
+          Giorno: giorno < 10 ? '0' + giorno : giorno,
+          NumeroOre: giornoObj.Ore,
+          PagaOraria: giornoObj.PagaOraria
+        })
+      }
+    })
+    return acc
+  }, {})
+
+  Object.values(TurniPerSettimana).forEach((settimana, index) => {
+    let Giorni = settimana.Giorni.map((g) => g.Giorno).join('-')
+    settimana.GiorniStr =
+      Giorni +
+      '/' +
+      (mese.value + 1 < 10 ? '0' + (mese.value + 1) : mese.value + 1) +
+      '/' +
+      anno.value
+    const Payload = {
+      IdAssistenteNero: As.value.find((assistente) => assistente.Nome === settimana.NomeAssistente)
+        ?.Id,
+      Data: settimana.GiorniStr,
+      Ore: settimana.Giorni.reduce((sum, g) => sum + parseFloat(g.NumeroOre), 0),
+      PagaOraria: settimana.Giorni[0].PagaOraria
+    }
+    ArrayFuoriBusta.value.push(Payload)
+    //Pinia.PagaAssistentiNero().Aggiungi(Payload)
+  })
+  FuoriBustaWeekEnd.forEach((item) => {
+    const DataStr =
+      item.Giorno +
+      '/' +
+      (mese.value + 1 < 10 ? '0' + (mese.value + 1) : mese.value + 1) +
+      '/' +
+      anno.value
+    const Payload = {
+      IdAssistenteNero: item.IdAssistente,
+      Data: DataStr,
+      Ore: item.Ore,
+      PagaOraria: item.PagaOraria
+    }
+    ArrayFuoriBusta.value.push(Payload)
+  })
+  //console.log('ArrayFuoriBusta', ArrayFuoriBusta.value)
+}
+
+const DividiMesePerSettimaneLunedì = () => {
+  const lastDay = new Date(anno.value, mese.value + 1, 0).getDate()
+
+  // Lunedì = 0, Martedì = 1, ..., Domenica = 6
+  const firstDay = (new Date(anno.value, mese.value, 1).getDay() + 6) % 7
+
+  const settimane = []
+  let settimanaCorrente = Array(7).fill(null)
+  let indexSettimana = firstDay
+
+  for (let day = 1; day <= lastDay; day++) {
+    settimanaCorrente[indexSettimana] = day
+    indexSettimana++
+
+    if (indexSettimana === 7) {
+      settimane.push(settimanaCorrente)
+      settimanaCorrente = Array(7).fill(null)
+      indexSettimana = 0
+    }
+  }
+
+  if (indexSettimana > 0) {
+    settimane.push(settimanaCorrente)
+  }
+
+  return settimane
+}
+const AggiungiBustePagaNero = (item) => {
+  const Payload = {
+    IdAssistenteNero: item.IdAssistenteNero,
+    Data: item.Data,
+    Ore: item.Ore.toString(),
+    PagaOraria: item.PagaOraria
+  }
+  Pinia.PagaAssistentiNero().Aggiungi(Payload)
+}
+const TestEsisteBustaPagaNero = (item) => {
+  const Test = Pinia.PagaAssistentiNero().getElenco.find((b) => {
+    if (
+      b.IdAssistenteNero === item.IdAssistenteNero &&
+      b.Data === item.Data &&
+      b.Ore.toString() === item.Ore.toString() &&
+      b.PagaOraria.toString() === item.PagaOraria.toString()
+    ) {
+      return true
+    } else {
+      return false
+    }
+  })
+  return Test !== undefined
+}
 </script>
 
 <style scoped lang="scss">

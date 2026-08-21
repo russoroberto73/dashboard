@@ -10,6 +10,7 @@ import { computed } from 'vue';
 
 import RTable from '@/components/ComponenteTabella/CostruisciTabella.vue'
 import { Data_ggmmaaaa_aaaammgg } from '@/assets/helpers/MyMixin';
+import { PatrimonioBanche } from '@/stores/modules/Banca/PatrimonioBanche.module';
 const Elenco = Pinia.SituazioneFideuram().getElenco
 
 const Items = computed(() => {
@@ -37,6 +38,18 @@ const Items = computed(() => {
                 Class: 'text-center',
                 Valido: 'p'
             },
+            Conto: {
+                Type: 'number',
+                Value: item.Conto,
+                Class: 'text-center',
+                Valido: 'p'
+            },
+            PatrimonioBanche: {
+                Type: 'number',
+                Value: !isNaN(item.ImportoTotale - item.Conto) ? (item.ImportoTotale - item.Conto).toFixed(2) : '01',
+                Class: 'text-center',
+                ReadOnly: true
+            }
         }
     }).sort((a, b) => {
         const dateA = new Date(a.Data.Value);

@@ -10,6 +10,8 @@ type TypeElemento = {
   Data: string
   Orario: string
   Ordine: string
+  PagaOraria: string
+  NumeroOre: string
 }
 
 type TypeCollezione = Array<TypeElemento>
@@ -34,7 +36,9 @@ export const AssistentiGiorniFestivi = defineStore('AssistentiGiorniFestivi', {
         Data: '',
         IdAssistente: '',
         Orario: '',
-        Ordine: '0'
+        Ordine: '0',
+        PagaOraria: '',
+        NumeroOre: ''
       }
     }
   },
@@ -81,6 +85,8 @@ export const AssistentiGiorniFestivi = defineStore('AssistentiGiorniFestivi', {
             this.Collezione[index].IdAssistente = res.val().IdAssistente
             this.Collezione[index].Orario = res.val().Orario
             this.Collezione[index].Ordine = res.val().Ordine
+            this.Collezione[index].PagaOraria = res.val().PagaOraria
+            this.Collezione[index].NumeroOre = res.val().NumeroOre
           })
         })
       } catch (e) {

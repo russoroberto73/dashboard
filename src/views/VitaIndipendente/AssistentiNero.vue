@@ -19,6 +19,13 @@ const Items = computed(() => {
                 Value: item.Id,
                 Class: "text-left"
             },
+            IdAssistentiNero:
+            {
+                Type: "string",
+                Value: item.Id,
+                Class: "text-left",
+                Valido: 'p'
+            },
             Nome:
             {
                 Type: "string",
@@ -38,7 +45,13 @@ const Items = computed(() => {
                 Type: "color",
                 Value: item.Colore,
                 Class: "text-center"
-             }
+            },
+            Weekend:
+            {
+                Type: "boolean",
+                Value: item.Weekend,
+                Class: "text-center"
+            }
         }
     })
 })

@@ -6,7 +6,7 @@
             </span>
         </span>
         <span v-else-if="item[Object.keys(item)[n]].Type === 'number'">
-            <span v-if="item[Object.keys(item)[n]].Value === '1'">                
+            <span v-if="item[Object.keys(item)[n]].Value === '01'">                
             </span>
             <span v-else-if="item[Object.keys(item)[n]].Intero">
                 {{ item[Object.keys(item)[n]].Value }}

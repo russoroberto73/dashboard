@@ -21,6 +21,13 @@ const Items = computed(() => {
                 Class: "text-left",
                 VerificaEliminazione: true
             },
+            IdAssistente:
+            {
+                Type: "string",
+                Value: item.Id,
+                Class: "text-left",
+                Valido: 'p'
+            },
             Nome:
             {
                 Type: "string",

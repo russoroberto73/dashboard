@@ -9,6 +9,7 @@ type TypeElemento = {
   Data: string
   Movimento: number
   ImportoTotale: number
+  Conto: number
 }
 
 type TypeCollezione = Array<TypeElemento>
@@ -26,7 +27,8 @@ export const SituazioneFideuram = defineStore('SituazioneFideuram', {
         Id: '0',
         Data: '',
         Movimento: '',
-        Importo: 0
+        ImportoTotale: 0,
+        Conto: 0
       }
     }
   },
@@ -59,7 +61,8 @@ export const SituazioneFideuram = defineStore('SituazioneFideuram', {
               Id,
               Data: Data_aaaammgg_ggmmaaaa(res.val().Data),
               Movimento: res.val().Movimento,
-              ImportoTotale: res.val().ImportoTotale
+              ImportoTotale: res.val().ImportoTotale,
+              Conto: res.val().Conto
             }
             this.Collezione.push(Payload)
           })

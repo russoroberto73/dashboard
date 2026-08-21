@@ -8,7 +8,8 @@ type TypeElemento = {
   Id?: string
   Nome: string,
   IdCategoriaBanca: string,
-  Colore: string
+  Colore: string,
+  Weekend?: boolean,
 }
 
 type TypeCollezione = Array<TypeElemento>
@@ -79,6 +80,7 @@ export const AssistentiNero = defineStore('AssistentiNero', {
             this.Collezione[index].Nome = res.val().Nome
             this.Collezione[index].IdCategoriaBanca = res.val().IdCategoriaBanca
             this.Collezione[index].Colore = res.val().Colore
+            this.Collezione[index].Weekend = res.val().Weekend
           })
         })
       } catch (e) {

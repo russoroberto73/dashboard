@@ -3,7 +3,6 @@ import { ref, get, DataSnapshot, update, child, push, remove } from 'firebase/da
 import { Data_aaaammgg_ggmmaaaa, DataOggiInglese } from '@/assets/helpers/MyMixin'
 import { defineStore } from 'pinia'
 import { db } from '@/stores/Conn'
-//const TabellaRef = ref(db, 'distribuzionenomiorariturniassistenti')
 
 const TabellaRef = ref(db, 'assistentidistribuzioneorariturni')
 

@@ -56,7 +56,7 @@ export const PagaAssistentiNero = defineStore('PagaAssistentiNero', {
     },
     async Aggiungi(Assistente: any) {
       //delete Assistente.value.Licenziamento
-      console.log(Assistente)      
+      //console.log(Assistente)      
       delete Assistente.Id
       delete Assistente.Importo
       try {
@@ -64,7 +64,7 @@ export const PagaAssistentiNero = defineStore('PagaAssistentiNero', {
           const snapshot = get(child(TabellaRef, response.key))
           const Id = response.key
           snapshot.then((res: any) => {
-            console.log(res.val(), Id)
+            //console.log(res.val(), Id)
             this.Collezione.push({ Id, ...res.val() })
           })
         })

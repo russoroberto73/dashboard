@@ -49,6 +49,9 @@ import { Libri } from './modules/Libri/Libri.module'
 import { ProvvigioniLibroSilvia } from './modules/Libri/ProvvigioniLibroSilvia.module'
 import { Recensioni } from './modules/Libri/Recensioni.module'
 import { Libro } from './modules/Libri/Libro.module'
+import { CategorieProdotti } from './modules/Spesa/CategoriaProdotti.module'
+import { Prodotti } from './modules/Spesa/Prodotti.module'
+import { Carrello } from './modules/Spesa/Carrello.modules'
 
 export const Pinia = {
     Login,
@@ -101,5 +104,8 @@ export const Pinia = {
     ProvvigioniLibroSilvia,
     Recensioni,
     DeclinoMamma,
+    CategorieProdotti,
+    Prodotti,
+    Carrello,
     UltimoBackup
 }

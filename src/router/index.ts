@@ -51,9 +51,9 @@ const router = createRouter({
               path: ':id',
               name: 'TurniDettaglio',
               component: () => import('@/views/VitaIndipendente/Turni/Calendario.vue'),
-              /*meta: {
+              meta: {
                 hideAside: 'stampa'
-              }*/
+              }
             }
           ]
         }
@@ -260,6 +260,26 @@ const router = createRouter({
       component: () => import('@/views/Libri/Recensioni.vue')
     },
     {
+      path: '/spesa',
+      children: [
+        {
+          path: 'categorie',
+          name: 'CategorieProdotti',
+          component: () => import('@/views/Banca/Spesa/CategorieProdotti.vue')
+        },
+        {
+          path: 'prodotti',
+          name: 'Prodotti',
+          component: () => import('@/views/Banca/Spesa/Prodotti.vue')
+        },
+        {
+          path: 'carrello',
+          name: 'Carrello',
+          component: () => import('@/views/Banca/Spesa/Carrello.vue')
+        }
+      ]
+    },
+    {
       path: '/download',
       name: 'Download',
       component: () => import('@/views/Download.vue')
@@ -270,8 +290,8 @@ const router = createRouter({
       component: () => import('@/views/CopiareDatabase.vue')
     },
     {
-      path: '/copydb',
-      name: 'CopyDb',
+      path: '/copydb1',
+      name: 'CopyDb1',
       component: () => import('@/views/CopyDb.vue')
     }
   ]

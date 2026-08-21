@@ -49,7 +49,7 @@ const ScadenzePassate = computed(() => {
   }
 })
 
-const Items = computed(() => {
+  const Items = computed(() => {
   return Elenco.map((item) => {
     return {
       Id: {
@@ -77,7 +77,7 @@ const Items = computed(() => {
         Type: 'boolean',
         Value: item.Pagato
       }
-    }
+    }    
   })
 })
 

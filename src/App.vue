@@ -129,19 +129,33 @@
         </router-link>
       </div>
       <div class="border border-[0px] border-blue-900 p-3 m-3 Bordo">
-        <div class="bg-gray-300">Botulino</div>
-        <router-link :to="{ name: 'BotulinoDistretti' }">
-          <h2>Distretti</h2>
-        </router-link>
-        <router-link :to="{ name: 'BotulinoMuscoli' }">
-          <h2>Muscoli</h2>
-        </router-link>
-        <router-link :to="{ name: 'BotulinoQtyDate' }">
-          <h2>Quantità date</h2>
-        </router-link>
-        <router-link :to="{ name: 'BotulinoTabellone' }">
-          <h2>Tabellone</h2>
-        </router-link>
+        <div class="border border-[0px] border-blue-900 p-3 m-3 Bordo">
+          <div class="bg-gray-300">Botulino</div>
+          <router-link :to="{ name: 'BotulinoDistretti' }">
+            <h2>Distretti</h2>
+          </router-link>
+          <router-link :to="{ name: 'BotulinoMuscoli' }">
+            <h2>Muscoli</h2>
+          </router-link>
+          <router-link :to="{ name: 'BotulinoQtyDate' }">
+            <h2>Quantità date</h2>
+          </router-link>
+          <router-link :to="{ name: 'BotulinoTabellone' }">
+            <h2>Tabellone</h2>
+          </router-link>
+        </div>
+        <div class="border border-[0px] border-blue-900 p-3 m-3 Bordo">
+          <div class="bg-gray-300">Spesa</div>
+          <router-link :to="{ name: 'CategorieProdotti' }">
+            <h2>Categorie prodotti</h2>
+          </router-link>
+          <router-link :to="{ name: 'Prodotti' }">
+            <h2>Prodotti</h2>
+          </router-link>
+          <router-link :to="{ name: 'Carrello' }">
+            <h2>Carrello</h2>
+          </router-link>
+        </div>
       </div>
       <div class="border border-[0px] border-blue-900 p-3 m-3 Bordo">
         <div class="bg-gray-300">Tema natale</div>
@@ -242,7 +256,7 @@ const FirebaseDistribuzioneTurniAssistenti = Pinia.DistribuzioneTurniAssistenti(
 const FirebaseGiorniFestivi = Pinia.AssistentiGiorniFestivi()
 const FirebaseBuste = Pinia.Buste()
 const FirebaseBloccaMeseCalendario = Pinia.BloccaMeseCalendario()
-  const FirebaseAssistentiOrariNero = Pinia.AssistentiOrariNero()
+const FirebaseAssistentiOrariNero = Pinia.AssistentiOrariNero()
 
 const FirebaseCompleanni = Pinia.Compleanni()
 
@@ -284,6 +298,9 @@ const FirebaseLibri = Pinia.Libri()
 const FirebaseLibro = Pinia.Libro()
 const FirebaseRecensioni = Pinia.Recensioni()
 const FirebaseProvvigioniLibroSilvia = Pinia.ProvvigioniLibroSilvia()
+const FirebaseCategorieProdotti = Pinia.CategorieProdotti()
+const FirebaseProdotti = Pinia.Prodotti()
+const FirebaseCarrello = Pinia.Carrello()
 
 import { useRoute } from 'vue-router'
 import type router from './router'
@@ -301,7 +318,7 @@ const hideAside = computed(() =>
 watch(
   hideAside,
   (val) => {
-    console.log(val)
+    //console.log(val)
 
     if (val) {
       document.body.style.backgroundColor = '#dddddd'
@@ -363,7 +380,7 @@ onMounted(() => {
   FirebaseBuste.Elenco()
   FirebaseBloccaMeseCalendario.Elenco()
   FirebaseAssistentiOrariNero.Elenco()
-  /*
+
   FirebaseLibro.Elenco()
   FirebaseLibri.Elenco()
   FirebaseRecensioni.Elenco()
@@ -372,7 +389,7 @@ onMounted(() => {
   FirebaseCompleanni.Elenco()
   FirebaseScadenze.Elenco()
   FirebaseCalendarioFilosofico.Elenco()
-
+  /*
   FirebaseSuperCategorie.Elenco()
   FirebaseCategorie.Elenco()
   FirebaseMovimenti.Elenco()
@@ -382,9 +399,9 @@ onMounted(() => {
   FirebasePatrimonioGruppi.Elenco()
   FirebasePatrimonioTitoli.Elenco()
   FirebasePatrimonioDate.Elenco()
-
+*/
   FirebaseSituazioneFideuram.Elenco()
-
+  /*
   FirebaseHandiphoneCategorie.Elenco()
   FirebaseHandiphoneCodiciFrasi.Elenco()
   FirebaseGruppiPassword.Elenco()
@@ -412,6 +429,9 @@ onMounted(() => {
   */
   FirebaseUltimoBackup.Elenco()
   FirebaseDeclinoMamma.Elenco()
+  FirebaseCategorieProdotti.Elenco()
+  FirebaseProdotti.Elenco()
+  FirebaseCarrello.Elenco()
   if (DatabaseFirebase != 'produzione') {
     document.documentElement.style.setProperty('--produzione', '#eccc86')
   }

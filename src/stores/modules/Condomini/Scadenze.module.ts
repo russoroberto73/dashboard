@@ -73,8 +73,8 @@ export const Scadenze = defineStore('Scadenze', {
           const Payload = {
             Id: doc.key ? doc.key : '0',
             Data: doc.val()['Data'],
-            Casa: Casa.Nome,
-            Tipologia: Tipologia.Nome,
+            Casa: Casa ? Casa.Nome : '',
+            Tipologia: Tipologia ? Tipologia.Nome : '',
             Importo: doc.val()['Importo'],
             Pagato: doc.val().Pagato ? doc.val()['Pagato'] : false
           }
