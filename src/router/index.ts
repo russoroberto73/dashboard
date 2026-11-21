@@ -116,6 +116,11 @@ const router = createRouter({
           path: '/patrimonio/situazionefideuram',
           name: 'SituazioneFideuram',
           component: () => import('@/views/Banca/Patrimonio/SituazioneBanche.vue')
+        },
+        {
+          path: '/patrimonio/cedolefineco',
+          name: 'CedoleFineco',
+          component: () => import('@/views/Banca/Patrimonio/CedoleFineco.vue')
         }
       ]
     },

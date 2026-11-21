@@ -9,6 +9,7 @@ type TypeElemento = {
   Data: string
   IdProdotto: string
   Qty: number
+  Preso: boolean
 }
 
 type TypeCollezione = Array<TypeElemento>
@@ -29,7 +30,8 @@ export const Carrello = defineStore('Carrello', {
         Id: '0',
         Data: '',
         IdProdotto: '',
-        Qty: ''
+        Qty: '',
+        Preso: false
       }
     }
   },
@@ -47,7 +49,8 @@ export const Carrello = defineStore('Carrello', {
             Id,
             Data: obj.Data,
             IdProdotto: obj.IdProdotto,
-            Qty: obj.Qty
+            Qty: obj.Qty,
+            Preso: obj.Preso
           }
           this.Collezione.push(Payload)
         })
@@ -58,7 +61,7 @@ export const Carrello = defineStore('Carrello', {
     async Aggiungi(Frase: any) {
       delete Frase.Id
       //Frase.Data = Data_aaaammgg_ggmmaaaa(Frase.Data)
-      //console.log(Frase)
+      console.log(Frase)
       try {
         await push(TabellaRef, Frase)
           .then((response: { key: any }) => {
@@ -69,7 +72,8 @@ export const Carrello = defineStore('Carrello', {
                 Id,
                 Data: res.val().Data,
                 IdProdotto: res.val().IdProdotto,
-                Qty: res.val().Qty
+                Qty: res.val().Qty,
+                Preso: res.val().Preso
               }
               this.Collezione.push(Payload)
             })
@@ -91,8 +95,9 @@ export const Carrello = defineStore('Carrello', {
             get(child(TabellaRef, Id)).then((res) => {
               const index = this.Collezione.findIndex((item) => item.Id === res.key)              
               this.Collezione[index].Data = res.val().Data
-              this.Collezione[index].Prodotto = res.val().Prodotto
-              this.Collezione[index].Qty = res.val().Qty              
+              this.Collezione[index].IdProdotto = res.val().IdProdotto
+              this.Collezione[index].Qty = res.val().Qty
+              this.Collezione[index].Preso = res.val().Preso
             })
           })
           .catch((e) => {

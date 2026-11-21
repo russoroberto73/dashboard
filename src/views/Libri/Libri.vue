@@ -2,15 +2,17 @@
   <div class="relative top-[120px]">
     <h2 class="text-center text-[30px]">Libri</h2>
     <div class="text-center text-[20px] mb-5">
-      {{ LibriAcquistati.Numero }} libri acquistati a {{ LibriAcquistati.Costo }}€ in
-      {{ LibriAcquistati.Data }}
+      {{ LibriAcquistati[0].Numero }} libri acquistati a {{ LibriAcquistati[0].Costo }}€ in
+      {{ LibriAcquistati[0].Data }}<br />
+      {{ LibriAcquistati[1].Numero }} libri acquistati a {{ LibriAcquistati[1].Costo }}€ in
+      {{ LibriAcquistati[1].Data }}
     </div>
     <div>
       <Rtable :items="Items" :pinia="Pinia.Libri()" />
     </div>
     <div class="text-center text-[20px] mb-5" @click="Silvia = !Silvia">
       {{ LibriVenduti.Numero }} libri venduti a {{ LibriVenduti.Incasso }}€ quindi rimngono
-      {{ LibriAcquistati.Numero - LibriVenduti.Numero }} libri a casa<br />      
+      {{ LibriAcquistati[0].Numero + LibriAcquistati[1].Numero - LibriVenduti.Numero }} libri a casa<br />      
     </div>
     <span v-if="Silvia" class="block text-center text-[20px] mb-5">
         <div>A Silvia spetta {{ (LibriVenduti.Incasso * 0.2).toFixed(2) }}€</div>
@@ -25,11 +27,16 @@ import Rtable from '@/components/ComponenteTabella/CostruisciTabella.vue'
 import { Pinia } from '@/stores/'
 import { computed, ref } from 'vue'
 import { Data_ggmmaaaa_aaaammgg } from '@/assets/helpers/MyMixin'
-const LibriAcquistati = {
+const LibriAcquistati = [{
   Numero: 50,
   Data: '19 maggio 2026',
   Costo: 136.2
-}
+},
+  {
+    Numero: 20,
+    Data: '28 agosto 2026',
+    Costo: 56.10
+  }]
 const Elenco = ref(Pinia.Libri().getElenco)
 const ProvvigioniLibroSilvia = ref(Pinia.ProvvigioniLibroSilvia().getElenco)
 

@@ -1,9 +1,10 @@
 <template>
   <div>
-    <div class="hidden">
+    <div class="hidde">
       <button class="bg-yellow-500 p-2 rounded-[45px] m-5" @click="EliminaCarrello">Elimina</button>
     </div>
     <div class="text-center">
+      {{ DataSelezionata }}
       Data:
       <select v-model="DataSelezionata" class="border border-blue-900 p-1 m-3 Bordo">
         <option value="0">Seleziona una data</option>
@@ -74,8 +75,20 @@ const Elenco = Pinia.Carrello().getElenco
 const ElencoProdotti = Pinia.Prodotti().getElenco
 const ElencoCategorieProdotti = Pinia.CategorieProdotti().getElenco
 const Oggi = Data_NewDate_aaaammgg(new Date())
-const DataSelezionata = ref('0')
-const Spesa = ref(false)
+const DataSelezionata = computed(() => {
+  const elenco = Pinia.Carrello().getElenco
+  elenco.sort((a, b) => {
+    if (a.Data < b.Data) {
+      return -1
+    } else if (a.Data > b.Data) {
+      return 1
+    }
+    return 0
+  })
+  return elenco[elenco.length - 1]?.Data || '0'
+})
+
+  const Spesa = ref(false)
 const Items = computed(() => {
   if (Elenco.length === 0) {
     return [
@@ -103,17 +116,29 @@ const Items = computed(() => {
           Value: 1,
           Class: 'text-left ml-5',
           Valido: 'p'
+        },
+        Preso: {
+          Type: 'boolean',
+          Value: false,
+          Class: 'text-center',
+          Valido: 'p'
         }
       }
     ]
   }
   return Elenco.filter(
     (item) => DataSelezionata.value === '0' || item.Data === DataSelezionata.value
-  ).map((item) => ({
+  ).map((item) => ({  
     Id: {
       Type: 'string',
       Value: item.Id,
       Class: 'text-left'
+    },
+    vIdProdotto: {
+      Type: 'string',
+      Value: item.IdProdotto,
+      Class: 'text-left ml-5',
+      Readonly: true
     },
     Data: {
       Type: 'date',
@@ -134,6 +159,11 @@ const Items = computed(() => {
       Value: item.Qty,
       Class: 'text-center',
       Valido: 'p'
+    },
+    Preso: {
+      Type: 'boolean',
+      Value: item.Preso,
+      Class: 'text-center'
     }
   }))
 })
@@ -151,6 +181,7 @@ const Aggiungi_prodotto = (item: any) => {
     TrovaProdotto.Qty = Number(TrovaProdotto.Qty) + 1
     Pinia.Carrello().Aggiorna({ ...TrovaProdotto, Id: TrovaProdotto.Id })
   } else {
+    console.log('Aggiungo nuovo prodotto:', Payload)
     Pinia.Carrello().Aggiungi({ ...Payload, Qty: 1 })
   }
 }
@@ -179,7 +210,14 @@ const ElencoDate = () => {
         return item.Data
       })
     )
-  ]
+  ].sort((a, b) => {
+    if (a < b) {
+      return -1
+    } else if (a > b) {
+      return 1
+    }
+    return 0
+  })
 }
 
 const getQty = (itemp: any) => {

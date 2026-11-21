@@ -126,6 +126,9 @@
         </router-link>
         <router-link :to="{ name: 'SituazioneFideuram' }">
           <h2>Situazione Fideuram</h2>
+        </router-link>        
+        <router-link :to="{ name: 'CedoleFineco' }">
+          <h2>Cedole Fineco</h2>
         </router-link>
       </div>
       <div class="border border-[0px] border-blue-900 p-3 m-3 Bordo">
@@ -389,11 +392,11 @@ onMounted(() => {
   FirebaseCompleanni.Elenco()
   FirebaseScadenze.Elenco()
   FirebaseCalendarioFilosofico.Elenco()
-  /*
+
   FirebaseSuperCategorie.Elenco()
   FirebaseCategorie.Elenco()
   FirebaseMovimenti.Elenco()
-  FirebaseRimborsi730.Elenco()
+  /*FirebaseRimborsi730.Elenco()
 
   FirebasePatrimonioBanche.Elenco()
   FirebasePatrimonioGruppi.Elenco()
@@ -401,7 +404,7 @@ onMounted(() => {
   FirebasePatrimonioDate.Elenco()
 */
   FirebaseSituazioneFideuram.Elenco()
-  /*
+  
   FirebaseHandiphoneCategorie.Elenco()
   FirebaseHandiphoneCodiciFrasi.Elenco()
   FirebaseGruppiPassword.Elenco()
@@ -426,7 +429,7 @@ onMounted(() => {
   FirebaseTemaNataleNatura.Elenco()
   FirebaseTemaNataleQuadrupliitàSegni.Elenco()
   FirebaseTemaNatalePianetiCaseSegni.Elenco()
-  */
+
   FirebaseUltimoBackup.Elenco()
   FirebaseDeclinoMamma.Elenco()
   FirebaseCategorieProdotti.Elenco()

@@ -50,7 +50,8 @@ const ScadenzePassate = computed(() => {
 })
 
   const Items = computed(() => {
-  return Elenco.map((item) => {
+    return Elenco.map((item) => {
+    console.log(item)
     return {
       Id: {
         Type: 'string',
@@ -70,7 +71,7 @@ const ScadenzePassate = computed(() => {
         Value: item.Casa
       },
       Importo: {
-        Type: 'number',
+        Type: 'string',
         Value: item.Importo
       },
       Pagato: {

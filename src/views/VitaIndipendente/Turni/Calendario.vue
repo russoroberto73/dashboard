@@ -63,7 +63,7 @@
               </option>
             </select>
           </div>
-          <table class="w-[400px] bg-red-200 hidden">
+          <table class="w-[400px] bg-red-200 hidde">
             <tr>
               <td class="text-left">
                 MeseAnno:<input type="text" class="m-2" v-model="FiltroAnnoMese" /><br />
@@ -76,7 +76,7 @@
               </td>
             </tr>
           </table>
-        </div>
+        </div>        
         <Rtable :items="Items" :pinia="Pinia.CalendarioTurni()" />
       </div>
       <div v-else-if="state === 1" class="text-center">
@@ -240,11 +240,12 @@
                             element.Orario === ModiOrarioVecchio
                           "
                         >
-                          <div class="grid grid-cols-[80px_90px_20px_20px_1fr] w-[140px]">
+                          <div class="grid grid-cols-[80px_90px_20px_20px_20px_20px_1fr] w-[160px]">
                             <input type="hidden" v-model="ModiId" />
                             <input type="text" v-model="ModiOrario" class="w-[100px]" />
                             <span>{{ ModiAssistente }}</span>
                             <input type="checkbox" v-model="ModiFerie" />F
+                            <input type="text" v-model="ModiOrdine" class="h-[25px] mt-[3px]" />O
                             <BTNSalva
                               class="w-[20px] h-[30px] BTNAzione"
                               @click="Aggiorna(giorno)"
@@ -262,7 +263,7 @@
                             {{ As.filter((p) => p.Id === element.IdAssistente)[0].Nome }}
                             <span>{{ element.Nero ? '(N)' : '' }}</span>
                             <span>{{ element.Ferie ? (element.Nero ? ' (A)' : '(F)') : '' }}</span>
-                            <span v-if="false">({{ element.Ordine }})</span>
+                            <span v-if="true">({{ element.Ordine }})</span>
                             <span v-if="false">
                               <span v-if="element.PagaOraria !== undefined">
                                 {{ element.PagaOraria }}
@@ -303,7 +304,8 @@ const ModiOrario = ref('')
 const ModiAssistente = ref('')
 const ModiId = ref('')
 const ModiGiorno = ref('')
-const ModiFerie = ref(false)
+  const ModiFerie = ref(false)
+const ModiOrdine = ref('0')
 
 const Filtromesefestivo = ref('')
 const ArrayFuoriBusta = ref([])
@@ -441,7 +443,7 @@ const ItemGiorniFestivi = computed(() => {
     .getElenco.map((item) => {
       let Filtro = true
       if (Filtromesefestivo.value !== '') {
-        Filtro = Filtro && Filtromesefestivo.value === item.Data?.substring(0, 7)
+        Filtro = Filtro && (Filtromesefestivo.value === item.Data?.substring(0, 7) || Filtromesefestivo.value === item.Data)
       }
       if (FiltroAssistente.value !== '') {
         Filtro = Filtro && FiltroAssistente.value === item.IdAssistente
@@ -825,7 +827,8 @@ const Aggiorna = (giorno) => {
   const Payload = {
     Id: ModiId.value,
     Orario: ModiOrario.value,
-    Ferie: ModiFerie.value
+    Ferie: ModiFerie.value,
+    Ordine: ModiOrdine.value
   }
   //console.log(Payload)
   Pinia.CalendarioTurni().Aggiorna(Payload)
@@ -1128,13 +1131,14 @@ const NomeGiorno = (data) => {
 }
 
 const Modifica = (element) => {
-  //console.log('Modifica turno', element)
+  console.log('Modifica turno', element)
   ModiOrarioVecchio.value = element.Orario
   ModiOrario.value = element.Orario
   ModiAssistente.value = As.value.filter((p) => p.Id === element.IdAssistente)[0].Nome
   ModiId.value = element.Id
   ModiGiorno.value = element.giorno
   ModiFerie.value = element.Ferie
+  ModiOrdine.value = element.Ordine
 }
 /*
 const Elimina = () => {

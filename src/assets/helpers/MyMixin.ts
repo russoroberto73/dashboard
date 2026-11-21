@@ -206,6 +206,9 @@ export const formatEuro = (amount: any) => {
   if (numreturn === 'NaN') {
     numreturn = ''
   }
+  if (numreturn === '0,00') { 
+    numreturn=''
+  }
   return numreturn
 }
 

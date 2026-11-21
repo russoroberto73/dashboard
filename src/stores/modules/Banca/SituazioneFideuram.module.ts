@@ -59,7 +59,7 @@ export const SituazioneFideuram = defineStore('SituazioneFideuram', {
           snapshot.then((res: any) => {
             const Payload = {
               Id,
-              Data: Data_aaaammgg_ggmmaaaa(res.val().Data),
+              Data: res.val().Data,
               Movimento: res.val().Movimento,
               ImportoTotale: res.val().ImportoTotale,
               Conto: res.val().Conto

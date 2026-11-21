@@ -24,7 +24,7 @@ const Items = computed(() => {
                 Type: "string",
                 Value: item.Id,
                 Class: "text-left",
-                Valido: 'p'
+                ReadOnly: true
             },
             Nome:
             {
